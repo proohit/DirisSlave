@@ -10,7 +10,6 @@ public class Main {
 		JDA jda = new JDABuilder(AccountType.BOT)
 				.setToken("NTY2NjIwMzc0OTA1OTEzMzU1.XLHr9A.zOoMFpoibt2lyzkNXl9PLNqNC1o").build();
 		jda.addEventListener(new MyEventListener(jda));
-		//System.out.println(YoutubeSearcher.search(new String[] {"live", "overflow"}));
 	}
 
 }
