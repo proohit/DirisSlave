@@ -7,6 +7,8 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import net.dv8tion.jda.core.managers.AudioManager;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Stream;
@@ -47,25 +49,60 @@ public class TrackScheduler extends AudioEventAdapter {
         // Start the next track, regardless of if something is already playing or not. In case queue was empty, we are
         // giving null to startTrack, which is a valid argument and will simply stop the player.
         AudioTrack nextTrack = queue.poll();
-        if(nextTrack==null) {
+        if (nextTrack == null) {
             player.stopTrack();
             audioplayer.AudioPlayer.getLastManager().closeAudioConnection();
         }
         player.startTrack(nextTrack, false);
     }
+
     public Stream<AudioTrack> getQueue() {
         return queue.stream();
     }
+
     public void stop() {
-        //TODO remove all items from queue
+        while (!queue.isEmpty()) queue.poll();
         player.destroy();
-        audioplayer.AudioPlayer.getLastManager().closeAudioConnection();
+        AudioManager manager = audioplayer.AudioPlayer.getLastManager();
+        if(manager.isConnected() || manager.isAttemptingToConnect()) manager.closeAudioConnection();
     }
+
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         // Only start the next track if the end reason is suitable for it (FINISHED or LOAD_FAILED)
         if (endReason.mayStartNext) {
             nextTrack();
+        }
+    }
+
+    public void skipTo(int pos) {
+        if (pos > queue.size() || pos <= 0) return;
+        int i = 0;
+        Iterator<AudioTrack> it = queue.iterator();
+
+        while (it.hasNext()) {
+            if (++i == pos) {
+                nextTrack();
+                return;
+            } else {
+                    queue.poll();
+                    it.next();
+
+            }
+        }
+    }
+
+    public void remove(int pos) {
+        if (pos > queue.size() || pos <= 0) return;
+        int i = 1;
+        Iterator<AudioTrack> it = queue.iterator();
+        while (it.hasNext()) {
+            if (i++ == pos) {
+                queue.remove(it.next());
+                return;
+            } else {
+                it.next();
+            }
         }
     }
 }

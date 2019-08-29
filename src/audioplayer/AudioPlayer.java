@@ -78,17 +78,21 @@ public class AudioPlayer {
             }
         });
     }
+
     public Stream<AudioTrack> getQueue(TextChannel channel) {
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
         return musicManager.scheduler.getQueue();
     }
+
     public void play(Guild guild, GuildMusicManager musicManager, AudioTrack track) {
         musicManager.scheduler.queue(track);
     }
+
     public void stop(TextChannel channel) {
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
         musicManager.scheduler.stop();
     }
+
     public void skipTrack(TextChannel channel) {
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
         musicManager.scheduler.nextTrack();
@@ -96,8 +100,18 @@ public class AudioPlayer {
         channel.sendMessage("Skipped to next track.").queue();
     }
 
+    public void remove(int pos, TextChannel channel) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+        musicManager.scheduler.remove(pos);
+    }
+
     public static AudioManager getLastManager() {
         return lastManager;
+    }
+
+    public void skipTo(int pos, TextChannel channel) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+        musicManager.scheduler.skipTo(pos);
     }
 
     public static void connectToUserVoiceChannel(AudioManager audioManager, VoiceChannel channel) {

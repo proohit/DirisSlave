@@ -43,6 +43,9 @@ public class Commands {
         permissions.put(prefix + "stop", "Bananenchefs");
         permissions.put(prefix + "queue", "Bananenchefs");
         permissions.put(prefix + "q", "Bananenchefs");
+        permissions.put(prefix + "remove", "Bananenchefs");
+        permissions.put(prefix + "rm", "Bananenchefs");
+        permissions.put(prefix + "skipto", "Bananenchefs");
 
     }
 
@@ -115,21 +118,51 @@ public class Commands {
             case "#queue":
                 queue(event);
                 break;
+            case "#rm":
+            case "#remove":
+                remove(event, argStrings);
+                break;
+            case "#skipto":
+                skipTo(event, argStrings);
+                break;
         }
     }
+
+    private static void skipTo(MessageReceivedEvent event, String[] argStrings) {
+        if (argStrings.length == 2) {
+            try {
+                player.skipTo(Integer.parseInt(argStrings[1]), event.getTextChannel());
+            } catch (NumberFormatException e) {
+                sendBeautifulMessage(event, "the position you have entered is invalid");
+
+            }
+        }
+    }
+
+    private static void remove(MessageReceivedEvent event, String[] argStrings) {
+        if (argStrings.length == 2) {
+            try {
+                player.remove(Integer.parseInt(argStrings[1]), event.getTextChannel());
+            } catch (NumberFormatException e) {
+                sendBeautifulMessage(event, "the position you have entered is invalid");
+            }
+        }
+    }
+
     private static void queue(MessageReceivedEvent event) {
         String queue = "current queue: \n";
         Iterator<AudioTrack> it = player.getQueue(event.getTextChannel()).iterator();
-        while(it.hasNext()) {
-            //TODO current position in queue
-            queue+=it.next().getInfo().title + "\n";
+        int i = 1;
+        while (it.hasNext()) {
+            queue += i++ + " " + it.next().getInfo().title + "\n";
         }
         sendBeautifulMessage(event, queue);
     }
+
     private static void stop(MessageReceivedEvent event, String[] argStrings) {
         Guild guild = event.getGuild();
 
-        if(guild!=null) {
+        if (guild != null) {
             player.stop(event.getTextChannel());
         }
     }
@@ -142,10 +175,10 @@ public class Commands {
         Guild guild = event.getGuild();
 
         if (guild != null) {
-            if(argStrings.length >= 2) {
+            if (argStrings.length >= 2) {
                 String trackUrl = "ytsearch: ";
-                for(int i = 1; i<argStrings.length;i++) {
-                    trackUrl+=argStrings[i] + " ";
+                for (int i = 1; i < argStrings.length; i++) {
+                    trackUrl += argStrings[i] + " ";
                 }
                 AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(), event.getMember().getVoiceState().getChannel());
                 player.loadAndPlay(event.getTextChannel(), trackUrl);
