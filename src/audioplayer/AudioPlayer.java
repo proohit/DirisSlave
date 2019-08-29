@@ -14,6 +14,7 @@ import net.dv8tion.jda.core.managers.AudioManager;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class AudioPlayer {
 
@@ -77,13 +78,17 @@ public class AudioPlayer {
             }
         });
     }
-
+    public Stream<AudioTrack> getQueue(TextChannel channel) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+        return musicManager.scheduler.getQueue();
+    }
     public void play(Guild guild, GuildMusicManager musicManager, AudioTrack track) {
-        connectToFirstVoiceChannel(guild.getAudioManager());
-
         musicManager.scheduler.queue(track);
     }
-
+    public void stop(TextChannel channel) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+        musicManager.scheduler.stop();
+    }
     public void skipTrack(TextChannel channel) {
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
         musicManager.scheduler.nextTrack();
@@ -95,12 +100,9 @@ public class AudioPlayer {
         return lastManager;
     }
 
-    public static void connectToFirstVoiceChannel(AudioManager audioManager) {
+    public static void connectToUserVoiceChannel(AudioManager audioManager, VoiceChannel channel) {
         if (!audioManager.isConnected() && !audioManager.isAttemptingToConnect()) {
-            for (VoiceChannel voiceChannel : audioManager.getGuild().getVoiceChannels()) {
-                audioManager.openAudioConnection(voiceChannel);
-                break;
-            }
+            audioManager.openAudioConnection(channel);
         }
     }
 }

@@ -1,12 +1,10 @@
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import audioplayer.AudioPlayer;
 import com.google.gson.JsonArray;
@@ -14,6 +12,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
@@ -41,6 +40,10 @@ public class Commands {
         permissions.put(prefix + "pl", "Bananenchefs");
         permissions.put(prefix + "play", "Bananenchefs");
         permissions.put(prefix + "skip", "Bananenchefs");
+        permissions.put(prefix + "stop", "Bananenchefs");
+        permissions.put(prefix + "queue", "Bananenchefs");
+        permissions.put(prefix + "q", "Bananenchefs");
+
     }
 
     private static boolean isAllowed(Member member, String command) {
@@ -105,6 +108,29 @@ public class Commands {
             case "#skip":
                 skip(event, argStrings);
                 break;
+            case "#stop":
+                stop(event, argStrings);
+                break;
+            case "#q":
+            case "#queue":
+                queue(event);
+                break;
+        }
+    }
+    private static void queue(MessageReceivedEvent event) {
+        String queue = "current queue: \n";
+        Iterator<AudioTrack> it = player.getQueue(event.getTextChannel()).iterator();
+        while(it.hasNext()) {
+            //TODO current position in queue
+            queue+=it.next().getInfo().title + "\n";
+        }
+        sendBeautifulMessage(event, queue);
+    }
+    private static void stop(MessageReceivedEvent event, String[] argStrings) {
+        Guild guild = event.getGuild();
+
+        if(guild!=null) {
+            player.stop(event.getTextChannel());
         }
     }
 
@@ -121,6 +147,7 @@ public class Commands {
                 for(int i = 1; i<argStrings.length;i++) {
                     trackUrl+=argStrings[i] + " ";
                 }
+                AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(), event.getMember().getVoiceState().getChannel());
                 player.loadAndPlay(event.getTextChannel(), trackUrl);
             }
         }

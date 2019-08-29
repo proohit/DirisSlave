@@ -9,6 +9,7 @@ import net.dv8tion.jda.core.managers.AudioManager;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.stream.Stream;
 
 /**
  * This class schedules tracks for the audio player. It contains the queue of tracks.
@@ -52,7 +53,14 @@ public class TrackScheduler extends AudioEventAdapter {
         }
         player.startTrack(nextTrack, false);
     }
-
+    public Stream<AudioTrack> getQueue() {
+        return queue.stream();
+    }
+    public void stop() {
+        //TODO remove all items from queue
+        player.destroy();
+        audioplayer.AudioPlayer.getLastManager().closeAudioConnection();
+    }
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         // Only start the next track if the end reason is suitable for it (FINISHED or LOAD_FAILED)
