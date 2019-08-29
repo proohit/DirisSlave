@@ -39,6 +39,7 @@ public class Commands {
         permissions.put(prefix + "stats", "everyone");
         permissions.put(prefix + "help", "everyone");
         permissions.put(prefix + "pl", "Bananenchefs");
+        permissions.put(prefix + "play", "Bananenchefs");
         permissions.put(prefix + "skip", "Bananenchefs");
     }
 
@@ -98,6 +99,7 @@ public class Commands {
                 stats(event);
                 break;
             case "#pl":
+            case "#play":
                 play(event, argStrings);
                 break;
             case "#skip":
@@ -114,16 +116,20 @@ public class Commands {
         Guild guild = event.getGuild();
 
         if (guild != null) {
-            if (argStrings.length == 2) {
-                    player.loadAndPlay(event.getTextChannel(), argStrings[1]);
+            if(argStrings.length >= 2) {
+                String trackUrl = "ytsearch: ";
+                for(int i = 1; i<argStrings.length;i++) {
+                    trackUrl+=argStrings[i] + " ";
                 }
+                player.loadAndPlay(event.getTextChannel(), trackUrl);
             }
         }
+    }
 
     private static void skip(MessageReceivedEvent event, String[] argStrings) {
         Guild guild = event.getGuild();
-        if(guild !=null) {
-                    player.skipTrack(event.getTextChannel());
+        if (guild != null) {
+            player.skipTrack(event.getTextChannel());
         }
     }
 
