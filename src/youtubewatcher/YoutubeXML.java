@@ -1,3 +1,5 @@
+package youtubewatcher;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -41,7 +43,9 @@ public class YoutubeXML extends XMLParser {
 			rss = new YoutubeRSS(channelid);
 		return rss.getRSS();
 	}
-
+	public String getUrl() {
+		return url;
+	}
 	public YoutubeRSS getRSS() {
 		if (rss == null)
 			rss = new YoutubeRSS(channelid);
