@@ -13,8 +13,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class Commands {
 
@@ -314,7 +314,6 @@ public class Commands {
             help += comm + "\n";
         }
         sendBeautifulMessage(event, help);
-        ;
     }
 
     private static void sendMessage(MessageReceivedEvent event, String text) {
