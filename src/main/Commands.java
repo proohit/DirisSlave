@@ -1,13 +1,7 @@
 package main;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.*;
-
 import audioplayer.AudioPlayer;
+import audioplayer.PlaylistManager;
 import audioplayer.playCommand;
 import calculator.Calculator;
 import calculator.DivisionByZero;
@@ -15,14 +9,19 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import metahandler.MetaHandler;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
 import youtubewatcher.YoutubeWatcher;
 import youtubewatcher.YoutubeXML;
-import metahandler.MetaHandler;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.*;
 
 public class Commands {
 
@@ -55,6 +54,7 @@ public class Commands {
         permissions.put(prefix + "remove", "Bananenchefs");
         permissions.put(prefix + "rm", "Bananenchefs");
         permissions.put(prefix + "skipto", "Bananenchefs");
+        permissions.put(prefix + "history", "Bananenchefs");
 
     }
 
@@ -134,6 +134,20 @@ public class Commands {
             case "#skipto":
                 skipTo(event, argStrings);
                 break;
+            case "#history":
+                history(event, argStrings);
+                break;
+        }
+    }
+
+    private static void history(MessageReceivedEvent event, String[] argStrings) {
+        if(argStrings.length==1) {
+            String result = "History: \n";
+            ArrayList<String> history = PlaylistManager.getHistory();
+            for(int i = 1; i<= history.size();i++) {
+             result+=i + " " + history.get(i-1) +"\n";
+            }
+            sendBeautifulMessage(event, result);
         }
     }
 

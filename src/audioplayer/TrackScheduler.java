@@ -36,6 +36,7 @@ public class TrackScheduler extends AudioEventAdapter {
         // Calling startTrack with the noInterrupt set to true will start the track only if nothing is currently playing. If
         // something is playing, it returns false and does nothing. In that case the player was already playing so this
         // track goes to the queue instead.
+        PlaylistManager.writeHistoryItem(track.getInfo().title + " " + track.getInfo().uri);
         if (!player.startTrack(track, true)) {
             queue.offer(track);
         }
