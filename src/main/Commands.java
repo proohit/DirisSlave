@@ -55,6 +55,8 @@ public class Commands {
         permissions.put(prefix + "rm", "Bananenchefs");
         permissions.put(prefix + "skipto", "Bananenchefs");
         permissions.put(prefix + "history", "Bananenchefs");
+        permissions.put(prefix + "savehistory", "Bananenchefs");
+        permissions.put(prefix + "loadplaylist", "Bananenchefs");
 
     }
 
@@ -137,6 +139,25 @@ public class Commands {
             case "#history":
                 history(event, argStrings);
                 break;
+            case "#savehistory":
+                savehistory(event, argStrings);
+                break;
+            case "#loadplaylist":
+                loadplaylist(event, argStrings);
+                break;
+        }
+    }
+
+    private void loadplaylist(MessageReceivedEvent event, String[] argStrings) {
+        if(argStrings.length>=2) {
+            PlaylistManager.loadPlaylist(argStrings[1], event);
+        }
+    }
+
+    private void savehistory(MessageReceivedEvent event, String[] argStrings) {
+        if(argStrings.length>=2) {
+            PlaylistManager.savePlaylistFromHistory(argStrings[1]);
+            sendBeautifulMessage(event, "saved playlist " + argStrings[1]);
         }
     }
 
@@ -144,7 +165,8 @@ public class Commands {
         if(argStrings.length==1) {
             String result = "History: \n";
             ArrayList<String> history = PlaylistManager.getHistory();
-            for(int i = 1; i<= history.size();i++) {
+            history.size();
+            for(int i = history.size()-9; i<= history.size();i++) {
              result+=i + " " + history.get(i-1) +"\n";
             }
             sendBeautifulMessage(event, result);
@@ -331,7 +353,7 @@ public class Commands {
             if (isAllowed(event.getMember(), command))
                 allowList.add(command);
         }
-
+        Collections.sort(allowList);
         String help = "usage:\n";
         for (String comm : allowList) {
             help += comm + "\n";
