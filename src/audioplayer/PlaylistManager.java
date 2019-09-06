@@ -1,5 +1,6 @@
 package audioplayer;
 
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import main.Commands;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -13,6 +14,22 @@ import java.util.List;
 import java.util.Scanner;
 
 public class PlaylistManager {
+    public static class Song {
+        String title;
+        String url;
+        Song(String title, String url) {
+            this.title=title;
+            this.url=url;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+    }
 
     private static File getFile() {
         File playlistFile = new File("playlistplayer.txt");
@@ -121,6 +138,29 @@ public class PlaylistManager {
         return playlists;
     }
 
+    public static boolean addToPlaylist(String playlist, AudioTrack track) {
+        boolean hasFoundPlaylist = false;
+        try {
+            String[] content = new String(Files.readAllBytes(Paths.get("playlistplayer.txt"))).split("\n");
+            FileWriter fw = new FileWriter(getFile(), false);
+            BufferedWriter bw = new BufferedWriter(fw);
+            String newFile = "";
+            for (String line : content) {
+                newFile += line + "\n";
+                if (line.contains("playlist " + playlist + ":")) {
+                    hasFoundPlaylist = true;
+                    newFile += track.getInfo().title + "-/-" + track.getInfo().uri + "\n";
+                }
+            }
+            bw.write(newFile);
+            bw.close();
+            fw.close();
+        } catch (IOException e) {
+
+        }
+        return hasFoundPlaylist;
+    }
+
     public static boolean deletePlaylist(String playlist) {
         boolean isPlaylistAvailable = false;
         try {
@@ -150,8 +190,8 @@ public class PlaylistManager {
         return isPlaylistAvailable;
     }
 
-    public static ArrayList<String> getSongsOfPlaylist(String playlist) {
-        ArrayList<String> playlists = new ArrayList<String>();
+    public static ArrayList<Song> getSongsOfPlaylist(String playlist) {
+        ArrayList<Song> playlists = new ArrayList<>();
         try {
             String[] content = new String(Files.readAllBytes(Paths.get("playlistplayer.txt"))).split("\n");
             boolean hasFoundPlaylist = false;
@@ -162,7 +202,9 @@ public class PlaylistManager {
                 } else if (line.contains("---") && hasFoundPlaylist) {
                     break;
                 } else if (hasFoundPlaylist) {
-                    playlists.add(line.split("-/-")[0]);
+                    String title = line.split("-/-")[0];
+                    String url = line.split("-/-")[1];
+                    playlists.add(new Song(title,url));
                 }
             }
         } catch (IOException e) {

@@ -2,6 +2,7 @@ package main;
 
 import audioplayer.AudioPlayer;
 import audioplayer.PlaylistManager;
+import audioplayer.loadplaylistCommand;
 import audioplayer.playCommand;
 import calculator.Calculator;
 import calculator.DivisionByZero;
@@ -9,10 +10,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
+import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
+import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import metahandler.MetaHandler;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.managers.AudioManager;
 import youtubewatcher.YoutubeWatcher;
 import youtubewatcher.YoutubeXML;
 
@@ -29,7 +34,7 @@ public class Commands {
     static HashMap<String, String> permissions = new HashMap<>();
     public static AudioPlayer player;
     playCommand play = new playCommand();
-
+    audioplayer.loadplaylistCommand loadplaylistCommand = new loadplaylistCommand();
     public Commands() {
         player = new AudioPlayer();
 
@@ -60,6 +65,7 @@ public class Commands {
         permissions.put(prefix + "loadplaylist", "Bananenchefs");
         permissions.put(prefix + "listplaylist", "Bananenchefs");
         permissions.put(prefix + "deleteplaylist", "Bananenchefs");
+        permissions.put(prefix + "addtoplaylist", "Bananenchefs");
 
     }
 
@@ -146,7 +152,7 @@ public class Commands {
                 savehistory(event, argStrings);
                 break;
             case "#loadplaylist":
-                loadplaylist(event, argStrings);
+                loadplaylistCommand.handle(event, argStrings);
                 break;
             case "#listplaylist":
                 listplaylist(event, argStrings);
@@ -154,13 +160,55 @@ public class Commands {
             case "#deleteplaylist":
                 deleteplaylist(event, argStrings);
                 break;
+            case "#addtoplaylist":
+                addtoplaylist(event, argStrings);
+                break;
+        }
+    }
+
+    private void addtoplaylist(MessageReceivedEvent event, String[] argStrings) {
+        if (argStrings.length >= 3) {
+            String search = "ytsearch: ";
+            for (int i = 2; i < argStrings.length; i++) {
+                search += argStrings[i] + " ";
+            }
+            player.fetchAudioTrack(event.getTextChannel(), search, new AudioLoadResultHandler() {
+                @Override
+                public void trackLoaded(AudioTrack track) {
+                    if (PlaylistManager.addToPlaylist(argStrings[1], track)) {
+                        sendBeautifulMessage(event, "added \"" + track.getInfo().title + "\" to playlist " + argStrings[1]);
+                    } else {
+                        sendBeautifulMessage(event, "there is no playlist " + argStrings[1]);
+                    }
+                }
+
+                @Override
+                public void playlistLoaded(AudioPlaylist playlist) {
+                    AudioTrack firstTrack = playlist.getTracks().get(0);
+                    if (PlaylistManager.addToPlaylist(argStrings[1], firstTrack)) {
+                        sendBeautifulMessage(event, "added \"" + firstTrack.getInfo().title + "\" to playlist " + argStrings[1]);
+                    } else {
+                        sendBeautifulMessage(event, "there is no playlist " + argStrings[1]);
+                    }
+                }
+
+                @Override
+                public void noMatches() {
+                    sendBeautifulMessage(event, "Nothing found for keywords");
+                }
+
+                @Override
+                public void loadFailed(FriendlyException exception) {
+                    System.out.println("loadFailed");
+                }
+            });
         }
     }
 
     private void deleteplaylist(MessageReceivedEvent event, String[] argStrings) {
-        if(argStrings.length==2) {
+        if (argStrings.length == 2) {
             String result;
-            result = PlaylistManager.deletePlaylist(argStrings[1])?"deleted playlist "+ argStrings[1]:"playlist " + argStrings[1] + " not found";
+            result = PlaylistManager.deletePlaylist(argStrings[1]) ? "deleted playlist " + argStrings[1] : "playlist " + argStrings[1] + " not found";
             sendBeautifulMessage(event, result);
         }
     }
@@ -178,14 +226,14 @@ public class Commands {
             }
             sendBeautifulMessage(event, result.toString());
         } else if (argStrings.length == 2) {
-            ArrayList<String> playlist = PlaylistManager.getSongsOfPlaylist(argStrings[1]);
+            ArrayList<PlaylistManager.Song> playlist = PlaylistManager.getSongsOfPlaylist(argStrings[1]);
             if (playlist.size() == 0) {
                 sendBeautifulMessage(event, "no such playlist or no songs found for " + argStrings[1]);
                 return;
             }
             StringBuilder result = new StringBuilder("songs of playlist " + argStrings[1] + ":\n");
-            for (String song : playlist) {
-                result.append(song).append("\n");
+            for (PlaylistManager.Song song : playlist) {
+                result.append(song.getTitle()).append("\n");
             }
             sendBeautifulMessage(event, result.toString());
         }
@@ -253,6 +301,8 @@ public class Commands {
     }
 
     private static void stop(MessageReceivedEvent event, String[] argStrings) {
+        AudioManager manager = event.getGuild().getAudioManager();
+        if(manager.isConnected() || manager.isAttemptingToConnect()) manager.closeAudioConnection();
         player.stop(event.getTextChannel());
     }
 

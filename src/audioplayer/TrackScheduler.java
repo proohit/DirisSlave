@@ -63,8 +63,6 @@ public class TrackScheduler extends AudioEventAdapter {
     public void stop() {
         while (!queue.isEmpty()) queue.poll();
         player.destroy();
-        AudioManager manager = audioplayer.AudioPlayer.getLastManager();
-        if(manager.isConnected() || manager.isAttemptingToConnect()) manager.closeAudioConnection();
     }
 
     @Override

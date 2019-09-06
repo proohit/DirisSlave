@@ -7,11 +7,13 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import main.Commands;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.managers.AudioManager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -41,6 +43,39 @@ public class AudioPlayer {
         guild.getAudioManager().setSendingHandler(musicManager.getSendHandler());
 
         return musicManager;
+    }
+
+    public void fetchAudioTrack(final TextChannel channel, final String trackUrl, AudioLoadResultHandler handler) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+        playerManager.loadItemOrdered(musicManager, trackUrl, handler);
+    }
+
+    public void playPlaylist(final TextChannel channel, final String playlist) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+        ArrayList<PlaylistManager.Song> songs = PlaylistManager.getSongsOfPlaylist(playlist);
+        for (PlaylistManager.Song song : songs) {
+            playerManager.loadItemOrdered(musicManager, song.getUrl(), new AudioLoadResultHandler() {
+                @Override
+                public void trackLoaded(AudioTrack track) {
+                    play(channel.getGuild(), musicManager, track);
+                }
+
+                @Override
+                public void playlistLoaded(AudioPlaylist playlist) {
+                    play(channel.getGuild(), musicManager, playlist.getTracks().get(0));
+                }
+
+                @Override
+                public void noMatches() {
+                    channel.sendMessage("could not load \"" + song.getTitle() + "\"");
+                }
+
+                @Override
+                public void loadFailed(FriendlyException exception) {
+                    channel.sendMessage("could not load \"" + song.getTitle() + "\"");
+                }
+            });
+        }
     }
 
     public void loadAndPlay(final TextChannel channel, final String trackUrl) {

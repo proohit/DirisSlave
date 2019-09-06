@@ -13,17 +13,19 @@ public class playCommand extends Command {
 
     @Override
     public void handle(MessageReceivedEvent event, String[] argStrings) {
-        Guild guild = event.getGuild();
-
-        if (guild != null) {
             if (argStrings.length >= 2) {
-                String trackUrl = "ytsearch: ";
-                for (int i = 1; i < argStrings.length; i++) {
-                    trackUrl += argStrings[i] + " ";
+                String trackUrl = "";
+                if (!(argStrings[1].contains("http") || argStrings[1].contains("https"))) {
+                    trackUrl = "ytsearch: ";
+                    for (int i = 1; i < argStrings.length; i++) {
+                        trackUrl += argStrings[i] + " ";
+                    }
+                } else {
+                    trackUrl = argStrings[1];
                 }
+
                 AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(), event.getMember().getVoiceState().getChannel());
                 Commands.player.loadAndPlay(event.getTextChannel(), trackUrl);
-            }
         }
     }
 }
