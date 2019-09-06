@@ -46,11 +46,13 @@ public class AudioPlayer {
     }
 
     public void fetchAudioTrack(final TextChannel channel, final String trackUrl, AudioLoadResultHandler handler) {
+        lastManager = channel.getGuild().getAudioManager();
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
         playerManager.loadItemOrdered(musicManager, trackUrl, handler);
     }
 
     public void playPlaylist(final TextChannel channel, final String playlist) {
+        lastManager = channel.getGuild().getAudioManager();
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
         ArrayList<PlaylistManager.Song> songs = PlaylistManager.getSongsOfPlaylist(playlist);
         for (PlaylistManager.Song song : songs) {

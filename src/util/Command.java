@@ -7,6 +7,8 @@ public abstract class Command {
     String command;
     String description;
     String permission;
+    CommandTopic topic;
+
     public void setPermission(String perm) {permission = perm;}
     public String getPermission() { return permission; }
     public void setCommand(String cmd) {command = cmd;};
