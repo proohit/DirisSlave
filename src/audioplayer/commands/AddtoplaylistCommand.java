@@ -1,5 +1,6 @@
-package audioplayer;
+package audioplayer.commands;
 
+import audioplayer.PlaylistManager;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
@@ -14,6 +15,7 @@ public class AddtoplaylistCommand extends Command {
     public AddtoplaylistCommand() {
         setCommand(prefix + "addtoplaylist");
         setPermission("Bananenchefs");
+        setTopic("music");
     }
 
     @Override

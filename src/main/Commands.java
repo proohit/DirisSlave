@@ -1,6 +1,7 @@
 package main;
 
 import audioplayer.*;
+import audioplayer.commands.*;
 import calculator.Calculator;
 import calculator.DivisionByZero;
 import com.google.gson.JsonArray;
@@ -15,6 +16,8 @@ import net.dv8tion.jda.api.managers.AudioManager;
 import util.Command;
 import youtubewatcher.YoutubeWatcher;
 import youtubewatcher.YoutubeXML;
+import youtubewatcher.commands.AddCommand;
+import youtubewatcher.commands.StatusCommand;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,7 +36,16 @@ public class Commands {
     LoadplaylistCommand loadplaylistCommand = new LoadplaylistCommand();
     ListplaylistCommand listplaylistCommand = new ListplaylistCommand();
     AddtoplaylistCommand addtoplaylistCommand = new AddtoplaylistCommand();
-
+    DeleteplaylistCommand deleteplaylistCommand = new DeleteplaylistCommand();
+    SavehistoryCommand savehistoryCommand = new SavehistoryCommand();
+    HistoryCommand historyCommand = new HistoryCommand();
+    SkiptoCommand skiptoCommand = new SkiptoCommand();
+    RemoveCommand removeCommand = new RemoveCommand();
+    QueueCommand queueCommand = new QueueCommand();
+    StopCommand stopCommand = new StopCommand();
+    StatusCommand statusCommand = new StatusCommand();
+    youtubewatcher.commands.RemoveCommand YtRemoveCommand = new youtubewatcher.commands.RemoveCommand();
+    AddCommand addCommand = new AddCommand();
     public Commands() {
         player = new AudioPlayer();
         //TODO für jeden command ändern in put(command Objekt, command Objekt.getCommand())
@@ -48,6 +60,9 @@ public class Commands {
         permissions.put(prefix + "danbooru", "Bananenchefs");
         permissions.put(prefix + "calc", "everyone");
         permissions.put(prefix + "yt", "everyone");
+        permissions.put(prefix + "ytstatus", "everyone");
+        permissions.put(prefix + "ytadd", "everyone");
+        permissions.put(prefix + "ytremove", "everyone");
         permissions.put(prefix + "stats", "everyone");
         permissions.put(prefix + "help", "everyone");
         permissions.put(prefix + "pl", "Bananenchefs");
@@ -93,6 +108,7 @@ public class Commands {
         if (!permissions.containsKey(argStrings[0])) return;
         if (!isAllowed(event.getMember(), argStrings[0]))
             return;
+        //TODO switch ersetzen durch filter auf zukünftige Map voller Commands -> wenn command gefunden, dann handle
         switch (argStrings[0]) {
             case "#del":
                 clear(event, argStrings);
@@ -127,8 +143,14 @@ public class Commands {
             case "#help":
                 help(event);
                 break;
-            case "#yt":
-                addYt(event, argStrings);
+            case "#ytstatus":
+                statusCommand.handle(event, argStrings);
+                break;
+            case "#ytadd":
+                addCommand.handle(event, argStrings);
+                break;
+            case "#ytremove":
+                YtRemoveCommand.handle(event,argStrings);
                 break;
             case "#stats":
                 stats(event);
@@ -141,24 +163,24 @@ public class Commands {
                 skip(event, argStrings);
                 break;
             case "#stop":
-                stop(event, argStrings);
+                stopCommand.handle(event, argStrings);
                 break;
             case "#q":
             case "#queue":
-                queue(event);
+                queueCommand.handle(event, argStrings);
                 break;
             case "#rm":
             case "#remove":
-                remove(event, argStrings);
+                removeCommand.handle(event, argStrings);
                 break;
             case "#skipto":
-                skipTo(event, argStrings);
+                skiptoCommand.handle(event, argStrings);
                 break;
             case "#history":
-                history(event, argStrings);
+                historyCommand.handle(event, argStrings);
                 break;
             case "#savehistory":
-                savehistory(event, argStrings);
+                savehistoryCommand.handle(event, argStrings);
                 break;
             case "#loadplaylist":
                 loadplaylistCommand.handle(event, argStrings);
@@ -167,136 +189,19 @@ public class Commands {
                 listplaylistCommand.handle(event, argStrings);
                 break;
             case "#deleteplaylist":
-                deleteplaylist(event, argStrings);
+                deleteplaylistCommand.handle(event, argStrings);
                 break;
             case "#addtoplaylist":
                 addtoplaylistCommand.handle(event, argStrings);
                 break;
         }
     }
-
-    private void deleteplaylist(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings.length == 2) {
-            String result;
-            result = PlaylistManager.deletePlaylist(argStrings[1]) ? "deleted playlist " + argStrings[1] : "playlist " + argStrings[1] + " not found";
-            sendBeautifulMessage(event, result);
-        }
-    }
-
-    private void listplaylist(MessageReceivedEvent event, String[] argStrings) {
-
-    }
-
-    private void loadplaylist(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings.length >= 2) {
-            PlaylistManager.loadPlaylist(argStrings[1], event);
-        }
-    }
-
-    private void savehistory(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings.length >= 2) {
-            PlaylistManager.savePlaylistFromHistory(argStrings[1]);
-            sendBeautifulMessage(event, "saved playlist " + argStrings[1]);
-        }
-    }
-
-    private static void history(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings.length == 1) {
-            StringBuilder result = new StringBuilder("History: \n");
-            ArrayList<String> history = PlaylistManager.getHistory();
-            int i;
-            if (history.size() < 10) {
-                i = 1;
-            } else {
-                i = history.size() - 9;
-            }
-            for (; i <= history.size(); i++) {
-                result.append(i).append(" ").append(history.get(i - 1)).append("\n");
-            }
-            sendBeautifulMessage(event, result.toString());
-        }
-    }
-
-    private static void skipTo(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings.length == 2) {
-            try {
-                player.skipTo(Integer.parseInt(argStrings[1]), event.getTextChannel());
-            } catch (NumberFormatException e) {
-                sendBeautifulMessage(event, "the position you have entered is invalid");
-
-            }
-        }
-    }
-
-    private static void remove(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings.length == 2) {
-            try {
-                player.remove(Integer.parseInt(argStrings[1]), event.getTextChannel());
-            } catch (NumberFormatException e) {
-                sendBeautifulMessage(event, "the position you have entered is invalid");
-            }
-        }
-    }
-
-    private static void queue(MessageReceivedEvent event) {
-        StringBuilder queue = new StringBuilder("current queue: \n");
-        Iterator<AudioTrack> it = player.getQueue(event.getTextChannel()).iterator();
-        int i = 1;
-        while (it.hasNext()) {
-            queue.append(i++).append(" ").append(it.next().getInfo().title).append("\n");
-        }
-        sendBeautifulMessage(event, queue.toString());
-    }
-
-    private static void stop(MessageReceivedEvent event, String[] argStrings) {
-        AudioManager manager = event.getGuild().getAudioManager();
-        if (manager.isConnected() || manager.isAttemptingToConnect()) manager.closeAudioConnection();
-        player.stop(event.getTextChannel());
-    }
-
     public static void stats(MessageReceivedEvent event) {
         sendBeautifulMessage(event, MetaHandler.greet() + MetaHandler.runtime() + MetaHandler.helpMessage());
     }
 
     private static void skip(MessageReceivedEvent event, String[] argStrings) {
         player.skipTrack(event.getTextChannel());
-    }
-
-    private static void addYt(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings[1].equals("status")) {
-            sendMessage(event, YoutubeWatcher.status());
-        } else if (argStrings[1].equals("remove") || argStrings[1].equals("rm")) {
-            try {
-                String channelname = "";
-                for (int i = 2; i < argStrings.length; i++) {
-                    channelname += argStrings[i];
-                    if (i < argStrings.length - 1)
-                        channelname += " ";
-                }
-                YoutubeWatcher.remove(channelname);
-                sendMessage(event, "Not watching " + channelname + " anymore.");
-            } catch (Exception e) {
-                sendMessage(event,
-                        "Sorry, that didn't work! To remove a channel from being watched, please type: #yt remove <channel name>");
-            }
-        } else if (argStrings[1].equals("add")) {
-            for (YoutubeXML urls : YoutubeWatcher.latestvideos.keySet()) {
-                if (argStrings[2].equals(urls.getUrl())) {
-                    sendMessage(event, "this channel was already added");
-                    return;
-                }
-            }
-            YoutubeWatcher.update(argStrings[2]);
-            for (YoutubeXML yt : YoutubeWatcher.latestvideos.keySet()) {
-                if (yt.getUrl().equals(argStrings[2])) {
-                    sendMessage(event, "added channel to watch: " + yt.getChannelName());
-                    return;
-                }
-            }
-        } else {
-            sendBeautifulMessage(event, "invalid argument. usage: \n #yt add <URL to channel> \n #yt remove/rm <channelname> \n #yt status \n");
-        }
-
     }
 
     private static void calculate(MessageReceivedEvent event, String[] argStrings) {

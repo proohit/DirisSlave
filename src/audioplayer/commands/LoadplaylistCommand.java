@@ -1,5 +1,6 @@
-package audioplayer;
+package audioplayer.commands;
 
+import audioplayer.AudioPlayer;
 import main.Commands;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.Command;
@@ -10,6 +11,7 @@ public class LoadplaylistCommand extends Command {
     public LoadplaylistCommand() {
         setCommand(prefix + "loadplaylist");
         setPermission("Bananenchefs");
+        setTopic("music");
     }
 
     @Override

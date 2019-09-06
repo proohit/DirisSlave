@@ -1,5 +1,6 @@
-package audioplayer;
+package audioplayer.commands;
 
+import audioplayer.AudioPlayer;
 import main.Commands;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -9,6 +10,7 @@ public class PlayCommand extends Command {
     public PlayCommand() {
         setCommand(prefix + "pl");
         setPermission("Bananenchefs");
+        setTopic("music");
     }
 
     @Override
