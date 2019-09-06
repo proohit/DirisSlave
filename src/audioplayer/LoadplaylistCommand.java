@@ -6,8 +6,8 @@ import util.Command;
 
 import java.util.ArrayList;
 
-public class loadplaylistCommand extends Command {
-    public loadplaylistCommand() {
+public class LoadplaylistCommand extends Command {
+    public LoadplaylistCommand() {
         setCommand(prefix + "loadplaylist");
         setPermission("Bananenchefs");
     }

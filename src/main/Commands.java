@@ -1,23 +1,18 @@
 package main;
 
-import audioplayer.AudioPlayer;
-import audioplayer.PlaylistManager;
-import audioplayer.loadplaylistCommand;
-import audioplayer.playCommand;
+import audioplayer.*;
 import calculator.Calculator;
 import calculator.DivisionByZero;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
-import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
-import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import metahandler.MetaHandler;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.managers.AudioManager;
+import util.Command;
 import youtubewatcher.YoutubeWatcher;
 import youtubewatcher.YoutubeXML;
 
@@ -31,13 +26,17 @@ import java.util.*;
 public class Commands {
 
     static final String prefix = "#";
+    //TODO ändern in HashMap<util.Command, String>
     static HashMap<String, String> permissions = new HashMap<>();
     public static AudioPlayer player;
-    playCommand play = new playCommand();
-    audioplayer.loadplaylistCommand loadplaylistCommand = new loadplaylistCommand();
+    PlayCommand play = new PlayCommand();
+    LoadplaylistCommand loadplaylistCommand = new LoadplaylistCommand();
+    ListplaylistCommand listplaylistCommand = new ListplaylistCommand();
+    AddtoplaylistCommand addtoplaylistCommand = new AddtoplaylistCommand();
+
     public Commands() {
         player = new AudioPlayer();
-
+        //TODO für jeden command ändern in put(command Objekt, command Objekt.getCommand())
         permissions.put(prefix + "del", "Bananenchefs");
         permissions.put(prefix + "coffe", "everyone");
         permissions.put(prefix + "gah", "everyone");
@@ -70,6 +69,16 @@ public class Commands {
     }
 
     private static boolean isAllowed(Member member, String command) {
+        /*
+        boolean isAllowed = false;
+        Command currentCommand = permissions.keySet().stream().filter(key -> key.getCommand().equals(command)).findFirst().get();
+        if(currentCommand.getCommand().equals("everyone")) return true;
+        for (Role role : member.getRoles()) {
+            if (role.getName().equals(currentCommand.getPermission()))
+                isAllowed = true;
+        }
+        return isAllowed;
+         */
         boolean isAllowed = false;
         if (permissions.get(command).equals("everyone")) return true;
         for (Role role : member.getRoles()) {
@@ -155,53 +164,14 @@ public class Commands {
                 loadplaylistCommand.handle(event, argStrings);
                 break;
             case "#listplaylist":
-                listplaylist(event, argStrings);
+                listplaylistCommand.handle(event, argStrings);
                 break;
             case "#deleteplaylist":
                 deleteplaylist(event, argStrings);
                 break;
             case "#addtoplaylist":
-                addtoplaylist(event, argStrings);
+                addtoplaylistCommand.handle(event, argStrings);
                 break;
-        }
-    }
-
-    private void addtoplaylist(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings.length >= 3) {
-            String search = "ytsearch: ";
-            for (int i = 2; i < argStrings.length; i++) {
-                search += argStrings[i] + " ";
-            }
-            player.fetchAudioTrack(event.getTextChannel(), search, new AudioLoadResultHandler() {
-                @Override
-                public void trackLoaded(AudioTrack track) {
-                    if (PlaylistManager.addToPlaylist(argStrings[1], track)) {
-                        sendBeautifulMessage(event, "added \"" + track.getInfo().title + "\" to playlist " + argStrings[1]);
-                    } else {
-                        sendBeautifulMessage(event, "there is no playlist " + argStrings[1]);
-                    }
-                }
-
-                @Override
-                public void playlistLoaded(AudioPlaylist playlist) {
-                    AudioTrack firstTrack = playlist.getTracks().get(0);
-                    if (PlaylistManager.addToPlaylist(argStrings[1], firstTrack)) {
-                        sendBeautifulMessage(event, "added \"" + firstTrack.getInfo().title + "\" to playlist " + argStrings[1]);
-                    } else {
-                        sendBeautifulMessage(event, "there is no playlist " + argStrings[1]);
-                    }
-                }
-
-                @Override
-                public void noMatches() {
-                    sendBeautifulMessage(event, "Nothing found for keywords");
-                }
-
-                @Override
-                public void loadFailed(FriendlyException exception) {
-                    System.out.println("loadFailed");
-                }
-            });
         }
     }
 
@@ -214,29 +184,7 @@ public class Commands {
     }
 
     private void listplaylist(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings.length == 1) {
-            ArrayList<String> playlists = PlaylistManager.getPlaylists();
-            if (playlists.size() == 0) {
-                sendBeautifulMessage(event, "no playlists found");
-                return;
-            }
-            StringBuilder result = new StringBuilder("saved playlists: \n");
-            for (String playlist : playlists) {
-                result.append(playlist).append("\n");
-            }
-            sendBeautifulMessage(event, result.toString());
-        } else if (argStrings.length == 2) {
-            ArrayList<PlaylistManager.Song> playlist = PlaylistManager.getSongsOfPlaylist(argStrings[1]);
-            if (playlist.size() == 0) {
-                sendBeautifulMessage(event, "no such playlist or no songs found for " + argStrings[1]);
-                return;
-            }
-            StringBuilder result = new StringBuilder("songs of playlist " + argStrings[1] + ":\n");
-            for (PlaylistManager.Song song : playlist) {
-                result.append(song.getTitle()).append("\n");
-            }
-            sendBeautifulMessage(event, result.toString());
-        }
+
     }
 
     private void loadplaylist(MessageReceivedEvent event, String[] argStrings) {
@@ -302,7 +250,7 @@ public class Commands {
 
     private static void stop(MessageReceivedEvent event, String[] argStrings) {
         AudioManager manager = event.getGuild().getAudioManager();
-        if(manager.isConnected() || manager.isAttemptingToConnect()) manager.closeAudioConnection();
+        if (manager.isConnected() || manager.isAttemptingToConnect()) manager.closeAudioConnection();
         player.stop(event.getTextChannel());
     }
 

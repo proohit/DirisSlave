@@ -14,5 +14,5 @@ public abstract class Command {
     public String getDescription() {
         return description;
     };
-    public void handle(MessageReceivedEvent event, String[] argStrings) {};
+    public abstract void handle(MessageReceivedEvent event, String[] argStrings);
 }
