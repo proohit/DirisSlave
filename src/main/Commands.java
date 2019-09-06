@@ -25,10 +25,11 @@ import java.util.*;
 
 public class Commands {
 
-    static String prefix = "#";
-    static HashMap<String, String> permissions = new HashMap<String, String>();
+    static final String prefix = "#";
+    static HashMap<String, String> permissions = new HashMap<>();
     public static AudioPlayer player;
     playCommand play = new playCommand();
+
     public Commands() {
         player = new AudioPlayer();
 
@@ -57,6 +58,8 @@ public class Commands {
         permissions.put(prefix + "history", "Bananenchefs");
         permissions.put(prefix + "savehistory", "Bananenchefs");
         permissions.put(prefix + "loadplaylist", "Bananenchefs");
+        permissions.put(prefix + "listplaylist", "Bananenchefs");
+        permissions.put(prefix + "deleteplaylist", "Bananenchefs");
 
     }
 
@@ -145,31 +148,76 @@ public class Commands {
             case "#loadplaylist":
                 loadplaylist(event, argStrings);
                 break;
+            case "#listplaylist":
+                listplaylist(event, argStrings);
+                break;
+            case "#deleteplaylist":
+                deleteplaylist(event, argStrings);
+                break;
+        }
+    }
+
+    private void deleteplaylist(MessageReceivedEvent event, String[] argStrings) {
+        if(argStrings.length==2) {
+            String result;
+            result = PlaylistManager.deletePlaylist(argStrings[1])?"deleted playlist "+ argStrings[1]:"playlist " + argStrings[1] + " not found";
+            sendBeautifulMessage(event, result);
+        }
+    }
+
+    private void listplaylist(MessageReceivedEvent event, String[] argStrings) {
+        if (argStrings.length == 1) {
+            ArrayList<String> playlists = PlaylistManager.getPlaylists();
+            if (playlists.size() == 0) {
+                sendBeautifulMessage(event, "no playlists found");
+                return;
+            }
+            StringBuilder result = new StringBuilder("saved playlists: \n");
+            for (String playlist : playlists) {
+                result.append(playlist).append("\n");
+            }
+            sendBeautifulMessage(event, result.toString());
+        } else if (argStrings.length == 2) {
+            ArrayList<String> playlist = PlaylistManager.getSongsOfPlaylist(argStrings[1]);
+            if (playlist.size() == 0) {
+                sendBeautifulMessage(event, "no such playlist or no songs found for " + argStrings[1]);
+                return;
+            }
+            StringBuilder result = new StringBuilder("songs of playlist " + argStrings[1] + ":\n");
+            for (String song : playlist) {
+                result.append(song).append("\n");
+            }
+            sendBeautifulMessage(event, result.toString());
         }
     }
 
     private void loadplaylist(MessageReceivedEvent event, String[] argStrings) {
-        if(argStrings.length>=2) {
+        if (argStrings.length >= 2) {
             PlaylistManager.loadPlaylist(argStrings[1], event);
         }
     }
 
     private void savehistory(MessageReceivedEvent event, String[] argStrings) {
-        if(argStrings.length>=2) {
+        if (argStrings.length >= 2) {
             PlaylistManager.savePlaylistFromHistory(argStrings[1]);
             sendBeautifulMessage(event, "saved playlist " + argStrings[1]);
         }
     }
 
     private static void history(MessageReceivedEvent event, String[] argStrings) {
-        if(argStrings.length==1) {
-            String result = "History: \n";
+        if (argStrings.length == 1) {
+            StringBuilder result = new StringBuilder("History: \n");
             ArrayList<String> history = PlaylistManager.getHistory();
-            history.size();
-            for(int i = history.size()-9; i<= history.size();i++) {
-             result+=i + " " + history.get(i-1) +"\n";
+            int i;
+            if (history.size() < 10) {
+                i = 1;
+            } else {
+                i = history.size() - 9;
             }
-            sendBeautifulMessage(event, result);
+            for (; i <= history.size(); i++) {
+                result.append(i).append(" ").append(history.get(i - 1)).append("\n");
+            }
+            sendBeautifulMessage(event, result.toString());
         }
     }
 
@@ -195,47 +243,25 @@ public class Commands {
     }
 
     private static void queue(MessageReceivedEvent event) {
-        String queue = "current queue: \n";
+        StringBuilder queue = new StringBuilder("current queue: \n");
         Iterator<AudioTrack> it = player.getQueue(event.getTextChannel()).iterator();
         int i = 1;
         while (it.hasNext()) {
-            queue += i++ + " " + it.next().getInfo().title + "\n";
+            queue.append(i++).append(" ").append(it.next().getInfo().title).append("\n");
         }
-        sendBeautifulMessage(event, queue);
+        sendBeautifulMessage(event, queue.toString());
     }
 
     private static void stop(MessageReceivedEvent event, String[] argStrings) {
-        Guild guild = event.getGuild();
-
-        if (guild != null) {
-            player.stop(event.getTextChannel());
-        }
+        player.stop(event.getTextChannel());
     }
 
     public static void stats(MessageReceivedEvent event) {
         sendBeautifulMessage(event, MetaHandler.greet() + MetaHandler.runtime() + MetaHandler.helpMessage());
     }
 
-    private static void play(MessageReceivedEvent event, String[] argStrings) {
-        Guild guild = event.getGuild();
-
-        if (guild != null) {
-            if (argStrings.length >= 2) {
-                String trackUrl = "ytsearch: ";
-                for (int i = 1; i < argStrings.length; i++) {
-                    trackUrl += argStrings[i] + " ";
-                }
-                AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(), event.getMember().getVoiceState().getChannel());
-                player.loadAndPlay(event.getTextChannel(), trackUrl);
-            }
-        }
-    }
-
     private static void skip(MessageReceivedEvent event, String[] argStrings) {
-        Guild guild = event.getGuild();
-        if (guild != null) {
-            player.skipTrack(event.getTextChannel());
-        }
+        player.skipTrack(event.getTextChannel());
     }
 
     private static void addYt(MessageReceivedEvent event, String[] argStrings) {
@@ -348,7 +374,7 @@ public class Commands {
     }
 
     private static void help(MessageReceivedEvent event) {
-        ArrayList<String> allowList = new ArrayList<String>();
+        ArrayList<String> allowList = new ArrayList<>();
         for (String command : permissions.keySet()) {
             if (isAllowed(event.getMember(), command))
                 allowList.add(command);

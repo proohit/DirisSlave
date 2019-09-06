@@ -32,7 +32,7 @@ public class PlaylistManager {
             String[] content = new String(Files.readAllBytes(Paths.get("playlistplayer.txt"))).split("\n");
             boolean foundHistory = false;
             for (String line : content) {
-                if(line.contains("History:")) {
+                if (line.contains("History:")) {
                     foundHistory = true;
                     continue;
                 }
@@ -84,15 +84,15 @@ public class PlaylistManager {
         try {
             String[] content = new String(Files.readAllBytes(Paths.get("playlistplayer.txt"))).split("\n");
             boolean foundPlaylist = false;
-            for(String line:content) {
-                if(line.contains("playlist "+name)) {
-                    foundPlaylist=true;
+            for (String line : content) {
+                if (line.contains("playlist " + name)) {
+                    foundPlaylist = true;
                     continue;
                 }
-                if(line.contains("---")) {
+                if (line.contains("---")) {
                     break;
                 }
-                if(foundPlaylist==true) {
+                if (foundPlaylist == true) {
                     String[] song = line.split("-/-");
                     //url bei song[1]
                     AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(), event.getMember().getVoiceState().getChannel());
@@ -106,6 +106,71 @@ public class PlaylistManager {
 
     }
 
+    public static ArrayList<String> getPlaylists() {
+        ArrayList<String> playlists = new ArrayList<String>();
+        try {
+            String[] content = new String(Files.readAllBytes(Paths.get("playlistplayer.txt"))).split("\n");
+            for (String line : content) {
+                if (line.matches("playlist ([a-z]|[A-Z]|[0-9])*:")) {
+                    String[] lineContent = line.split("playlist ");
+                    playlists.add(lineContent[1].replaceAll(":", ""));
+                }
+            }
+        } catch (IOException e) {
+        }
+        return playlists;
+    }
+
+    public static boolean deletePlaylist(String playlist) {
+        boolean isPlaylistAvailable = false;
+        try {
+            String[] content = new String(Files.readAllBytes(Paths.get("playlistplayer.txt"))).split("\n");
+            FileWriter fw = new FileWriter(getFile(), false);
+            BufferedWriter bw = new BufferedWriter(fw);
+            String newFile = "";
+            boolean hasFoundPlaylist = false;
+            for (String line : content) {
+                if (line.equals("playlist " + playlist + ":")) {
+                    hasFoundPlaylist = true;
+                    isPlaylistAvailable = true;
+                } else if (line.equals("---") && hasFoundPlaylist) {
+                    hasFoundPlaylist = false;
+                } else if (hasFoundPlaylist) {
+
+                } else {
+                    newFile += line + "\n";
+                }
+            }
+            bw.write(newFile);
+            bw.close();
+            fw.close();
+        } catch (IOException e) {
+
+        }
+        return isPlaylistAvailable;
+    }
+
+    public static ArrayList<String> getSongsOfPlaylist(String playlist) {
+        ArrayList<String> playlists = new ArrayList<String>();
+        try {
+            String[] content = new String(Files.readAllBytes(Paths.get("playlistplayer.txt"))).split("\n");
+            boolean hasFoundPlaylist = false;
+            for (String line : content) {
+                if (line.matches("playlist " + playlist + ":")) {
+                    hasFoundPlaylist = true;
+                    continue;
+                } else if (line.contains("---") && hasFoundPlaylist) {
+                    break;
+                } else if (hasFoundPlaylist) {
+                    playlists.add(line.split("-/-")[0]);
+                }
+            }
+        } catch (IOException e) {
+
+        }
+        return playlists;
+    }
+
     public static void savePlaylistFromHistory(String name) {
         try {
             String[] content = new String(Files.readAllBytes(Paths.get("playlistplayer.txt"))).split("\n");
@@ -114,12 +179,12 @@ public class PlaylistManager {
             String newFile = "";
             ArrayList<String> historyItems = getHistory(content);
             String playlist = "playlist " + name + ":\n";
-            for(int i = historyItems.size()-1; i>=0;i--) {
-                if(i == historyItems.size()-1-10) break;
-                playlist+= historyItems.get(i) + "\n";
+            for (int i = historyItems.size() - 1; i >= 0; i--) {
+                if (i == historyItems.size() - 1 - 10) break;
+                playlist += historyItems.get(i) + "\n";
             }
 
-            playlist+="---\n";
+            playlist += "---\n";
             newFile += playlist;
             for (String line : content) {
                 newFile += line + "\n";
