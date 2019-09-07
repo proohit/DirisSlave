@@ -9,6 +9,7 @@ public class ThighCommand extends Command {
         setCommand(prefix+"thigh");
         setPermission("Bananenchefs");
         setTopic("images");
+        setDescription("Stockings, socks and pantys. Everything you desire");
     }
 
     @Override

@@ -19,6 +19,7 @@ public class PlaylistCommand extends Command {
         setCommand(prefix + "playlist");
         setPermission("Bananenchefs");
         setTopic("music");
+        setDescription("lists options regarding playlists");
     }
 
     @Override

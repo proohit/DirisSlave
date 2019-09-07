@@ -10,6 +10,7 @@ public class StopCommand extends Command {
         setCommand(prefix + "stop");
         setPermission("Bananenchefs");
         setTopic("music");
+        setDescription("stop the current playlist and remove all songs from queue");
     }
 
     @Override

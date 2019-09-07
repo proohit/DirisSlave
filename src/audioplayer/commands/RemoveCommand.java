@@ -9,6 +9,7 @@ public class RemoveCommand extends Command {
         setCommand(prefix + "remove");
         setPermission("Bananenchefs");
         setTopic("music");
+        setDescription("remove song from queue");
     }
 
     @Override

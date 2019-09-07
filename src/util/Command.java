@@ -3,7 +3,7 @@ package util;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public abstract class Command {
-    protected String prefix = "#";
+    protected String prefix = ".";
     String command;
     String description;
     String permission;
@@ -17,6 +17,7 @@ public abstract class Command {
     public void setCommand(String cmd) {command = cmd;};
     public String getCommand() {return command;};
     public String getDescription() {return description;};
+    public void setDescription(String description) {this.description=description;}
     public String getTopic() {return topic;}
     public void setTopic(String topic) {this.topic = topic;}
     public abstract void handle(MessageReceivedEvent event, String[] argStrings);

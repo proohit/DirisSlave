@@ -12,6 +12,7 @@ public class HelpCommand extends Command {
         setCommand(prefix + "help");
         setPermission("everyone");
         setTopic("util");
+        setDescription("lists options for tags [arguments]");
     }
 
     @Override

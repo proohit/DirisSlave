@@ -11,6 +11,7 @@ public class SkiptoCommand extends Command {
         setCommand(prefix + "skipto");
         setPermission("Bananenchefs");
         setTopic("music");
+        setDescription("skip current playing song");
     }
 
     @Override

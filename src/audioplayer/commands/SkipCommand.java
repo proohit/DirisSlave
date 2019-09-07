@@ -9,6 +9,7 @@ public class SkipCommand extends Command {
         setCommand(prefix + "skip");
         setPermission("Bananenchefs");
         setTopic("music");
+        setDescription("skip current playing song");
     }
 
     @Override

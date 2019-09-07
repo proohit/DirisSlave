@@ -9,6 +9,7 @@ public class CalculatorCommand extends Command {
         setCommand(prefix + "calc");
         setPermission("everyone");
         setTopic("calculator");
+        setDescription("Solve calculations by typing the term.");
     }
 
     @Override
@@ -32,7 +33,7 @@ public class CalculatorCommand extends Command {
     public String getHelp() {
         StringBuilder help = new StringBuilder();
 
-        help.append("***" + getCommand()+"***");
+        help.append("***" + getCommand() + "***");
         help.append(" - " + getDescription() + "\n");
 
         help.append("<number> <+ - * / ( )> <number> ... \n");

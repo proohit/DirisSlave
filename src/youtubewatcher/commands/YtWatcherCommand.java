@@ -11,6 +11,7 @@ public class YtWatcherCommand extends Command {
         setCommand(prefix + "yt");
         setPermission("everyone");
         setTopic("ytwatcher");
+        setDescription("get notified by your slave, if your followed youtuber has uploaded a new video");
     }
 
     @Override

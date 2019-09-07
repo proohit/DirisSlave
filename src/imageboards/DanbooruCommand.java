@@ -11,6 +11,7 @@ public class DanbooruCommand extends Command {
         setCommand(prefix + "danbooru");
         setPermission("Bananenchefs");
         setTopic("images");
+        setDescription("Sexy pictures of hot waifus are waiting for you. Just add your tag");
     }
 
     @Override

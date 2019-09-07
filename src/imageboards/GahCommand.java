@@ -8,6 +8,7 @@ public class GahCommand extends Command {
         setCommand(prefix + "gah");
         setPermission("everyone");
         setTopic("images");
+        setDescription("JUST. DO. IT.");
     }
 
     @Override

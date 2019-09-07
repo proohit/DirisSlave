@@ -9,6 +9,7 @@ public class StatsCommand extends Command {
         setCommand(prefix + "stats");
         setPermission("everyone");
         setTopic("util");
+        setDescription("see the running-time");
     }
 
     @Override

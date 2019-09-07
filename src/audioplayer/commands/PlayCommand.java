@@ -11,6 +11,7 @@ public class PlayCommand extends Command {
         setCommand(prefix + "pl");
         setPermission("Bananenchefs");
         setTopic("music");
+        setDescription("Play music by adding a search-term or by adding a link");
     }
 
     @Override

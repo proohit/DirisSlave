@@ -13,6 +13,7 @@ public class QueueCommand extends Command {
         setCommand(prefix + "q");
         setPermission("Bananenchefs");
         setTopic("music");
+        setDescription("shows the queue");
     }
 
     @Override

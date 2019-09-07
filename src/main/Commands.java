@@ -43,6 +43,7 @@ public class Commands {
     StatsCommand statsCommand = new StatsCommand();
     YtWatcherCommand ytWatcherCommand = new YtWatcherCommand();
     PlaylistCommand playlistCommand = new PlaylistCommand();
+    LizardCommand lizardCommand = new LizardCommand();
     public Commands() {
         player = new AudioPlayer();
         //TODO für jeden command ändern in put(command Objekt, command Objekt.getCommand())
@@ -60,15 +61,15 @@ public class Commands {
         permissions.add(coffeeCommand);
         permissions.add(danbooruCommand);
         permissions.add(thighCommand);
-        permissions.add(pgifCommand);
-        permissions.add(nekoCommand);
-        permissions.add(hentaiCommand);
+//        permissions.add(pgifCommand);
+//        permissions.add(nekoCommand);
+//        permissions.add(hentaiCommand);
         permissions.add(gahCommand);
         permissions.add(clearCommand);
         permissions.add(recipeCommand);
         permissions.add(helpCommand);
         permissions.add(statsCommand);
-
+        permissions.add(lizardCommand);
     }
 
     public static boolean isAllowed(Member member, String inputCommand) {

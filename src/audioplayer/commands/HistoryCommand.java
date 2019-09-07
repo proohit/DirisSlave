@@ -13,6 +13,7 @@ public class HistoryCommand extends Command {
         setCommand(prefix + "history");
         setPermission("Bananenchefs");
         setTopic("music");
+        setDescription("shows you already played songs");
     }
 
     @Override

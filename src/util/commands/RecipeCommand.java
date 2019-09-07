@@ -11,6 +11,7 @@ public class RecipeCommand extends Command {
         setCommand(prefix+"recipe");
         setPermission("everyone");
         setTopic("util");
+        setDescription("displays you a recipe containing specific ingredients");
     }
 
     @Override

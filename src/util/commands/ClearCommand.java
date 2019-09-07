@@ -12,6 +12,7 @@ public ClearCommand() {
     setCommand(prefix+"del");
     setPermission("Bananenchefs");
     setTopic("util");
+    setDescription("mass-delete messages from a channel");
 }
     @Override
     public void handle(MessageReceivedEvent event, String[] argStrings) {

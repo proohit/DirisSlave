@@ -9,6 +9,7 @@ public class CoffeeCommand extends Command {
         setCommand(prefix+"coffee");
         setPermission("everyone");
         setTopic("images");
+        setDescription("Enjoy your coffee with a gif");
     }
 
     @Override
