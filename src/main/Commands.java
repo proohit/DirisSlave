@@ -110,6 +110,9 @@ public class Commands {
     public static void sendBeautifulMessage(MessageReceivedEvent event, String text) {
         event.getChannel().sendMessage("```" + text + "```").queue();
     }
+    public static void sendBeautifulMessage(TextChannel channel, String text) {
+        channel.sendMessage("```" + text + "```").queue();
+    }
 
     private static String[] getArgs(MessageReceivedEvent event) {
         return event.getMessage().getContentRaw().split(" ");

@@ -40,9 +40,12 @@ public class PlaylistCommand extends Command {
             }
         } else if (argStrings[1].equals("load")) {
             if (argStrings.length == 3) {
-                AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(), event.getMember().getVoiceState().getChannel());
-                Commands.player.playPlaylist(event.getTextChannel(), argStrings[2]);
-                Commands.sendBeautifulMessage(event, "loaded playlist " + argStrings[2]);
+                if (Commands.player.playPlaylist(event.getTextChannel(), argStrings[2])) {
+                    AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(), event.getMember().getVoiceState().getChannel());
+                    Commands.sendBeautifulMessage(event, "loaded playlist " + argStrings[2]);
+                } else {
+                    main.Commands.sendBeautifulMessage(event, argStrings[2] + " not found or no songs available");
+                }
             }
         } else if (argStrings[1].equals("list")) {
             if (argStrings.length == 2) {
@@ -117,7 +120,7 @@ public class PlaylistCommand extends Command {
     public String getHelp() {
         StringBuilder help = new StringBuilder();
 
-        help.append("***" + getCommand()+"***");
+        help.append("***" + getCommand() + "***");
         help.append(" - " + getDescription() + "\n");
 
         help.append("create <playlist name>\n");

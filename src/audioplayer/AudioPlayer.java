@@ -51,10 +51,13 @@ public class AudioPlayer {
         playerManager.loadItemOrdered(musicManager, trackUrl, handler);
     }
 
-    public void playPlaylist(final TextChannel channel, final String playlist) {
+    public boolean playPlaylist(final TextChannel channel, final String playlist) {
         lastManager = channel.getGuild().getAudioManager();
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
         ArrayList<PlaylistManager.Song> songs = PlaylistManager.getSongsOfPlaylist(playlist);
+        if(songs.size() == 0) {
+            return false;
+        }
         for (PlaylistManager.Song song : songs) {
             playerManager.loadItemOrdered(musicManager, song.getUrl(), new AudioLoadResultHandler() {
                 @Override
@@ -78,6 +81,7 @@ public class AudioPlayer {
                 }
             });
         }
+        return true;
     }
 
     public void loadAndPlay(final TextChannel channel, final String trackUrl) {
