@@ -18,13 +18,13 @@ import java.util.*;
 
 public class Commands {
 
-    static final String prefix = "#";
     //TODO ändern in HashMap<util.Command, String>
     public static ArrayList<util.Command> permissions = new ArrayList<>();
 //    public static HashMap<util.Command, String> permissions = new HashMap<>();
     public static AudioPlayer player;
 
     PlayCommand playCommand = new PlayCommand();
+    CreateplaylistCommand createplaylistCommand = new CreateplaylistCommand();
     LoadplaylistCommand loadplaylistCommand = new LoadplaylistCommand();
     ListplaylistCommand listplaylistCommand = new ListplaylistCommand();
     AddtoplaylistCommand addtoplaylistCommand = new AddtoplaylistCommand();
@@ -58,6 +58,7 @@ public class Commands {
 //        permissions.put(prefix + "del", "Bananenchefs");
         permissions.add(playCommand);
         permissions.add(loadplaylistCommand);
+        permissions.add(createplaylistCommand);
         permissions.add(listplaylistCommand);
         permissions.add(addtoplaylistCommand);
         permissions.add(deleteplaylistCommand);
@@ -111,7 +112,6 @@ public class Commands {
             //TODO switch ersetzen durch filter auf zukünftige Map voller Commands -> wenn command gefunden, dann handle
             insertedCommand.handle(event, argStrings);
         } catch(NoSuchElementException e) {
-
         }
     }
 

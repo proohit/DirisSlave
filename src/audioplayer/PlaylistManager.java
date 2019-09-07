@@ -10,6 +10,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -17,9 +18,10 @@ public class PlaylistManager {
     public static class Song {
         String title;
         String url;
+
         Song(String title, String url) {
-            this.title=title;
-            this.url=url;
+            this.title = title;
+            this.url = url;
         }
 
         public String getTitle() {
@@ -95,32 +97,6 @@ public class PlaylistManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static void loadPlaylist(String name, MessageReceivedEvent event) {
-        try {
-            String[] content = new String(Files.readAllBytes(Paths.get("playlistplayer.txt"))).split("\n");
-            boolean foundPlaylist = false;
-            for (String line : content) {
-                if (line.contains("playlist " + name)) {
-                    foundPlaylist = true;
-                    continue;
-                }
-                if (line.contains("---")) {
-                    break;
-                }
-                if (foundPlaylist == true) {
-                    String[] song = line.split("-/-");
-                    //url bei song[1]
-                    AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(), event.getMember().getVoiceState().getChannel());
-                    Commands.player.loadAndPlay(event.getTextChannel(), song[1]);
-                }
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
     }
 
     public static ArrayList<String> getPlaylists() {
@@ -204,7 +180,7 @@ public class PlaylistManager {
                 } else if (hasFoundPlaylist) {
                     String title = line.split("-/-")[0];
                     String url = line.split("-/-")[1];
-                    playlists.add(new Song(title,url));
+                    playlists.add(new Song(title, url));
                 }
             }
         } catch (IOException e) {
@@ -241,9 +217,25 @@ public class PlaylistManager {
         }
     }
 
-    public static void savePlaylist() {
+    public static boolean createPlaylist(String playlist) {
+        boolean success = false;
+        try {
+            if ((getPlaylists().stream().filter(pl -> playlist.equals(pl))).count() == 1) return success;
+            String[] content = new String(Files.readAllBytes(Paths.get("playlistplayer.txt"))).split("\n");
+            FileWriter fw = new FileWriter(getFile(), false);
+            BufferedWriter bw = new BufferedWriter(fw);
+            StringBuilder newFile = new StringBuilder();
+            newFile.append("playlist " + playlist + ":\n---\n");
+            for (String line : content) {
+                newFile.append(line + "\n");
+            }
+            bw.write(newFile.toString());
+            bw.close();
+            fw.close();
+            success = true;
+        } catch (IOException e) {
 
+        }
+        return success;
     }
-
-    ;
 }

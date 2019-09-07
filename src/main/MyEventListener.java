@@ -8,7 +8,7 @@ public class MyEventListener extends ListenerAdapter {
 	Commands commander;
 	public MyEventListener(JDA jda) {
 		commander = new Commands();
-//		youtubewatcher.YoutubeWatcher.start(jda);
+		youtubewatcher.YoutubeWatcher.start(jda);
 	}
 
 	@Override
