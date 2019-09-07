@@ -11,8 +11,7 @@ import util.commands.ClearCommand;
 import util.commands.HelpCommand;
 import util.commands.RecipeCommand;
 import util.commands.StatsCommand;
-import youtubewatcher.commands.AddCommand;
-import youtubewatcher.commands.StatusCommand;
+import youtubewatcher.commands.YtWatcherCommand;
 
 import java.util.*;
 
@@ -24,20 +23,11 @@ public class Commands {
     public static AudioPlayer player;
 
     PlayCommand playCommand = new PlayCommand();
-    CreateplaylistCommand createplaylistCommand = new CreateplaylistCommand();
-    LoadplaylistCommand loadplaylistCommand = new LoadplaylistCommand();
-    ListplaylistCommand listplaylistCommand = new ListplaylistCommand();
-    AddtoplaylistCommand addtoplaylistCommand = new AddtoplaylistCommand();
-    DeleteplaylistCommand deleteplaylistCommand = new DeleteplaylistCommand();
-    SavehistoryCommand savehistoryCommand = new SavehistoryCommand();
     HistoryCommand historyCommand = new HistoryCommand();
     SkiptoCommand skiptoCommand = new SkiptoCommand();
     RemoveCommand removeCommand = new RemoveCommand();
     QueueCommand queueCommand = new QueueCommand();
     StopCommand stopCommand = new StopCommand();
-    StatusCommand statusCommand = new StatusCommand();
-    youtubewatcher.commands.RemoveCommand YtRemoveCommand = new youtubewatcher.commands.RemoveCommand();
-    AddCommand addCommand = new AddCommand();
     SkipCommand skipCommand = new SkipCommand();
     CalculatorCommand calculatorCommand = new CalculatorCommand();
     CoffeeCommand coffeeCommand = new CoffeeCommand();
@@ -51,26 +41,20 @@ public class Commands {
     RecipeCommand recipeCommand = new RecipeCommand();
     HelpCommand helpCommand = new HelpCommand();
     StatsCommand statsCommand = new StatsCommand();
-
+    YtWatcherCommand ytWatcherCommand = new YtWatcherCommand();
+    PlaylistCommand playlistCommand = new PlaylistCommand();
     public Commands() {
         player = new AudioPlayer();
         //TODO für jeden command ändern in put(command Objekt, command Objekt.getCommand())
 //        permissions.put(prefix + "del", "Bananenchefs");
         permissions.add(playCommand);
-        permissions.add(loadplaylistCommand);
-        permissions.add(createplaylistCommand);
-        permissions.add(listplaylistCommand);
-        permissions.add(addtoplaylistCommand);
-        permissions.add(deleteplaylistCommand);
-        permissions.add(savehistoryCommand);
+        permissions.add(playlistCommand);
         permissions.add(historyCommand);
         permissions.add(skiptoCommand);
         permissions.add(removeCommand);
         permissions.add(queueCommand);
         permissions.add(stopCommand);
-        permissions.add(statusCommand);
-        permissions.add(YtRemoveCommand);
-        permissions.add(addCommand);
+        permissions.add(ytWatcherCommand);
         permissions.add(skipCommand);
         permissions.add(calculatorCommand);
         permissions.add(coffeeCommand);

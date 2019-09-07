@@ -21,7 +21,9 @@ public class HelpCommand extends Command {
         Map<String, List<Command>> topics = allowList.stream().collect(Collectors.groupingBy(Command::getTopic));
 
         final StringBuilder help = new StringBuilder();
-        help.append("__**Welcome, master!**__\n\n");
+        help.append("__**Welcome, master ");
+        help.append(event.getAuthor().getName());
+        help.append(" !**__\n\n");
         topics.keySet().stream().forEach(topic -> {
             help.append("***" + topic + "*** functions" + "\n");
             topics.get(topic).stream().forEach(command -> help.append("\t" + command.getCommand() + " - " + command.getDescription() + "\n"));
