@@ -8,7 +8,7 @@ import static main.Commands.sendBeautifulMessage;
 
 public class SkiptoCommand extends Command {
     public SkiptoCommand() {
-        setCommand(prefix+"skipto");
+        setCommand(prefix + "skipto");
         setPermission("Bananenchefs");
         setTopic("music");
     }
@@ -23,5 +23,17 @@ public class SkiptoCommand extends Command {
 
             }
         }
+    }
+
+    @Override
+    public String getHelp() {
+        StringBuilder help = new StringBuilder();
+
+        help.append("***" + getCommand() + "***");
+        help.append(" - " + getDescription() + "\n");
+
+        help.append("<number of song to skip to in the queue, type #q for queue>\n");
+
+        return help.toString();
     }
 }

@@ -112,4 +112,20 @@ public class PlaylistCommand extends Command {
             }
         }
     }
+
+    @Override
+    public String getHelp() {
+        StringBuilder help = new StringBuilder();
+
+        help.append("***" + getCommand()+"***");
+        help.append(" - " + getDescription() + "\n");
+
+        help.append("create <playlist name>\n");
+        help.append("delete <playlist name>\n");
+        help.append("addto <playlist name> <keywords>\n");
+        help.append("savehistory <playlist name>\n");
+        help.append("load <playlist name>\n");
+        help.append("list [playlist name, optional]\n");
+        return help.toString();
+    }
 }

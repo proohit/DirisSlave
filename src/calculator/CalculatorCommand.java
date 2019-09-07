@@ -27,4 +27,16 @@ public class CalculatorCommand extends Command {
             Commands.sendMessage(event.getTextChannel(), "#calc usage:\n number (+ - * /) number");
         }
     }
+
+    @Override
+    public String getHelp() {
+        StringBuilder help = new StringBuilder();
+
+        help.append("***" + getCommand()+"***");
+        help.append(" - " + getDescription() + "\n");
+
+        help.append("<number> <+ - * / ( )> <number> ... \n");
+
+        return help.toString();
+    }
 }

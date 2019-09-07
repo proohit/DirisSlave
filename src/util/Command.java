@@ -20,4 +20,5 @@ public abstract class Command {
     public String getTopic() {return topic;}
     public void setTopic(String topic) {this.topic = topic;}
     public abstract void handle(MessageReceivedEvent event, String[] argStrings);
+    public abstract String getHelp();
 }

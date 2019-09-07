@@ -18,4 +18,14 @@ public class StopCommand extends Command {
         if (manager.isConnected() || manager.isAttemptingToConnect()) manager.closeAudioConnection();
         Commands.player.stop(event.getTextChannel());
     }
+
+    @Override
+    public String getHelp() {
+        StringBuilder help = new StringBuilder();
+
+        help.append("***" + getCommand() + "***");
+        help.append(" - " + getDescription() + "\n");
+
+        return help.toString();
+    }
 }

@@ -15,4 +15,14 @@ public class HentaiCommand extends Command {
         main.Commands.sendMessage(event, UrlHandler.getImage("https://nekobot.xyz/api/image?type=hentai"));
 
     }
+
+    @Override
+    public String getHelp() {
+        StringBuilder help = new StringBuilder();
+
+        help.append("***" + getCommand()+"***");
+        help.append(" - " + getDescription() + "\n");
+
+        return help.toString();
+    }
 }

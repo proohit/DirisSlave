@@ -31,4 +31,16 @@ public class RecipeCommand extends Command {
 
         return UrlHandler.getRandomObject(object).get("source_url").getAsString();
     }
+
+    @Override
+    public String getHelp() {
+        StringBuilder help = new StringBuilder();
+
+        help.append("***" + getCommand()+"***");
+        help.append(" - " + getDescription() + "\n");
+
+        help.append("<ingredient1> <ingredient2>...\n");
+
+        return help.toString();
+    }
 }

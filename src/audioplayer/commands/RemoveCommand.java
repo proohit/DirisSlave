@@ -21,4 +21,15 @@ public class RemoveCommand extends Command {
             }
         }
     }
+    @Override
+    public String getHelp() {
+        StringBuilder help = new StringBuilder();
+
+        help.append("***" + getCommand()+"***");
+        help.append(" - " + getDescription() + "\n");
+
+        help.append("<number of song in queue, type #q for queue>\n");
+
+        return help.toString();
+    }
 }

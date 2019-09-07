@@ -8,10 +8,11 @@ import youtubewatcher.YoutubeXML;
 
 public class YtWatcherCommand extends Command {
     public YtWatcherCommand() {
-        setCommand(prefix+"yt");
+        setCommand(prefix + "yt");
         setPermission("everyone");
         setTopic("ytwatcher");
     }
+
     @Override
     public void handle(MessageReceivedEvent event, String[] argStrings) {
         if (argStrings[1].equals("add")) {
@@ -45,5 +46,19 @@ public class YtWatcherCommand extends Command {
         } else if (argStrings[1].equals("status")) {
             Commands.sendMessage(event, YoutubeWatcher.status());
         }
+    }
+
+    @Override
+    public String getHelp() {
+        StringBuilder help = new StringBuilder();
+
+        help.append("***" + getCommand() + "***");
+        help.append(" - " + getDescription() + "\n");
+
+        help.append("add <url to youtube channel> \n");
+        help.append("status\n");
+        help.append("remove <name of channel, type #yt status to see current channels> \n");
+
+        return help.toString();
     }
 }

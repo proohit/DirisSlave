@@ -22,4 +22,16 @@ public ClearCommand() {
         event.getChannel().purgeMessages(msgs);
         main.Commands.sendMessage(event, "Deleted " + deleteMessageCount + " messages.");
     }
+
+    @Override
+    public String getHelp() {
+        StringBuilder help = new StringBuilder();
+
+        help.append("***" + getCommand()+"***");
+        help.append(" - " + getDescription() + "\n");
+
+        help.append("<number of messages to delete> \n");
+
+        return help.toString();
+    }
 }

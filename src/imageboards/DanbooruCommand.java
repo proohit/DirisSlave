@@ -57,4 +57,15 @@ public class DanbooruCommand extends Command {
         return UrlHandler.getRandomObject(object).get("file_url").getAsString();
     }
 
+    @Override
+    public String getHelp() {
+        StringBuilder help = new StringBuilder();
+
+        help.append("***" + getCommand() + "***");
+        help.append(" - " + getDescription() + "\n");
+
+        help.append("<tag1> <tag2 (optional)>\n");
+
+        return help.toString();
+    }
 }

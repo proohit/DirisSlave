@@ -30,4 +30,16 @@ public class PlayCommand extends Command {
                 Commands.player.loadAndPlay(event.getTextChannel(), trackUrl);
         }
     }
+
+    @Override
+    public String getHelp() {
+        StringBuilder help = new StringBuilder();
+
+        help.append("***" + getCommand()+"***");
+        help.append(" - " + getDescription() + "\n");
+
+        help.append("<search term>");
+
+        return help.toString();
+    }
 }
