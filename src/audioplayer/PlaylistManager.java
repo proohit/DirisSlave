@@ -166,6 +166,49 @@ public class PlaylistManager {
         return isPlaylistAvailable;
     }
 
+    public static Song removeFromPlaylist(String playlist, int index) {
+        Song toBeDeletedSong = null;
+        try {
+            ArrayList<Song> songs = getSongsOfPlaylist(playlist);
+            if(songs.size() == 0 || index > songs.size() || index < 0) return null;
+            for(int i = 1; i<=songs.size();i++) {
+                if(i == index) {
+                    toBeDeletedSong = songs.get(i-1);
+                }
+            }
+            String[] content = new String(Files.readAllBytes(Paths.get("playlistplayer.txt"))).split("\n");
+
+            FileWriter fw = new FileWriter(getFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            boolean hasFoundPlaylist = false;
+            String newFile = "";
+
+            for (String line : content) {
+                if (line.matches("playlist " + playlist + ":")) {
+                    newFile += line + "\n";
+                    hasFoundPlaylist = true;
+                } else if (line.contains("---") && hasFoundPlaylist) {
+                    newFile += line + "\n";
+                    hasFoundPlaylist = false;
+                } else if (hasFoundPlaylist) {
+                    if(toBeDeletedSong.title.equals(line.split("-/-")[0])) {
+                    } else {
+                        newFile += line+"\n";
+                    }
+                } else {
+                    newFile+=line+"\n";
+                }
+            }
+            bw.write(newFile);
+            bw.close();
+            fw.close();
+        } catch (IOException e) {
+
+        }
+        return toBeDeletedSong;
+    }
+
     public static ArrayList<Song> getSongsOfPlaylist(String playlist) {
         ArrayList<Song> playlists = new ArrayList<>();
         try {

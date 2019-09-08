@@ -16,19 +16,23 @@ public class PlayCommand extends Command {
 
     @Override
     public void handle(MessageReceivedEvent event, String[] argStrings) {
-            if (argStrings.length >= 2) {
-                String trackUrl = "";
-                if (!(argStrings[1].contains("http") || argStrings[1].contains("https"))) {
-                    trackUrl = "ytsearch: ";
-                    for (int i = 1; i < argStrings.length; i++) {
-                        trackUrl += argStrings[i] + " ";
-                    }
-                } else {
-                    trackUrl = argStrings[1];
+        if (argStrings.length <= 1) {
+            main.Commands.sendMessage(event, getHelp());
+            return;
+        }
+        if (argStrings.length >= 2) {
+            String trackUrl = "";
+            if (!(argStrings[1].contains("http") || argStrings[1].contains("https"))) {
+                trackUrl = "ytsearch: ";
+                for (int i = 1; i < argStrings.length; i++) {
+                    trackUrl += argStrings[i] + " ";
                 }
+            } else {
+                trackUrl = argStrings[1];
+            }
 
-                AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(), event.getMember().getVoiceState().getChannel());
-                Commands.player.loadAndPlay(event.getTextChannel(), trackUrl);
+            AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(), event.getMember().getVoiceState().getChannel());
+            Commands.player.loadAndPlay(event.getTextChannel(), trackUrl);
         }
     }
 
@@ -36,7 +40,7 @@ public class PlayCommand extends Command {
     public String getHelp() {
         StringBuilder help = new StringBuilder();
 
-        help.append("***" + getCommand()+"***");
+        help.append("***" + getCommand() + "***");
         help.append(" - " + getDescription() + "\n");
 
         help.append("<search term>");

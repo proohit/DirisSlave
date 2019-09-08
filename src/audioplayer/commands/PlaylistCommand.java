@@ -24,7 +24,10 @@ public class PlaylistCommand extends Command {
 
     @Override
     public void handle(MessageReceivedEvent event, String[] argStrings) {
-
+        if(argStrings.length <= 1) {
+            main.Commands.sendMessage(event, getHelp());
+            return;
+        }
         if (argStrings[1].equals("create")) {
             if (argStrings.length == 3) {
                 if (PlaylistManager.createPlaylist(argStrings[2])) {
@@ -67,8 +70,8 @@ public class PlaylistCommand extends Command {
                     return;
                 }
                 StringBuilder result = new StringBuilder("songs of playlist " + argStrings[2] + ":\n");
-                for (PlaylistManager.Song song : playlist) {
-                    result.append(song.getTitle()).append("\n");
+                for(int i = 1;i<=playlist.size();i++) {
+                    result.append(i + " ").append(playlist.get(i-1).getTitle()).append("\n");
                 }
                 sendBeautifulMessage(event, result.toString());
             }
@@ -114,6 +117,15 @@ public class PlaylistCommand extends Command {
                     }
                 });
             }
+        } else if(argStrings[1].equals("remove")) {
+            if(argStrings.length == 4) {
+                PlaylistManager.Song deletedSong = PlaylistManager.removeFromPlaylist(argStrings[2], Integer.parseInt(argStrings[3]));
+                if(deletedSong!=null) {
+                    sendBeautifulMessage(event, "deleted " + deletedSong.getTitle() + " from " + argStrings[2]);
+                } else {
+                    sendBeautifulMessage(event, "playlist or song not found.");
+                }
+            }
         }
     }
 
@@ -124,12 +136,14 @@ public class PlaylistCommand extends Command {
         help.append("***" + getCommand() + "***");
         help.append(" - " + getDescription() + "\n");
 
+        help.append("list [playlist name, optional]\n");
         help.append("create <playlist name>\n");
+        help.append("load <playlist name>\n");
         help.append("delete <playlist name>\n");
         help.append("addto <playlist name> <keywords>\n");
+        help.append("remove <playlist name> <index of song in playlist. type playlist list playlistname to get indexes>\n");
         help.append("savehistory <playlist name>\n");
-        help.append("load <playlist name>\n");
-        help.append("list [playlist name, optional]\n");
+
         return help.toString();
     }
 }
