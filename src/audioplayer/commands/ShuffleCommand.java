@@ -9,13 +9,13 @@ public class ShuffleCommand extends Command {
         setCommand(prefix + "shuffle");
         setPermission("Bananenchefs");
         setTopic("music");
-        setDescription("");
+        setDescription("bring some spice into the queue by shuffling it :man_dancing:");
     }
 
     @Override
     public void handle(MessageReceivedEvent event, String[] argStrings) {
         if(Commands.player.shuffle(event.getTextChannel())) {
-            Commands.sendBeautifulMessage(event, "shuffled the music :man_dancing:");
+            Commands.sendMessage(event, "shuffled the music :man_dancing:");
         } else {
             Commands.sendBeautifulMessage(event, "queue is empty :( start rocking with " + prefix+"pl !");
         }

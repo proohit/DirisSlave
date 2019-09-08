@@ -5,6 +5,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
+import main.Main;
 import net.dv8tion.jda.api.managers.AudioManager;
 
 import java.util.ArrayList;
@@ -41,6 +42,8 @@ public class TrackScheduler extends AudioEventAdapter {
         PlaylistManager.writeHistoryItem(track.getInfo().title + "-/-" + track.getInfo().uri);
         if (!player.startTrack(track, true)) {
             queue.offer(track);
+        } else {
+            Main.jda.getTextChannelById("385557091605020672").getManager().setTopic("*Now playing* " + track.getInfo().title).queue();
         }
     }
 
@@ -54,8 +57,10 @@ public class TrackScheduler extends AudioEventAdapter {
         if (nextTrack == null) {
             player.stopTrack();
             audioplayer.AudioPlayer.getLastManager().closeAudioConnection();
+        } else {
+            Main.jda.getTextChannelById("385557091605020672").getManager().setTopic("*Now playing* " + nextTrack.getInfo().title).queue();
+            player.startTrack(nextTrack, false);
         }
-        player.startTrack(nextTrack, false);
     }
 
     public Stream<AudioTrack> getQueue() {
