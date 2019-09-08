@@ -29,6 +29,7 @@ public class Commands {
     QueueCommand queueCommand = new QueueCommand();
     StopCommand stopCommand = new StopCommand();
     SkipCommand skipCommand = new SkipCommand();
+    ShuffleCommand shuffleCommand = new ShuffleCommand();
     CalculatorCommand calculatorCommand = new CalculatorCommand();
     CoffeeCommand coffeeCommand = new CoffeeCommand();
     DanbooruCommand danbooruCommand = new DanbooruCommand();
@@ -55,6 +56,7 @@ public class Commands {
         permissions.add(removeCommand);
         permissions.add(queueCommand);
         permissions.add(stopCommand);
+        permissions.add(shuffleCommand);
         permissions.add(ytWatcherCommand);
         permissions.add(skipCommand);
         permissions.add(calculatorCommand);

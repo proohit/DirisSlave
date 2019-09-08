@@ -44,7 +44,10 @@ public class AudioPlayer {
 
         return musicManager;
     }
-
+    public boolean shuffle(TextChannel channel) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+        return musicManager.scheduler.shuffle();
+    }
     public void fetchAudioTrack(final TextChannel channel, final String trackUrl, AudioLoadResultHandler handler) {
         lastManager = channel.getGuild().getAudioManager();
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());

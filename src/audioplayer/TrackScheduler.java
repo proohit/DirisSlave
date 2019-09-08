@@ -7,7 +7,9 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import net.dv8tion.jda.api.managers.AudioManager;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Stream;
@@ -65,6 +67,18 @@ public class TrackScheduler extends AudioEventAdapter {
         player.destroy();
     }
 
+    public boolean shuffle() {
+        if (queue.isEmpty()) return false;
+        ArrayList<AudioTrack> savedQueue = new ArrayList<>();
+        while (!queue.isEmpty()) savedQueue.add(queue.poll());
+        while (!savedQueue.isEmpty()) {
+            Random rand = new Random();
+            int index = rand.nextInt(savedQueue.size());
+            queue.offer(savedQueue.remove(index));
+        }
+        return true;
+    }
+
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         // Only start the next track if the end reason is suitable for it (FINISHED or LOAD_FAILED)
@@ -83,8 +97,8 @@ public class TrackScheduler extends AudioEventAdapter {
                 nextTrack();
                 return;
             } else {
-                    queue.poll();
-                    it.next();
+                queue.poll();
+                it.next();
 
             }
         }
