@@ -8,7 +8,7 @@ import util.Command;
 
 public class RecipeCommand extends Command {
     public RecipeCommand() {
-        setCommand(prefix+"recipe");
+        setCommand(prefix + "recipe");
         setPermission("everyone");
         setTopic("util");
         setDescription("displays you a recipe containing specific ingredients");
@@ -16,6 +16,10 @@ public class RecipeCommand extends Command {
 
     @Override
     public void handle(MessageReceivedEvent event, String[] argStrings) {
+        if (argStrings.length < 2) {
+            main.Commands.sendMessage(event, getHelp());
+            return;
+        }
         String URL = "https://www.food2fork.com/api/search?key=ffb26f279a14aaf6b21493d4ebccb867&q=";
         for (int i = 1; i < argStrings.length; i++) {
             URL += argStrings[i] + "%20";
@@ -37,7 +41,7 @@ public class RecipeCommand extends Command {
     public String getHelp() {
         StringBuilder help = new StringBuilder();
 
-        help.append("***" + getCommand()+"***");
+        help.append("***" + getCommand() + "***");
         help.append(" - " + getDescription() + "\n");
 
         help.append("<ingredient1> <ingredient2>...\n");

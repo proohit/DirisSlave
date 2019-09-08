@@ -16,6 +16,10 @@ public class DanbooruCommand extends Command {
 
     @Override
     public void handle(MessageReceivedEvent event, String[] argStrings) {
+        if (argStrings.length < 2) {
+            main.Commands.sendMessage(event, getHelp());
+            return;
+        }
         String URL = "https://danbooru.donmai.us/posts.json/?utf8=%E2%9C%93&limit=200&tags=";
         if (argStrings.length > 3)
             Commands.sendMessage(event, "`you cannot search for more than 2 tags!`");

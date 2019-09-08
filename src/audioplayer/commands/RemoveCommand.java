@@ -14,6 +14,10 @@ public class RemoveCommand extends Command {
 
     @Override
     public void handle(MessageReceivedEvent event, String[] argStrings) {
+        if(argStrings.length < 2) {
+            main.Commands.sendMessage(event, getHelp());
+            return;
+        }
         if (argStrings.length == 2) {
             try {
                 Commands.player.remove(Integer.parseInt(argStrings[1]), event.getTextChannel());

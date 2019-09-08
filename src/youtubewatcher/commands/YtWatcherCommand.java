@@ -16,6 +16,10 @@ public class YtWatcherCommand extends Command {
 
     @Override
     public void handle(MessageReceivedEvent event, String[] argStrings) {
+        if (argStrings.length <= 1) {
+            main.Commands.sendMessage(event, getHelp());
+            return;
+        }
         if (argStrings[1].equals("add")) {
             for (YoutubeXML urls : YoutubeWatcher.latestvideos.keySet()) {
                 if (argStrings[2].equals(urls.getUrl())) {

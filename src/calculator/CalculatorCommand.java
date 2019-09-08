@@ -14,6 +14,10 @@ public class CalculatorCommand extends Command {
 
     @Override
     public void handle(MessageReceivedEvent event, String[] argStrings) {
+        if(argStrings.length <2) {
+            main.Commands.sendMessage(event,getHelp());
+            return;
+        }
         String term = "";
         for (int i = 1; i < argStrings.length; i++) {
             term += argStrings[i];

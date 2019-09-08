@@ -11,11 +11,15 @@ public class SkiptoCommand extends Command {
         setCommand(prefix + "skipto");
         setPermission("Bananenchefs");
         setTopic("music");
-        setDescription("skip current playing song");
+        setDescription("skip songs to specific index in queue");
     }
 
     @Override
     public void handle(MessageReceivedEvent event, String[] argStrings) {
+        if (argStrings.length < 2) {
+            main.Commands.sendMessage(event, getHelp());
+            return;
+        }
         if (argStrings.length == 2) {
             try {
                 Commands.player.skipTo(Integer.parseInt(argStrings[1]), event.getTextChannel());
