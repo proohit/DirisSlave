@@ -45,6 +45,8 @@ public class Commands {
     YtWatcherCommand ytWatcherCommand = new YtWatcherCommand();
     PlaylistCommand playlistCommand = new PlaylistCommand();
     LizardCommand lizardCommand = new LizardCommand();
+    SeekCommand seekCommand = new SeekCommand();
+    JumptoCommand jumptoCommand = new JumptoCommand();
     public Commands() {
         player = new AudioPlayer();
         //TODO für jeden command ändern in put(command Objekt, command Objekt.getCommand())
@@ -57,6 +59,8 @@ public class Commands {
         permissions.add(queueCommand);
         permissions.add(stopCommand);
         permissions.add(shuffleCommand);
+        permissions.add(seekCommand);
+        permissions.add(jumptoCommand);
         permissions.add(ytWatcherCommand);
         permissions.add(skipCommand);
         permissions.add(calculatorCommand);

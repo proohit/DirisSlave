@@ -93,7 +93,10 @@ public class AudioPlayer {
         playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
-                channel.sendMessage("Adding to queue " + track.getInfo().title).queue();
+                float seconds = track.getDuration()/1000;
+                int minutes = (int)seconds/60;
+                seconds = seconds%60;
+                channel.sendMessage("Adding to queue " + track.getInfo().title+ " Duration: " + minutes + ":"+seconds + " minutes").queue();
 
                 play(channel.getGuild(), musicManager, track);
             }
@@ -105,8 +108,14 @@ public class AudioPlayer {
                 if (firstTrack == null) {
                     firstTrack = playlist.getTracks().get(0);
                 }
-
-                channel.sendMessage("Adding to queue " + firstTrack.getInfo().title + " (first track of playlist " + playlist.getName() + ")").queue();
+                int seconds = (int)firstTrack.getDuration()/1000;
+                int minutes = (int)seconds/60;
+                seconds = seconds%60;
+                String secondsString = String.valueOf(seconds);
+                String minutesString = String.valueOf(minutes);
+                if(secondsString.length() <2) secondsString="0" + secondsString;
+                if(minutesString.length() <2) minutesString = "0" + minutesString;
+                channel.sendMessage("Adding to queue " + firstTrack.getInfo().title + " Duration: " + minutesString + ":"+secondsString + " minutes").queue();
 
                 play(channel.getGuild(), musicManager, firstTrack);
             }
@@ -136,7 +145,15 @@ public class AudioPlayer {
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
         musicManager.scheduler.stop();
     }
+    public long seek(TextChannel channel, int seconds) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+        return musicManager.scheduler.seek(seconds);
+    }
 
+    public void jumpto(TextChannel channel, int seconds) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+        musicManager.scheduler.jumpto(seconds);
+    }
     public void skipTrack(TextChannel channel) {
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
         musicManager.scheduler.nextTrack();

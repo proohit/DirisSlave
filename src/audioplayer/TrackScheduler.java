@@ -62,7 +62,15 @@ public class TrackScheduler extends AudioEventAdapter {
             player.startTrack(nextTrack, false);
         }
     }
-
+    public long seek(int seconds) {
+        if (player.getPlayingTrack() == null) return 0;
+            player.getPlayingTrack().setPosition(player.getPlayingTrack().getPosition()+seconds * 1000);
+            return player.getPlayingTrack().getPosition();
+    }
+    public void jumpto(int seconds) {
+        if(player.getPlayingTrack() == null) return;
+        player.getPlayingTrack().setPosition(seconds*1000);
+    }
     public Stream<AudioTrack> getQueue() {
         return queue.stream();
     }
