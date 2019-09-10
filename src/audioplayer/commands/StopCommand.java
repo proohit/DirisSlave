@@ -8,7 +8,7 @@ import util.Command;
 public class StopCommand extends Command {
     public StopCommand() {
         setCommand(prefix + "stop");
-        setPermission("Bananenchefs");
+        setPermission("everyone");
         setTopic("music");
         setDescription("stop the current playlist and remove all songs from queue");
     }

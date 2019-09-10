@@ -11,7 +11,7 @@ import java.util.Iterator;
 public class QueueCommand extends Command {
     public QueueCommand() {
         setCommand(prefix + "q");
-        setPermission("Bananenchefs");
+        setPermission("everyone");
         setTopic("music");
         setDescription("shows the queue");
     }

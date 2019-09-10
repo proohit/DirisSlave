@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import main.Commands;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.Command;
+import util.UrlHandler;
 
 public class DanbooruCommand extends Command {
     public DanbooruCommand() {

@@ -1,4 +1,4 @@
-package imageboards;
+package util;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

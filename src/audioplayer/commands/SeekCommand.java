@@ -7,7 +7,7 @@ import util.Command;
 public class SeekCommand extends Command {
     public SeekCommand() {
         setCommand(prefix+"seek");
-        setPermission("Bananenchefs");
+        setPermission("everyone");
         setTopic("music");
         setDescription("seeks forward in the current playing song");
     }

@@ -7,7 +7,7 @@ import util.Command;
 public class RemoveCommand extends Command {
     public RemoveCommand() {
         setCommand(prefix + "remove");
-        setPermission("Bananenchefs");
+        setPermission("everyone");
         setTopic("music");
         setDescription("remove song from queue");
     }

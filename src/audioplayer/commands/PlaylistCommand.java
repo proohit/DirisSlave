@@ -17,7 +17,7 @@ import static main.Commands.sendBeautifulMessage;
 public class PlaylistCommand extends Command {
     public PlaylistCommand() {
         setCommand(prefix + "playlist");
-        setPermission("Bananenchefs");
+        setPermission("everyone");
         setTopic("music");
         setDescription("lists options regarding playlists");
     }

@@ -9,7 +9,7 @@ import util.Command;
 public class PlayCommand extends Command {
     public PlayCommand() {
         setCommand(prefix + "pl");
-        setPermission("Bananenchefs");
+        setPermission("everyone");
         setTopic("music");
         setDescription("Play music by adding a search-term or by adding a link");
     }

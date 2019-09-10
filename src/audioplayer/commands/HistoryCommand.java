@@ -11,7 +11,7 @@ import static main.Commands.sendBeautifulMessage;
 public class HistoryCommand extends Command {
     public HistoryCommand() {
         setCommand(prefix + "history");
-        setPermission("Bananenchefs");
+        setPermission("everyone");
         setTopic("music");
         setDescription("shows you already played songs");
     }

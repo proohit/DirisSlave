@@ -7,7 +7,7 @@ import util.Command;
 public class SkipCommand extends Command {
     public SkipCommand() {
         setCommand(prefix + "skip");
-        setPermission("Bananenchefs");
+        setPermission("everyone");
         setTopic("music");
         setDescription("skip current playing song");
     }

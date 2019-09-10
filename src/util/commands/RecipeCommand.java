@@ -2,7 +2,7 @@ package util.commands;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import imageboards.UrlHandler;
+import util.UrlHandler;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.Command;
 

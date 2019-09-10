@@ -7,7 +7,7 @@ import util.Command;
 public class JumptoCommand extends Command {
     public JumptoCommand() {
         setCommand(prefix+"jumpto");
-        setPermission("Bananenchefs");
+        setPermission("everyone");
         setTopic("music");
         setDescription("sets the position of the current song");
     }

@@ -9,7 +9,7 @@ import static main.Commands.sendBeautifulMessage;
 public class SkiptoCommand extends Command {
     public SkiptoCommand() {
         setCommand(prefix + "skipto");
-        setPermission("Bananenchefs");
+        setPermission("everyone");
         setTopic("music");
         setDescription("skip songs to specific index in queue");
     }

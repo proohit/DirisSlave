@@ -7,7 +7,7 @@ import util.Command;
 public class ShuffleCommand extends Command {
     public ShuffleCommand() {
         setCommand(prefix + "shuffle");
-        setPermission("Bananenchefs");
+        setPermission("everyone");
         setTopic("music");
         setDescription("bring some spice into the queue by shuffling it :man_dancing:");
     }
