@@ -53,7 +53,10 @@ public class AudioPlayer {
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
         playerManager.loadItemOrdered(musicManager, trackUrl, handler);
     }
-
+    public boolean setRepeat(TextChannel channel,boolean repeat) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+        return musicManager.scheduler.setRepeat(repeat);
+    }
     public boolean playPlaylist(final TextChannel channel, final String playlist) {
         lastManager = channel.getGuild().getAudioManager();
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());

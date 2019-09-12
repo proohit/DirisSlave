@@ -1,7 +1,6 @@
 package weatherservice;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.dv8tion.jda.api.JDA;
 import util.UrlHandler;

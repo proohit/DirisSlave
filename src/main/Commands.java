@@ -30,6 +30,7 @@ public class Commands {
     StopCommand stopCommand = new StopCommand();
     SkipCommand skipCommand = new SkipCommand();
     ShuffleCommand shuffleCommand = new ShuffleCommand();
+    RepeatCommand repeatCommand = new RepeatCommand();
     CalculatorCommand calculatorCommand = new CalculatorCommand();
     CoffeeCommand coffeeCommand = new CoffeeCommand();
     DanbooruCommand danbooruCommand = new DanbooruCommand();
@@ -47,6 +48,7 @@ public class Commands {
     LizardCommand lizardCommand = new LizardCommand();
     SeekCommand seekCommand = new SeekCommand();
     JumptoCommand jumptoCommand = new JumptoCommand();
+
     public Commands() {
         player = new AudioPlayer();
         //TODO für jeden command ändern in put(command Objekt, command Objekt.getCommand())
@@ -59,6 +61,7 @@ public class Commands {
         permissions.add(queueCommand);
         permissions.add(stopCommand);
         permissions.add(shuffleCommand);
+        permissions.add(repeatCommand);
         permissions.add(seekCommand);
         permissions.add(jumptoCommand);
         permissions.add(ytWatcherCommand);

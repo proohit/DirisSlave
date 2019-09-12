@@ -19,10 +19,14 @@ public class SeekCommand extends Command {
             if(inputSeconds<0) return;
             long position = Commands.player.seek(event.getTextChannel(),inputSeconds);
             if(position > 0) {
-                long seconds = position/1000;
+                int seconds = (int)position/1000;
                 int minutes = (int)seconds/60;
                 seconds = seconds%60;
-                Commands.sendBeautifulMessage(event, "skipped to minute " + minutes + ":" + seconds);
+                String secondsString = String.valueOf(seconds);
+                String minutesString = String.valueOf(minutes);
+                if(secondsString.length() <2) secondsString="0" + secondsString;
+                if(minutesString.length() <2) minutesString = "0" + minutesString;
+                Commands.sendBeautifulMessage(event, "skipped to minute " + minutesString + ":" + secondsString);
             }
         }
     }
