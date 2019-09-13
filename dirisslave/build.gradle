@@ -10,9 +10,7 @@ repositories {
     jcenter()
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.0'
-}
+
 
 dependencies {
     compile 'com.sedmelluq:lavaplayer:1.3.20'
