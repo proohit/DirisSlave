@@ -11,6 +11,7 @@ import util.commands.ClearCommand;
 import util.commands.HelpCommand;
 import util.commands.RecipeCommand;
 import util.commands.StatsCommand;
+import weatherservice.WeatherCommand;
 import youtubewatcher.commands.YtWatcherCommand;
 
 import java.util.*;
@@ -48,6 +49,7 @@ public class Commands {
     LizardCommand lizardCommand = new LizardCommand();
     SeekCommand seekCommand = new SeekCommand();
     JumptoCommand jumptoCommand = new JumptoCommand();
+WeatherCommand weatherCommand = new WeatherCommand();
 
     public Commands() {
         player = new AudioPlayer();
@@ -79,6 +81,7 @@ public class Commands {
         permissions.add(helpCommand);
         permissions.add(statsCommand);
         permissions.add(lizardCommand);
+        permissions.add(weatherCommand);
     }
 
     public static boolean isAllowed(Member member, String inputCommand) {

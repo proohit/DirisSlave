@@ -3,9 +3,13 @@ package weatherservice;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageHistory;
+import net.dv8tion.jda.api.entities.TextChannel;
 import util.UrlHandler;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -48,8 +52,13 @@ public class WeatherWatcher {
                     weather[i] = list.get(i).getAsJsonObject().get("weather").getAsJsonArray().get(0).getAsJsonObject().get("main").getAsString();
                     result += "time: " + time[i] + ", temperature: " + temperatures[i] + "°C, status: " + weather[i] + "\n";
                 }
+                TextChannel channel = jda.getTextChannelById("621021131675140096");
+                MessageHistory history = new MessageHistory(channel);
+                List<Message> msgs;
+                msgs = history.retrievePast(1).complete();
+                channel.purgeMessages(msgs);
 
-                jda.getTextChannelById("621021131675140096").sendMessage(result).queue();
+                channel.sendMessage(result).queue();
 
             }
         }, timeTo6Am, 24*60*60*1000);

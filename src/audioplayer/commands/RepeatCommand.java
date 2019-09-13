@@ -9,6 +9,7 @@ public class RepeatCommand extends Command {
         setCommand(prefix + "repeat");
         setPermission("everyone");
         setTopic("music");
+        setDescription("enables queue repetition. Now playing song will repeat as the last song");
     }
 
     @Override
