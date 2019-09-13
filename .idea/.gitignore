@@ -30,3 +30,5 @@ gradle-app.setting
 
 # Cache of project
 .gradletasknamecache
+# Default ignored files
+/workspace.xml
