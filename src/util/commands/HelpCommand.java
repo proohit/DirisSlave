@@ -46,6 +46,13 @@ public class HelpCommand extends Command {
 
     @Override
     public String getHelp() {
-        return null;
+        StringBuilder help = new StringBuilder();
+
+        help.append("***" + getCommand() + "***");
+        help.append(" - " + getDescription() + "\n");
+
+        help.append("<command to get help for>");
+
+        return help.toString();
     }
 }

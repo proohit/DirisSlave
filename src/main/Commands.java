@@ -23,65 +23,40 @@ public class Commands {
 //    public static HashMap<util.Command, String> permissions = new HashMap<>();
     public static AudioPlayer player;
 
-    PlayCommand playCommand = new PlayCommand();
-    HistoryCommand historyCommand = new HistoryCommand();
-    SkiptoCommand skiptoCommand = new SkiptoCommand();
-    RemoveCommand removeCommand = new RemoveCommand();
-    QueueCommand queueCommand = new QueueCommand();
-    StopCommand stopCommand = new StopCommand();
-    SkipCommand skipCommand = new SkipCommand();
-    ShuffleCommand shuffleCommand = new ShuffleCommand();
-    RepeatCommand repeatCommand = new RepeatCommand();
-    CalculatorCommand calculatorCommand = new CalculatorCommand();
-    CoffeeCommand coffeeCommand = new CoffeeCommand();
-    DanbooruCommand danbooruCommand = new DanbooruCommand();
-    ThighCommand thighCommand = new ThighCommand();
-    PgifCommand pgifCommand = new PgifCommand();
-    NekoCommand nekoCommand = new NekoCommand();
-    HentaiCommand hentaiCommand = new HentaiCommand();
-    GahCommand gahCommand = new GahCommand();
-    ClearCommand clearCommand = new ClearCommand();
-    RecipeCommand recipeCommand = new RecipeCommand();
-    HelpCommand helpCommand = new HelpCommand();
-    StatsCommand statsCommand = new StatsCommand();
-    YtWatcherCommand ytWatcherCommand = new YtWatcherCommand();
-    PlaylistCommand playlistCommand = new PlaylistCommand();
-    LizardCommand lizardCommand = new LizardCommand();
-    SeekCommand seekCommand = new SeekCommand();
-    JumptoCommand jumptoCommand = new JumptoCommand();
-WeatherCommand weatherCommand = new WeatherCommand();
-
     public Commands() {
         player = new AudioPlayer();
         //TODO für jeden command ändern in put(command Objekt, command Objekt.getCommand())
-//        permissions.put(prefix + "del", "Bananenchefs");
-        permissions.add(playCommand);
-        permissions.add(playlistCommand);
-        permissions.add(historyCommand);
-        permissions.add(skiptoCommand);
-        permissions.add(removeCommand);
-        permissions.add(queueCommand);
-        permissions.add(stopCommand);
-        permissions.add(shuffleCommand);
-        permissions.add(repeatCommand);
-        permissions.add(seekCommand);
-        permissions.add(jumptoCommand);
-        permissions.add(ytWatcherCommand);
-        permissions.add(skipCommand);
-        permissions.add(calculatorCommand);
-        permissions.add(coffeeCommand);
-        permissions.add(danbooruCommand);
-        permissions.add(thighCommand);
+        permissions.add(new PlayCommand());
+        permissions.add(new PlaylistCommand());
+        permissions.add(new HistoryCommand());
+        permissions.add(new SkiptoCommand());
+        permissions.add(new RemoveCommand());
+        permissions.add(new QueueCommand());
+        permissions.add(new StopCommand());
+        permissions.add(new ShuffleCommand());
+        permissions.add(new RepeatCommand());
+        permissions.add(new SeekCommand());
+        permissions.add(new JumptoCommand());
+        permissions.add(new YtWatcherCommand());
+        permissions.add(new SkipCommand());
+        permissions.add(new CalculatorCommand());
+        permissions.add(new CoffeeCommand());
+        permissions.add(new DanbooruCommand());
+        permissions.add(new ThighCommand());
 //        permissions.add(pgifCommand);
 //        permissions.add(nekoCommand);
 //        permissions.add(hentaiCommand);
-        permissions.add(gahCommand);
-        permissions.add(clearCommand);
-        permissions.add(recipeCommand);
-        permissions.add(helpCommand);
-        permissions.add(statsCommand);
-        permissions.add(lizardCommand);
-        permissions.add(weatherCommand);
+        permissions.add(new GahCommand());
+        permissions.add(new ClearCommand());
+        permissions.add(new RecipeCommand());
+        permissions.add(new HelpCommand());
+        permissions.add(new StatsCommand());
+        permissions.add(new LizardCommand());
+        permissions.add(new WeatherCommand());
+        permissions.add(new PauseCommand());
+        permissions.add(new ResumeCommand());
+
+
     }
 
     public static boolean isAllowed(Member member, String inputCommand) {
