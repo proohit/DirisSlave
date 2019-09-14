@@ -6,10 +6,13 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.XYItemLabelGenerator;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.Hour;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
+import org.jfree.data.xy.XYDataset;
 import util.Command;
 import util.UrlHandler;
 
@@ -67,6 +70,15 @@ public class WeatherCommand extends Command {
                     false,
                     false
             );
+            XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) chart.getXYPlot().getRenderer();
+            //enable data points labeling, gets the Y value of the item i1 in the series i
+            renderer.setBaseItemLabelGenerator(new XYItemLabelGenerator() {
+                @Override
+                public String generateLabel(XYDataset xyDataset, int i, int i1) {
+                    return String.valueOf(xyDataset.getYValue(i, i1));
+                }
+            });
+            renderer.setBaseItemLabelsVisible(true);
             File file = new File("chart.png");
             try {
                 ChartUtilities.saveChartAsPNG(file, chart, 800, 600);

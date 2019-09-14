@@ -119,6 +119,6 @@ public class WeatherWatcher {
                     e.printStackTrace();
                 }
             }
-        }, 0, 24 * 60 * 60 * 1000);
+        }, timeTo6Am, 24 * 60 * 60 * 1000);
     }
 }
