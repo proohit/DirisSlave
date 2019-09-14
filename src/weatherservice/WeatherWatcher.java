@@ -56,11 +56,11 @@ public class WeatherWatcher {
 
                 Double[] temperatures = new Double[6];
                 String[] time = new String[6];
-                String[] weather = new String[6];
+                String[] weather1 = new String[6];
                 for (int i = 1; i < 6; i++) {
                     temperatures[i] = Double.parseDouble(list.get(i).getAsJsonObject().get("main").getAsJsonObject().get("temp").getAsString());
                     time[i] = list.get(i).getAsJsonObject().get("dt_txt").getAsString();
-                    weather[i] = list.get(i).getAsJsonObject().get("weather").getAsJsonArray().get(0).getAsJsonObject().get("main").getAsString();
+                    weather1[i] = list.get(i).getAsJsonObject().get("weather").getAsJsonArray().get(0).getAsJsonObject().get("main").getAsString();
                     String date = time[i].split(" ")[0];
                     String timeString = time[i].split(" ")[1];
                     int hour = Integer.parseInt(timeString.split(":")[0]);
@@ -71,10 +71,12 @@ public class WeatherWatcher {
                 }
                 root = UrlHandler.parseJson("http://api.openweathermap.org/data/2.5/forecast?q=Dortmund&units=metric&appid=057f5d829942a1293eedbb094f8a5c71");
                 list = root.get("list").getAsJsonArray();
+                String[] weather2 = new String[6];
+
                 for (int i = 1; i < 6; i++) {
                     temperatures[i] = Double.parseDouble(list.get(i).getAsJsonObject().get("main").getAsJsonObject().get("temp").getAsString());
                     time[i] = list.get(i).getAsJsonObject().get("dt_txt").getAsString();
-                    weather[i] = list.get(i).getAsJsonObject().get("weather").getAsJsonArray().get(0).getAsJsonObject().get("main").getAsString();
+                    weather2[i] = list.get(i).getAsJsonObject().get("weather").getAsJsonArray().get(0).getAsJsonObject().get("main").getAsString();
                     String date = time[i].split(" ")[0];
                     String timeString = time[i].split(" ")[1];
                     int hour = Integer.parseInt(timeString.split(":")[0]);
@@ -102,7 +104,11 @@ public class WeatherWatcher {
                 renderer.setBaseItemLabelGenerator(new XYItemLabelGenerator() {
                     @Override
                     public String generateLabel(XYDataset xyDataset, int i, int i1) {
-                        return String.valueOf(xyDataset.getYValue(i, i1));
+                        if (i == 0) {
+                            return String.valueOf(xyDataset.getYValue(i, i1)) + " " + weather1[i1 + 1];
+                        } else {
+                            return String.valueOf(xyDataset.getYValue(i, i1)) + " " + weather2[i1 + 1];
+                        }
                     }
                 });
                 renderer.setBaseItemLabelsVisible(true);

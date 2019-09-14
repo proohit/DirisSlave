@@ -31,11 +31,15 @@ public class WeatherCommand extends Command {
 
     @Override
     public void handle(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings.length == 2) {
+        if (argStrings.length >= 2) {
             final StringBuilder result = new StringBuilder();
-            result.append("*The temperature in *" + argStrings[1] + "* for the next 15 hours* \n");
+            String query ="";
+            for(int i = 1; i< argStrings.length; i++) {
+                query+= argStrings[i] + " ";
+            }
+            result.append("*The temperature in *" + query + "* for the next 15 hours* \n");
 
-            JsonObject root = UrlHandler.parseJson("http://api.openweathermap.org/data/2.5/forecast?q=" + argStrings[1] + "&units=metric&appid=057f5d829942a1293eedbb094f8a5c71");
+            JsonObject root = UrlHandler.parseJson("http://api.openweathermap.org/data/2.5/forecast?q=" + query + "&units=metric&appid=057f5d829942a1293eedbb094f8a5c71");
 
             JsonArray list = root.get("list").getAsJsonArray();
 
@@ -75,7 +79,7 @@ public class WeatherCommand extends Command {
             renderer.setBaseItemLabelGenerator(new XYItemLabelGenerator() {
                 @Override
                 public String generateLabel(XYDataset xyDataset, int i, int i1) {
-                    return String.valueOf(xyDataset.getYValue(i, i1));
+                    return String.valueOf(xyDataset.getYValue(i, i1)) + " " + weather[i1+1];
                 }
             });
             renderer.setBaseItemLabelsVisible(true);
