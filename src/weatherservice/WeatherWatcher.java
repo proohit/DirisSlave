@@ -116,11 +116,12 @@ public class WeatherWatcher {
                 try {
                     ChartUtilities.saveChartAsPNG(file, chart, 800, 600);
                     TextChannel channel = jda.getTextChannelById("621021131675140096");
-                    channel.sendFile(file, file.getName()).queue();
                     MessageHistory history = new MessageHistory(channel);
                     List<Message> msgs;
                     msgs = history.retrievePast(1).complete();
                     channel.purgeMessages(msgs);
+                    channel.sendFile(file, file.getName()).queue();
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
