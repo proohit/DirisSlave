@@ -61,7 +61,7 @@ public class TrackScheduler extends AudioEventAdapter {
             player.stopTrack();
             audioplayer.AudioPlayer.getLastManager().closeAudioConnection();
         } else {
-            Main.jda.getTextChannelById("385557091605020672").getManager().setTopic("*Now playing* " + nextTrack.getInfo().title).queue();
+            Main.jda.getTextChannelById("621749238745006080").getManager().setTopic("*Now playing* " + nextTrack.getInfo().title).queue();
             player.startTrack(nextTrack.makeClone(), false);
         }
     }
@@ -99,7 +99,16 @@ public class TrackScheduler extends AudioEventAdapter {
         }
         return true;
     }
-
+    public void pause() {
+        if(!player.isPaused() && player.getPlayingTrack() != null) {
+            player.setPaused(true);
+        }
+    }
+    public void resume() {
+        if(player.isPaused() && player.getPlayingTrack() != null) {
+            player.setPaused(false);
+        }
+    }
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         // Only start the next track if the end reason is suitable for it (FINISHED or LOAD_FAILED)

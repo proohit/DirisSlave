@@ -48,6 +48,14 @@ public class AudioPlayer {
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
         return musicManager.scheduler.shuffle();
     }
+    public void togglePause(TextChannel channel, boolean setPause) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+        if(setPause == true) {
+            musicManager.scheduler.pause();
+        } else if(setPause == false) {
+            musicManager.scheduler.resume();
+        }
+    }
     public void fetchAudioTrack(final TextChannel channel, final String trackUrl, AudioLoadResultHandler handler) {
         lastManager = channel.getGuild().getAudioManager();
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());

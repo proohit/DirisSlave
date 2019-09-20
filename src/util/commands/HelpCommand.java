@@ -40,12 +40,21 @@ public class HelpCommand extends Command {
                 help.append("***" + topic + "*** functions" + "\n");
                 topics.get(topic).stream().forEach(command -> help.append("\t" + command.getCommand() + " - " + command.getDescription() + "\n"));
             });
+
+            help.append("\n If you find any bugs or have feature suggestions, pm me or send an email to direnc99@gmail.com. I will look into it A$AP.");
         }
         main.Commands.sendMessage(event, help.toString());
     }
 
     @Override
     public String getHelp() {
-        return null;
+        StringBuilder help = new StringBuilder();
+
+        help.append("***" + getCommand() + "***");
+        help.append(" - " + getDescription() + "\n");
+
+        help.append("<command to get help for>");
+
+        return help.toString();
     }
 }

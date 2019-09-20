@@ -4,20 +4,22 @@ import main.Commands;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.Command;
 
-public class ShuffleCommand extends Command {
-    public ShuffleCommand() {
-        setCommand(prefix + "shuffle");
-        setPermission("everyone");
+public class ResumeCommand extends Command {
+    public ResumeCommand() {
+        setCommand(prefix + "resume");
         setTopic("music");
-        setDescription("bring some spice into the queue by shuffling it :man_dancing:");
+        setPermission("everyone");
+        setDescription("resumes the current paused playback");
     }
 
     @Override
     public void handle(MessageReceivedEvent event, String[] argStrings) {
-        if (Commands.player.shuffle(event.getTextChannel())) {
-            Commands.sendMessage(event, "shuffled the music :man_dancing:");
+        if (argStrings.length == 1) {
+            Commands.player.togglePause(event.getTextChannel(), false);
+            Commands.sendMessage(event, "resuming the playback...");
+
         } else {
-            Commands.sendBeautifulMessage(event, "queue is empty :( start rocking with " + prefix + "pl !");
+            Commands.sendMessage(event, getHelp());
         }
     }
 
