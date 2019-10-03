@@ -24,13 +24,14 @@ public class SongPlaylistTable {
         return result;
     }
 
-    public static void insertSongIntoPlaylist(Song song, Playlist playlist) {
+    public static int insertSongIntoPlaylist(Song song, Playlist playlist) {
         try {
             Connection con = DBManager.getConnection();
             Statement stmt = con.createStatement();
-            stmt.executeUpdate("INSERT INTO playlist_songs(songid, playlistname) VALUES(" + song.getId() + "," + playlist.getName() + ");");
+            return stmt.executeUpdate("INSERT INTO playlist_songs(songid, playlistname) VALUES(" + song.getId() + ",'" + playlist.getName() + "');");
         } catch (SQLException e) {
 
         }
+        return 0;
     }
 }

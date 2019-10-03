@@ -6,10 +6,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import database.Playlist;
-import database.PlaylistTable;
-import database.Song;
-import database.SongPlaylistTable;
+import database.*;
 import main.Commands;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.Command;
@@ -34,7 +31,7 @@ public class PlaylistCommand extends Command {
         }
         if (argStrings[1].equals("create")) {
             if (argStrings.length == 3) {
-                if (PlaylistManager.createPlaylist(argStrings[2])) {
+                if (PlaylistTable.createPlaylist(argStrings[2])==1) {
                     main.Commands.sendBeautifulMessage(event, "playlist " + argStrings[2] + " created.");
                 } else {
                     main.Commands.sendBeautifulMessage(event, "this playlist has already been created before");
@@ -43,7 +40,7 @@ public class PlaylistCommand extends Command {
         } else if (argStrings[1].equals("delete")) {
             if (argStrings.length == 3) {
                 String result;
-                result = PlaylistManager.deletePlaylist(argStrings[2]) ? "deleted playlist " + argStrings[2] : "playlist " + argStrings[2] + " not found";
+                result = PlaylistTable.deletePlaylist(argStrings[2]) == 1? "deleted playlist " + argStrings[2] : "playlist " + argStrings[2] + " not found";
                 sendBeautifulMessage(event, result);
             }
         } else if (argStrings[1].equals("load")) {
@@ -92,7 +89,9 @@ public class PlaylistCommand extends Command {
                 Commands.player.fetchAudioTrack(event.getTextChannel(), search, new AudioLoadResultHandler() {
                     @Override
                     public void trackLoaded(AudioTrack track) {
-                        if (PlaylistManager.addToPlaylist(argStrings[2], track)) {
+                        if(!SongTable.hasSong(track.getInfo().uri)) SongTable.insertSong(new Song(track.getInfo().title,track.getInfo().uri));
+                        Song song = SongTable.getSongsByUrl(track.getInfo().uri).get(0);
+                        if (SongPlaylistTable.insertSongIntoPlaylist(song, PlaylistTable.getPlaylist(argStrings[2])) != 0) {
                             sendBeautifulMessage(event, "added \"" + track.getInfo().title + "\" to playlist " + argStrings[2]);
                         } else {
                             sendBeautifulMessage(event, "there is no playlist " + argStrings[2]);
@@ -101,9 +100,10 @@ public class PlaylistCommand extends Command {
 
                     @Override
                     public void playlistLoaded(AudioPlaylist playlist) {
-                        AudioTrack firstTrack = playlist.getTracks().get(0);
-                        if (PlaylistManager.addToPlaylist(argStrings[2], firstTrack)) {
-                            sendBeautifulMessage(event, "added \"" + firstTrack.getInfo().title + "\" to playlist " + argStrings[2]);
+                        if(!SongTable.hasSong(playlist.getTracks().get(0).getInfo().uri)) SongTable.insertSong(new Song(playlist.getTracks().get(0).getInfo().title,playlist.getTracks().get(0).getInfo().uri));
+                        Song song = SongTable.getSongsByUrl(playlist.getTracks().get(0).getInfo().uri).get(0);
+                        if (SongPlaylistTable.insertSongIntoPlaylist(song, PlaylistTable.getPlaylist(argStrings[2])) != 0) {
+                            sendBeautifulMessage(event, "added \"" + song.getTitle() + "\" to playlist " + argStrings[2]);
                         } else {
                             sendBeautifulMessage(event, "there is no playlist " + argStrings[2]);
                         }

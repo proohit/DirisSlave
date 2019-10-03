@@ -64,4 +64,31 @@ public class SongTable {
         }
         return result;
     }
+
+    public static List<Song> getSongsByUrl(String url) {
+        ArrayList<Song> result = new ArrayList<>();
+        try {
+            Connection con = DBManager.getConnection();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM songs WHERE url=\'" + url + "\'");
+            while (rs.next()) {
+                result.add(new Song(rs.getInt("id"), rs.getString("title"), rs.getString("url")));
+            }
+        } catch (SQLException e) {
+
+        }
+        return result;
+    }
+
+    public static boolean hasSong(String uri) {
+        try {
+            Connection con = DBManager.getConnection();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM songs WHERE url=\'" + uri + "\'");
+            if(rs.next()) return true;
+        } catch (SQLException e) {
+
+        }
+        return false;
+    }
 }

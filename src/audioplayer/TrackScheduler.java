@@ -52,7 +52,6 @@ public class TrackScheduler extends AudioEventAdapter {
         } else {
             SongHistoryTable.updateTimestamp(song);
         }
-//        PlaylistManager.writeHistoryItem(track.getInfo().title + "-/-" + track.getInfo().uri);
         if (!player.startTrack(track, true)) {
             queue.offer(track);
         } else {

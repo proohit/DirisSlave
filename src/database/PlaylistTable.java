@@ -15,12 +15,49 @@ public class PlaylistTable {
         try {
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM playlist");
-            while(rs.next()) {
+            while (rs.next()) {
                 playlists.add(new Playlist(rs.getString("name")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return playlists;
+    }
+
+    public static int deletePlaylist(String playlist) {
+        try {
+            Connection con = DBManager.getConnection();
+            Statement stmt = con.createStatement();
+            return stmt.executeUpdate("DELETE FROM playlist WHERE name='" + playlist + "'");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static int createPlaylist(String name) {
+        try {
+            Connection con = DBManager.getConnection();
+            Statement stmt = con.createStatement();
+            return stmt.executeUpdate("INSERT INTO playlist(name) VALUES('" + name + "')");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static Playlist getPlaylist(String name) {
+        Playlist playlist;
+        try {
+            Connection con = DBManager.getConnection();
+            Statement stmt = con.createStatement();
+            ResultSet rs=stmt.executeQuery("SELECT * FROM playlist WHERE name='"+name+"'");
+            if(rs.next()) return new Playlist(rs.getString("name"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
