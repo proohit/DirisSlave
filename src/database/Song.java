@@ -3,11 +3,18 @@ package database;
 public class Song {
 
     private int id;
-
-
-
     private String title;
     private String url;
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    private String timestamp;
 
     public Song(int id, String title, String url) {
         this.id = id;
@@ -15,10 +22,18 @@ public class Song {
         this.url = url;
     }
 
+    public Song(int id, String title, String url, String timestamp) {
+        this.id = id;
+        this.title = title;
+        this.url = url;
+        this.timestamp = timestamp;
+    }
+
     public Song(String title, String url) {
         this.title = title;
         this.url = url;
     }
+
     public String getTitle() {
         return title;
     }
@@ -34,6 +49,7 @@ public class Song {
     public void setTitle(String title) {
         this.title = title;
     }
+
     public int getId() {
         return id;
     }
@@ -42,4 +58,7 @@ public class Song {
         this.id = id;
     }
 
+    public String toString() {
+        return timestamp == null?id + " " + title + " " + url:id + " " + title + " " + url + " " + timestamp;
+    }
 }

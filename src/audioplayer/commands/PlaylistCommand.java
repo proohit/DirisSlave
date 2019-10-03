@@ -6,6 +6,10 @@ import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import database.Playlist;
+import database.PlaylistTable;
+import database.Song;
+import database.SongPlaylistTable;
 import main.Commands;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.Command;
@@ -53,26 +57,25 @@ public class PlaylistCommand extends Command {
             }
         } else if (argStrings[1].equals("list")) {
             if (argStrings.length == 2) {
-                ArrayList<String> playlists = PlaylistManager.getPlaylists();
+                ArrayList<Playlist> playlists = (ArrayList) PlaylistTable.getPlaylists();
                 if (playlists.size() == 0) {
                     sendBeautifulMessage(event, "no playlists found");
                     return;
                 }
                 StringBuilder result = new StringBuilder("saved playlists: \n");
-                for (String playlist : playlists) {
-                    result.append(playlist).append("\n");
-                }
+                playlists.stream().forEach(playlist -> result.append(playlist.getName()).append("\n"));
                 sendBeautifulMessage(event, result.toString());
             } else if (argStrings.length == 3) {
-                ArrayList<PlaylistManager.Song> playlist = PlaylistManager.getSongsOfPlaylist(argStrings[2]);
+                ArrayList<Song> playlist = (ArrayList) SongPlaylistTable.getSongsByPlaylist(argStrings[2]);
                 if (playlist.size() == 0) {
                     sendBeautifulMessage(event, "no such playlist or no songs found for " + argStrings[2]);
                     return;
                 }
                 StringBuilder result = new StringBuilder("songs of playlist " + argStrings[2] + ":\n");
-                for(int i = 1;i<=playlist.size();i++) {
-                    result.append(i + " ").append(playlist.get(i-1).getTitle()).append("\n");
-                }
+                playlist.stream().forEach(song -> result.append(song.toString()).append("\n"));
+//                for(int i = 1;i<=playlist.size();i++) {
+//                    result.append(i + " ").append(playlist.get(i-1).getTitle()).append("\n");
+//                }
                 sendBeautifulMessage(event, result.toString());
             }
         } else if (argStrings[1].equals("savehistory")) {

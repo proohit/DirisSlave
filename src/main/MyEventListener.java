@@ -12,14 +12,11 @@ import weatherservice.WeatherWatcher;
 public class MyEventListener extends ListenerAdapter {
 	Commands commander;
 	public MyEventListener(JDA jda) {
-//		commander = new Commands();
+		commander = new Commands();
 //		youtubewatcher.YoutubeWatcher.start(jda);
 //		WeatherWatcher.start(jda);
 		DBManager.connect();
-		SongPlaylistTable.getSongsByPlaylist("TestPlaylist").stream().forEach(song -> System.out.println(song.getTitle()));
-		Song song = new Song("testSong des neue","https://www.youtube.com/watch?v=1adgadg35");
-		SongTable.insertSong(song);
-		SongTable.getAllSongs().stream().forEach(lied -> System.out.println(lied.getTitle()));
+
 	}
 
 	@Override

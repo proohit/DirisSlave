@@ -5,6 +5,9 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
+import database.Song;
+import database.SongHistoryTable;
+import database.SongTable;
 import main.Main;
 import net.dv8tion.jda.api.managers.AudioManager;
 
@@ -39,7 +42,17 @@ public class TrackScheduler extends AudioEventAdapter {
         // Calling startTrack with the noInterrupt set to true will start the track only if nothing is currently playing. If
         // something is playing, it returns false and does nothing. In that case the player was already playing so this
         // track goes to the queue instead.
-        PlaylistManager.writeHistoryItem(track.getInfo().title + "-/-" + track.getInfo().uri);
+        Song song;
+        if(SongTable.getSongsByTitle(track.getInfo().title).size() == 0) {
+            SongTable.insertSong(new Song(track.getInfo().title,track.getInfo().uri));
+        }
+        song = SongTable.getSongsByTitle(track.getInfo().title).get(0);
+        if(!SongHistoryTable.hasEntry(song)) {
+            SongHistoryTable.insertHistoryItem(song);
+        } else {
+            SongHistoryTable.updateTimestamp(song);
+        }
+//        PlaylistManager.writeHistoryItem(track.getInfo().title + "-/-" + track.getInfo().uri);
         if (!player.startTrack(track, true)) {
             queue.offer(track);
         } else {

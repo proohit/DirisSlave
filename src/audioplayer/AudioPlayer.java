@@ -7,6 +7,8 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import database.Song;
+import database.SongPlaylistTable;
 import main.Commands;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -68,11 +70,12 @@ public class AudioPlayer {
     public boolean playPlaylist(final TextChannel channel, final String playlist) {
         lastManager = channel.getGuild().getAudioManager();
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
-        ArrayList<PlaylistManager.Song> songs = PlaylistManager.getSongsOfPlaylist(playlist);
+
+        ArrayList<Song> songs = (ArrayList<Song>) SongPlaylistTable.getSongsByPlaylist(playlist);
         if(songs.size() == 0) {
             return false;
         }
-        for (PlaylistManager.Song song : songs) {
+        for (Song song : songs) {
             playerManager.loadItemOrdered(musicManager, song.getUrl(), new AudioLoadResultHandler() {
                 @Override
                 public void trackLoaded(AudioTrack track) {

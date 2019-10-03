@@ -49,4 +49,19 @@ public class SongTable {
             e.printStackTrace();
         }
     }
+
+    public static List<Song> getSongsByTitle(String title) {
+        ArrayList<Song> result = new ArrayList<>();
+        try {
+            Connection con = DBManager.getConnection();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM songs WHERE title=\'" + title + "\'");
+            while (rs.next()) {
+                result.add(new Song(rs.getInt("id"), rs.getString("title"), rs.getString("url")));
+            }
+        } catch (SQLException e) {
+
+        }
+        return result;
+    }
 }
