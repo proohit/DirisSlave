@@ -43,10 +43,10 @@ public class TrackScheduler extends AudioEventAdapter {
         // something is playing, it returns false and does nothing. In that case the player was already playing so this
         // track goes to the queue instead.
         Song song;
-        if(SongTable.getSongsByTitle(track.getInfo().title).size() == 0) {
+        if(SongTable.getSongsByUrl(track.getInfo().uri).size() == 0) {
             SongTable.insertSong(new Song(track.getInfo().title,track.getInfo().uri));
         }
-        song = SongTable.getSongsByTitle(track.getInfo().title).get(0);
+        song = SongTable.getSongsByUrl(track.getInfo().uri).get(0);
         if(!SongHistoryTable.hasEntry(song)) {
             SongHistoryTable.insertHistoryItem(song);
         } else {

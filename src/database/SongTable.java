@@ -42,7 +42,7 @@ public class SongTable {
         try {
             Connection con = DBManager.getConnection();
             Statement stmt = con.createStatement();
-            stmt.executeUpdate("INSERT INTO songs(title,url) VALUES('" + song.getTitle() + "','" + song.getUrl() + "');", Statement.RETURN_GENERATED_KEYS);
+            stmt.executeUpdate("INSERT INTO songs(title,url) VALUES('" + song.getTitle().replace("'","''") + "','" + song.getUrl() + "')", Statement.RETURN_GENERATED_KEYS);
             ResultSet key = stmt.getGeneratedKeys();
             if (key.next()) song.setId(key.getInt(1));
         } catch (SQLException e) {

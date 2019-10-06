@@ -23,7 +23,20 @@ public class SongPlaylistTable {
         }
         return result;
     }
+    public static Playlist getPlaylistByName(String name) {
+        Playlist playlist = new Playlist(name);
+        try {
+            Connection con = DBManager.getConnection();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM playlist_songs WHERE playlistname ='" + name + "';");
+            while(rs.next()) {
+                playlist.addSong(SongTable.getSongById(rs.getInt("songid")));
+            }
+        } catch (SQLException e) {
 
+        }
+        return playlist;
+    }
     public static int insertSongIntoPlaylist(Song song, Playlist playlist) {
         try {
             Connection con = DBManager.getConnection();
@@ -33,5 +46,29 @@ public class SongPlaylistTable {
 
         }
         return 0;
+    }
+
+    public static int removeSongFromPlaylist(String playlist, Song song) {
+        try {
+            Connection con = DBManager.getConnection();
+            Statement stmt = con.createStatement();
+            return stmt.executeUpdate("DELETE FROM playlist_songs WHERE songid=" + song.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static Song getSongOfPlaylistByIndex(int index) {
+        Song song = null;
+        try {
+            Connection con = DBManager.getConnection();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM playlist_songs WHERE songplaylistid=" + index);
+            if(rs.next()) song = SongTable.getSongById(rs.getInt("songid"));
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return song;
     }
 }

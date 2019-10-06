@@ -63,16 +63,15 @@ public class PlaylistCommand extends Command {
                 playlists.stream().forEach(playlist -> result.append(playlist.getName()).append("\n"));
                 sendBeautifulMessage(event, result.toString());
             } else if (argStrings.length == 3) {
-                ArrayList<Song> playlist = (ArrayList) SongPlaylistTable.getSongsByPlaylist(argStrings[2]);
-                if (playlist.size() == 0) {
+                Playlist playlist = SongPlaylistTable.getPlaylistByName(argStrings[2]);
+                if (playlist.getSongs().size() == 0) {
                     sendBeautifulMessage(event, "no such playlist or no songs found for " + argStrings[2]);
                     return;
                 }
                 StringBuilder result = new StringBuilder("songs of playlist " + argStrings[2] + ":\n");
-                playlist.stream().forEach(song -> result.append(song.toString()).append("\n"));
-//                for(int i = 1;i<=playlist.size();i++) {
-//                    result.append(i + " ").append(playlist.get(i-1).getTitle()).append("\n");
-//                }
+                for(int i = 1;i<=playlist.getSongs().size();i++) {
+                    result.append(i + " ").append(playlist.getSongs().get(i-1).getTitle()).append("\n");
+                }
                 sendBeautifulMessage(event, result.toString());
             }
         } else if (argStrings[1].equals("savehistory")) {
@@ -91,7 +90,7 @@ public class PlaylistCommand extends Command {
                     public void trackLoaded(AudioTrack track) {
                         if(!SongTable.hasSong(track.getInfo().uri)) SongTable.insertSong(new Song(track.getInfo().title,track.getInfo().uri));
                         Song song = SongTable.getSongsByUrl(track.getInfo().uri).get(0);
-                        if (SongPlaylistTable.insertSongIntoPlaylist(song, PlaylistTable.getPlaylist(argStrings[2])) != 0) {
+                        if (SongPlaylistTable.insertSongIntoPlaylist(song, SongPlaylistTable.getPlaylistByName(argStrings[2])) != 0) {
                             sendBeautifulMessage(event, "added \"" + track.getInfo().title + "\" to playlist " + argStrings[2]);
                         } else {
                             sendBeautifulMessage(event, "there is no playlist " + argStrings[2]);
@@ -122,9 +121,11 @@ public class PlaylistCommand extends Command {
             }
         } else if(argStrings[1].equals("remove")) {
             if(argStrings.length == 4) {
-                PlaylistManager.Song deletedSong = PlaylistManager.removeFromPlaylist(argStrings[2], Integer.parseInt(argStrings[3]));
-                if(deletedSong!=null) {
-                    sendBeautifulMessage(event, "deleted " + deletedSong.getTitle() + " from " + argStrings[2]);
+                Song song = SongPlaylistTable.getPlaylistByName(argStrings[2]).getSongs().get(Integer.parseInt(argStrings[3])-1);
+                if(song!=null) {
+                    if(SongPlaylistTable.removeSongFromPlaylist(argStrings[2], song) != 0) {
+                        sendBeautifulMessage(event, "deleted " + song.getTitle() + " from " + argStrings[2]);
+                    }
                 } else {
                     sendBeautifulMessage(event, "playlist or song not found.");
                 }
