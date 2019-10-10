@@ -20,11 +20,12 @@ public class Commands {
 
     //TODO ändern in HashMap<util.Command, String>
     public static ArrayList<util.Command> permissions = new ArrayList<>();
-//    public static HashMap<util.Command, String> permissions = new HashMap<>();
+    //    public static HashMap<util.Command, String> permissions = new HashMap<>();
     public static AudioPlayer player;
 
     public Commands() {
         player = new AudioPlayer();
+
         //TODO für jeden command ändern in put(command Objekt, command Objekt.getCommand())
         permissions.add(new PlayCommand());
         permissions.add(new PlaylistCommand());
@@ -63,7 +64,7 @@ public class Commands {
 
         boolean isAllowed = false;
         Command currentCommand = permissions.stream().filter(command -> command.getCommand().equals(inputCommand)).findFirst().get();
-        if(currentCommand.getPermission().equals("everyone")) return true;
+        if (currentCommand.getPermission().equals("everyone")) return true;
         for (Role role : member.getRoles()) {
             if (role.getName().equals(currentCommand.getPermission()))
                 isAllowed = true;
@@ -81,9 +82,8 @@ public class Commands {
             //check if user is allowed to type command
             if (!isAllowed(event.getMember(), insertedCommand.getCommand()))
                 return;
-            //TODO switch ersetzen durch filter auf zukünftige Map voller Commands -> wenn command gefunden, dann handle
             insertedCommand.handle(event, argStrings);
-        } catch(NoSuchElementException e) {
+        } catch (NoSuchElementException e) {
         }
     }
 
@@ -98,6 +98,7 @@ public class Commands {
     public static void sendBeautifulMessage(MessageReceivedEvent event, String text) {
         event.getChannel().sendMessage("```" + text + "```").queue();
     }
+
     public static void sendBeautifulMessage(TextChannel channel, String text) {
         channel.sendMessage("```" + text + "```").queue();
     }
