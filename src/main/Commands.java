@@ -7,10 +7,7 @@ import imageboards.*;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.Command;
-import util.commands.ClearCommand;
-import util.commands.HelpCommand;
-import util.commands.RecipeCommand;
-import util.commands.StatsCommand;
+import util.commands.*;
 import weatherservice.WeatherCommand;
 import youtubewatcher.commands.YtWatcherCommand;
 
@@ -51,6 +48,7 @@ public class Commands {
         permissions.add(new ClearCommand());
         permissions.add(new RecipeCommand());
         permissions.add(new HelpCommand());
+        permissions.add(new RestartCommand());
         permissions.add(new StatsCommand());
         permissions.add(new LizardCommand());
         permissions.add(new WeatherCommand());
