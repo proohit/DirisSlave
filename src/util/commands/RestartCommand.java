@@ -18,7 +18,7 @@ public class RestartCommand extends Command {
         if (argStrings.length >= 1) {
             try {
                 Process process = Runtime.getRuntime().exec("supervisorctl restart discordbot");
-
+                System.exit(0);
             } catch (IOException e) {
                 e.printStackTrace();
             }
