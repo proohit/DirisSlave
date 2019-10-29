@@ -9,7 +9,6 @@ import database.Song;
 import database.SongHistoryTable;
 import database.SongTable;
 import main.Main;
-import net.dv8tion.jda.api.managers.AudioManager;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,6 +24,7 @@ public class TrackScheduler extends AudioEventAdapter {
     private final AudioPlayer player;
     private final BlockingQueue<AudioTrack> queue;
     private boolean isRepeat = false;
+
     /**
      * @param player The audio player this scheduler uses
      */
@@ -43,15 +43,11 @@ public class TrackScheduler extends AudioEventAdapter {
         // something is playing, it returns false and does nothing. In that case the player was already playing so this
         // track goes to the queue instead.
         Song song;
-        if(SongTable.getSongsByUrl(track.getInfo().uri).size() == 0) {
-            SongTable.insertSong(new Song(track.getInfo().title,track.getInfo().uri));
+        if (SongTable.getSongsByUrl(track.getInfo().uri).size() == 0) {
+            SongTable.insertSong(new Song(track.getInfo().title, track.getInfo().uri));
         }
         song = SongTable.getSongsByUrl(track.getInfo().uri).get(0);
-        if(!SongHistoryTable.hasEntry(song)) {
-            SongHistoryTable.insertHistoryItem(song);
-        } else {
-            SongHistoryTable.updateTimestamp(song);
-        }
+        SongHistoryTable.insertHistoryItem(song);
         if (!player.startTrack(track, true)) {
             queue.offer(track);
         } else {
@@ -65,7 +61,7 @@ public class TrackScheduler extends AudioEventAdapter {
     public void nextTrack() {
         // Start the next track, regardless of if something is already playing or not. In case queue was empty, we are
         // giving null to startTrack, which is a valid argument and will simply stop the player.
-        if(isRepeat) {
+        if (isRepeat) {
             queue(player.getPlayingTrack());
         }
         AudioTrack nextTrack = queue.poll();
@@ -77,20 +73,23 @@ public class TrackScheduler extends AudioEventAdapter {
             player.startTrack(nextTrack.makeClone(), false);
         }
     }
+
     public long seek(int seconds) {
         if (player.getPlayingTrack() == null) return 0;
-            player.getPlayingTrack().setPosition(player.getPlayingTrack().getPosition()+seconds * 1000);
-            return player.getPlayingTrack().getPosition();
+        player.getPlayingTrack().setPosition(player.getPlayingTrack().getPosition() + seconds * 1000);
+        return player.getPlayingTrack().getPosition();
     }
+
     public void jumpto(int seconds) {
-        if(player.getPlayingTrack() == null) return;
-        player.getPlayingTrack().setPosition(seconds*1000);
+        if (player.getPlayingTrack() == null) return;
+        player.getPlayingTrack().setPosition(seconds * 1000);
     }
 
     public boolean setRepeat(boolean isRepeat) {
         this.isRepeat = isRepeat;
         return isRepeat;
     }
+
     public Stream<AudioTrack> getQueue() {
         return queue.stream();
     }
@@ -111,21 +110,24 @@ public class TrackScheduler extends AudioEventAdapter {
         }
         return true;
     }
+
     public void pause() {
-        if(!player.isPaused() && player.getPlayingTrack() != null) {
+        if (!player.isPaused() && player.getPlayingTrack() != null) {
             player.setPaused(true);
         }
     }
+
     public void resume() {
-        if(player.isPaused() && player.getPlayingTrack() != null) {
+        if (player.isPaused() && player.getPlayingTrack() != null) {
             player.setPaused(false);
         }
     }
+
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         // Only start the next track if the end reason is suitable for it (FINISHED or LOAD_FAILED)
         if (endReason.mayStartNext) {
-            if(isRepeat) queue(track.makeClone());
+            if (isRepeat) queue(track.makeClone());
             nextTrack();
         }
     }

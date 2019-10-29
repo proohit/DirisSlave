@@ -11,9 +11,9 @@ public class Main {
 
     public static void main(String[] args) throws LoginException {
         jda = new JDABuilder(AccountType.BOT)
-                .setToken("NTY2NjIwMzc0OTA1OTEzMzU1.XLHr9A.zOoMFpoibt2lyzkNXl9PLNqNC1o").build();
+                .setToken("//").build();
         jda.addEventListener(new MyEventListener(jda));
-
+        jda.getTextChannelById("544815528179531776").sendMessage("starting the engine...").queue();
     }
 
 }

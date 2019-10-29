@@ -11,7 +11,9 @@ public class PlaylistTable {
 
     public static List<Playlist> getPlaylists() {
         ArrayList<Playlist> playlists = new ArrayList<>();
-        Connection con = DBManager.getConnection();
+
+        Connection con = DBManager.connected()?DBManager.getConnection():DBManager.connect();
+
         try {
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM playlist");
@@ -19,45 +21,47 @@ public class PlaylistTable {
                 playlists.add(new Playlist(rs.getString("name")));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            if(!DBManager.connected()) DBManager.connect();
+            e.printStackTrace();        }
         return playlists;
     }
 
     public static int deletePlaylist(String playlist) {
         try {
-            Connection con = DBManager.getConnection();
+            Connection con = DBManager.connected()?DBManager.getConnection():DBManager.connect();
             Statement stmt = con.createStatement();
             return stmt.executeUpdate("DELETE FROM playlist WHERE name='" + playlist + "'");
 
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            if(!DBManager.connected()) DBManager.connect();
+            e.printStackTrace();        }
         return 0;
     }
 
     public static int createPlaylist(String name) {
         try {
-            Connection con = DBManager.getConnection();
+            Connection con = DBManager.connected()?DBManager.getConnection():DBManager.connect();
+
             Statement stmt = con.createStatement();
             return stmt.executeUpdate("INSERT INTO playlist(name) VALUES('" + name + "')");
 
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            if(!DBManager.connected()) DBManager.connect();
+            e.printStackTrace();        }
         return 0;
     }
 
     public static Playlist getPlaylist(String name) {
         Playlist playlist;
         try {
-            Connection con = DBManager.getConnection();
+            Connection con = DBManager.connected()?DBManager.getConnection():DBManager.connect();
+
             Statement stmt = con.createStatement();
             ResultSet rs=stmt.executeQuery("SELECT * FROM playlist WHERE name='"+name+"'");
             if(rs.next()) return new Playlist(rs.getString("name"));
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            if(!DBManager.connected()) DBManager.connect();
+            e.printStackTrace();        }
         return null;
     }
 }

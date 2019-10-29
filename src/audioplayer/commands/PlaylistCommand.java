@@ -25,13 +25,13 @@ public class PlaylistCommand extends Command {
 
     @Override
     public void handle(MessageReceivedEvent event, String[] argStrings) {
-        if(argStrings.length <= 1) {
+        if (argStrings.length <= 1) {
             main.Commands.sendMessage(event, getHelp());
             return;
         }
         if (argStrings[1].equals("create")) {
             if (argStrings.length == 3) {
-                if (PlaylistTable.createPlaylist(argStrings[2])==1) {
+                if (PlaylistTable.createPlaylist(argStrings[2]) == 1) {
                     main.Commands.sendBeautifulMessage(event, "playlist " + argStrings[2] + " created.");
                 } else {
                     main.Commands.sendBeautifulMessage(event, "this playlist has already been created before");
@@ -40,7 +40,7 @@ public class PlaylistCommand extends Command {
         } else if (argStrings[1].equals("delete")) {
             if (argStrings.length == 3) {
                 String result;
-                result = PlaylistTable.deletePlaylist(argStrings[2]) == 1? "deleted playlist " + argStrings[2] : "playlist " + argStrings[2] + " not found";
+                result = PlaylistTable.deletePlaylist(argStrings[2]) == 1 ? "deleted playlist " + argStrings[2] : "playlist " + argStrings[2] + " not found";
                 sendBeautifulMessage(event, result);
             }
         } else if (argStrings[1].equals("load")) {
@@ -69,15 +69,25 @@ public class PlaylistCommand extends Command {
                     return;
                 }
                 StringBuilder result = new StringBuilder("songs of playlist " + argStrings[2] + ":\n");
-                for(int i = 1;i<=playlist.getSongs().size();i++) {
-                    result.append(i + " ").append(playlist.getSongs().get(i-1).getTitle()).append("\n");
+                for (int i = 1; i <= playlist.getSongs().size(); i++) {
+                    result.append(i + " ").append(playlist.getSongs().get(i - 1).getTitle()).append("\n");
                 }
                 sendBeautifulMessage(event, result.toString());
             }
         } else if (argStrings[1].equals("savehistory")) {
-            if (argStrings.length >= 3) {
-                PlaylistManager.savePlaylistFromHistory(argStrings[2]);
-                sendBeautifulMessage(event, "saved playlist " + argStrings[2]);
+            if (argStrings.length >= 2) {
+                if (PlaylistTable.getPlaylist(argStrings[2]) != null) {
+                    sendBeautifulMessage(event, "playlistname already exists");
+                    return;
+                } else {
+                    PlaylistTable.createPlaylist(argStrings[2]);
+                    final Playlist playlist = PlaylistTable.getPlaylist(argStrings[2]);
+                    SongHistoryTable.getLastSongs().forEach((id, song) -> {
+                        SongPlaylistTable.insertSongIntoPlaylist(song, playlist);
+                    });
+                    sendBeautifulMessage(event, "saved playlist " + argStrings[2]);
+
+                }
             }
         } else if (argStrings[1].equals("addto")) {
             if (argStrings.length >= 4) {
@@ -88,7 +98,8 @@ public class PlaylistCommand extends Command {
                 Commands.player.fetchAudioTrack(event.getTextChannel(), search, new AudioLoadResultHandler() {
                     @Override
                     public void trackLoaded(AudioTrack track) {
-                        if(!SongTable.hasSong(track.getInfo().uri)) SongTable.insertSong(new Song(track.getInfo().title,track.getInfo().uri));
+                        if (!SongTable.hasSong(track.getInfo().uri))
+                            SongTable.insertSong(new Song(track.getInfo().title, track.getInfo().uri));
                         Song song = SongTable.getSongsByUrl(track.getInfo().uri).get(0);
                         if (SongPlaylistTable.insertSongIntoPlaylist(song, SongPlaylistTable.getPlaylistByName(argStrings[2])) != 0) {
                             sendBeautifulMessage(event, "added \"" + track.getInfo().title + "\" to playlist " + argStrings[2]);
@@ -99,7 +110,8 @@ public class PlaylistCommand extends Command {
 
                     @Override
                     public void playlistLoaded(AudioPlaylist playlist) {
-                        if(!SongTable.hasSong(playlist.getTracks().get(0).getInfo().uri)) SongTable.insertSong(new Song(playlist.getTracks().get(0).getInfo().title,playlist.getTracks().get(0).getInfo().uri));
+                        if (!SongTable.hasSong(playlist.getTracks().get(0).getInfo().uri))
+                            SongTable.insertSong(new Song(playlist.getTracks().get(0).getInfo().title, playlist.getTracks().get(0).getInfo().uri));
                         Song song = SongTable.getSongsByUrl(playlist.getTracks().get(0).getInfo().uri).get(0);
                         if (SongPlaylistTable.insertSongIntoPlaylist(song, PlaylistTable.getPlaylist(argStrings[2])) != 0) {
                             sendBeautifulMessage(event, "added \"" + song.getTitle() + "\" to playlist " + argStrings[2]);
@@ -119,11 +131,11 @@ public class PlaylistCommand extends Command {
                     }
                 });
             }
-        } else if(argStrings[1].equals("remove")) {
-            if(argStrings.length == 4) {
-                Song song = SongPlaylistTable.getPlaylistByName(argStrings[2]).getSongs().get(Integer.parseInt(argStrings[3])-1);
-                if(song!=null) {
-                    if(SongPlaylistTable.removeSongFromPlaylist(argStrings[2], song) != 0) {
+        } else if (argStrings[1].equals("remove")) {
+            if (argStrings.length == 4) {
+                Song song = SongPlaylistTable.getPlaylistByName(argStrings[2]).getSongs().get(Integer.parseInt(argStrings[3]) - 1);
+                if (song != null) {
+                    if (SongPlaylistTable.removeSongFromPlaylist(argStrings[2], song) != 0) {
                         sendBeautifulMessage(event, "deleted " + song.getTitle() + " from " + argStrings[2]);
                     }
                 } else {
