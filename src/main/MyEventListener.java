@@ -1,15 +1,10 @@
 package main;
 
 import database.DBManager;
-import database.Song;
-import database.SongPlaylistTable;
-import database.SongTable;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import weatherservice.WeatherWatcher;
-
-import java.sql.SQLException;
 
 public class MyEventListener extends ListenerAdapter {
 	Commands commander;

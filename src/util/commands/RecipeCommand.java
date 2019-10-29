@@ -2,9 +2,9 @@ package util.commands;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import util.UrlHandler;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.Command;
+import util.UrlHandler;
 
 public class RecipeCommand extends Command {
     public RecipeCommand() {

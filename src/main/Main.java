@@ -10,6 +10,7 @@ public class Main {
     public static JDA jda;
 
     public static void main(String[] args) throws LoginException {
+        //insert bot token here
         jda = new JDABuilder(AccountType.BOT)
                 .setToken("//").build();
         jda.addEventListener(new MyEventListener(jda));

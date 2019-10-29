@@ -1,12 +1,10 @@
 package audioplayer.commands;
 
-import audioplayer.PlaylistManager;
 import database.Song;
 import database.SongHistoryTable;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.Command;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 

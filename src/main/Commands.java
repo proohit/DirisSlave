@@ -1,17 +1,20 @@
 package main;
 
-import audioplayer.*;
+import audioplayer.AudioPlayer;
 import audioplayer.commands.*;
 import calculator.CalculatorCommand;
 import imageboards.*;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.Command;
 import util.commands.*;
 import weatherservice.WeatherCommand;
 import youtubewatcher.commands.YtWatcherCommand;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 public class Commands {
 
