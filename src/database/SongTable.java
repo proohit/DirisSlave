@@ -12,7 +12,7 @@ public class SongTable {
     public static Song getSongById(int id) {
 
         try {
-            Connection con = DBManager.connected()?DBManager.getConnection():DBManager.connect();
+            Connection con = DBManager.connect();
 
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM songs WHERE id =" + id + ";");
@@ -27,7 +27,7 @@ public class SongTable {
     public static List<Song> getAllSongs() {
         ArrayList<Song> result = new ArrayList<>();
         try {
-            Connection con = DBManager.connected()?DBManager.getConnection():DBManager.connect();
+            Connection con = DBManager.connect();
 
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM songs;");
@@ -44,7 +44,7 @@ public class SongTable {
 
     public static void insertSong(Song song) {
         try {
-            Connection con = DBManager.connected()?DBManager.getConnection():DBManager.connect();
+            Connection con = DBManager.connect();
 
             Statement stmt = con.createStatement();
             stmt.executeUpdate("INSERT INTO songs(title,url) VALUES('" + song.getTitle().replace("'","''") + "','" + song.getUrl() + "')", Statement.RETURN_GENERATED_KEYS);
@@ -58,7 +58,7 @@ public class SongTable {
     public static List<Song> getSongsByTitle(String title) {
         ArrayList<Song> result = new ArrayList<>();
         try {
-            Connection con = DBManager.connected()?DBManager.getConnection():DBManager.connect();
+            Connection con = DBManager.connect();
 
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM songs WHERE title=\'" + title + "\'");
@@ -75,7 +75,7 @@ public class SongTable {
     public static List<Song> getSongsByUrl(String url) {
         ArrayList<Song> result = new ArrayList<>();
         try {
-            Connection con = DBManager.connected()?DBManager.getConnection():DBManager.connect();
+            Connection con = DBManager.connect();
 
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM songs WHERE url=\'" + url + "\'");
@@ -91,7 +91,7 @@ public class SongTable {
 
     public static boolean hasSong(String uri) {
         try {
-            Connection con = DBManager.connected()?DBManager.getConnection():DBManager.connect();
+            Connection con = DBManager.connect();
 
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM songs WHERE url=\'" + uri + "\'");

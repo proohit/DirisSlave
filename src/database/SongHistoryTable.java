@@ -13,7 +13,7 @@ public class SongHistoryTable {
         Map<Integer, Song> songs = new HashMap<>();
 
         try {
-            Connection con = DBManager.connected()?DBManager.getConnection():DBManager.connect();
+            Connection con = DBManager.connect();
 
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM Song_history order by timestamp desc LIMIT 10");
@@ -31,7 +31,7 @@ public class SongHistoryTable {
 
     public static void insertHistoryItem(Song song) {
         try {
-            Connection con = DBManager.connected()?DBManager.getConnection():DBManager.connect();
+            Connection con = DBManager.connect();
 
             Statement stmt = con.createStatement();
             stmt.executeUpdate("INSERT INTO Song_history(songId) VALUES (" + song.getId() + ")");
@@ -44,7 +44,7 @@ public class SongHistoryTable {
     public static boolean hasEntry(Song song) {
         boolean hasEntry = false;
         try {
-            Connection con = DBManager.connected()?DBManager.getConnection():DBManager.connect();
+            Connection con = DBManager.connect();
 
             Statement stmt = con.createStatement();
             if(stmt.executeQuery("SELECT * FROM Song_history where songId=" + song.getId()).next()) hasEntry = true;
@@ -56,7 +56,7 @@ public class SongHistoryTable {
     }
     public static void updateTimestamp(Song song) {
         try {
-            Connection con = DBManager.connected()?DBManager.getConnection():DBManager.connect();
+            Connection con = DBManager.connect();
 
             Statement stmt = con.createStatement();
             stmt.executeUpdate("UPDATE Song_history set timestamp = CURRENT_TIMESTAMP WHERE songId=" + song.getId());

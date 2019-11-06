@@ -12,7 +12,7 @@ public class PlaylistTable {
     public static List<Playlist> getPlaylists() {
         ArrayList<Playlist> playlists = new ArrayList<>();
 
-        Connection con = DBManager.connected()?DBManager.getConnection():DBManager.connect();
+        Connection con = DBManager.connect();
 
         try {
             Statement stmt = con.createStatement();
@@ -28,7 +28,7 @@ public class PlaylistTable {
 
     public static int deletePlaylist(String playlist) {
         try {
-            Connection con = DBManager.connected()?DBManager.getConnection():DBManager.connect();
+            Connection con = DBManager.connect();
             Statement stmt = con.createStatement();
             return stmt.executeUpdate("DELETE FROM playlist WHERE name='" + playlist + "'");
 
@@ -40,7 +40,7 @@ public class PlaylistTable {
 
     public static int createPlaylist(String name) {
         try {
-            Connection con = DBManager.connected()?DBManager.getConnection():DBManager.connect();
+            Connection con = DBManager.connect();
 
             Statement stmt = con.createStatement();
             return stmt.executeUpdate("INSERT INTO playlist(name) VALUES('" + name + "')");
@@ -54,7 +54,7 @@ public class PlaylistTable {
     public static Playlist getPlaylist(String name) {
         Playlist playlist;
         try {
-            Connection con = DBManager.connected()?DBManager.getConnection():DBManager.connect();
+            Connection con = DBManager.connect();
 
             Statement stmt = con.createStatement();
             ResultSet rs=stmt.executeQuery("SELECT * FROM playlist WHERE name='"+name+"'");

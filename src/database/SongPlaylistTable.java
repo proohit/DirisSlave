@@ -12,7 +12,7 @@ public class SongPlaylistTable {
     public static List<Song> getSongsByPlaylist(String playlist) {
         ArrayList<Song> result = new ArrayList<>();
         try {
-            Connection con = DBManager.connected()?DBManager.getConnection():DBManager.connect();
+            Connection con = DBManager.connect();
 
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM playlist_songs WHERE playlistname ='" + playlist + "';");
@@ -28,7 +28,7 @@ public class SongPlaylistTable {
     public static Playlist getPlaylistByName(String name) {
         Playlist playlist = new Playlist(name);
         try {
-            Connection con = DBManager.connected()?DBManager.getConnection():DBManager.connect();
+            Connection con = DBManager.connect();
 
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM playlist_songs WHERE playlistname ='" + name + "';");
@@ -43,7 +43,7 @@ public class SongPlaylistTable {
     }
     public static int insertSongIntoPlaylist(Song song, Playlist playlist) {
         try {
-            Connection con = DBManager.connected()?DBManager.getConnection():DBManager.connect();
+            Connection con = DBManager.connect();
 
             Statement stmt = con.createStatement();
             return stmt.executeUpdate("INSERT INTO playlist_songs(songid, playlistname) VALUES(" + song.getId() + ",'" + playlist.getName() + "');");
@@ -56,7 +56,7 @@ public class SongPlaylistTable {
 
     public static int removeSongFromPlaylist(String playlist, Song song) {
         try {
-            Connection con = DBManager.connected()?DBManager.getConnection():DBManager.connect();
+            Connection con = DBManager.connect();
 
             Statement stmt = con.createStatement();
             return stmt.executeUpdate("DELETE FROM playlist_songs WHERE songid=" + song.getId());
@@ -69,7 +69,7 @@ public class SongPlaylistTable {
     public static Song getSongOfPlaylistByIndex(int index) {
         Song song = null;
         try {
-            Connection con = DBManager.connected()?DBManager.getConnection():DBManager.connect();
+            Connection con = DBManager.connect();
 
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM playlist_songs WHERE songplaylistid=" + index);
