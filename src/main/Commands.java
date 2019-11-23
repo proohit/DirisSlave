@@ -30,6 +30,7 @@ public class Commands {
         permissions.add(new PlayCommand());
         permissions.add(new PlaylistCommand());
         permissions.add(new HistoryCommand());
+        permissions.add(new SongStatisticsCommand());
         permissions.add(new SkiptoCommand());
         permissions.add(new RemoveCommand());
         permissions.add(new QueueCommand());

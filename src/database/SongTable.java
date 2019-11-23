@@ -10,15 +10,23 @@ import java.util.List;
 public class SongTable {
 
     public static Song getSongById(int id) {
+        Connection con = null;
+        ResultSet rs = null;
+        Statement stmt = null;
 
         try {
-            Connection con = DBManager.connect();
+            con = DBManager.connect();
 
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM songs WHERE id =" + id + ";");
-            if (rs.next()) return new Song(rs.getInt("id"), rs.getString("title"), rs.getString("url"));
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM songs WHERE id =" + id + ";");
+            if (rs.next()) {
+                Song foundSong = new Song(rs.getInt("id"), rs.getString("title"), rs.getString("url"));
+                con.close();
+                rs.close();
+                stmt.close();
+                return foundSong;
+            }
         } catch (SQLException e) {
-            if(!DBManager.connected()) DBManager.connect();
             e.printStackTrace();
         }
         return null;
@@ -36,7 +44,7 @@ public class SongTable {
             }
             return result;
         } catch (SQLException e) {
-            if(!DBManager.connected()) DBManager.connect();
+            if (!DBManager.connected()) DBManager.connect();
             e.printStackTrace();
         }
         return null;
@@ -47,12 +55,13 @@ public class SongTable {
             Connection con = DBManager.connect();
 
             Statement stmt = con.createStatement();
-            stmt.executeUpdate("INSERT INTO songs(title,url) VALUES('" + song.getTitle().replace("'","''") + "','" + song.getUrl() + "')", Statement.RETURN_GENERATED_KEYS);
+            stmt.executeUpdate("INSERT INTO songs(title,url) VALUES('" + song.getTitle().replace("'", "''") + "','" + song.getUrl() + "')", Statement.RETURN_GENERATED_KEYS);
             ResultSet key = stmt.getGeneratedKeys();
             if (key.next()) song.setId(key.getInt(1));
         } catch (SQLException e) {
-            if(!DBManager.connected()) DBManager.connect();
-            e.printStackTrace();        }
+            if (!DBManager.connected()) DBManager.connect();
+            e.printStackTrace();
+        }
     }
 
     public static List<Song> getSongsByTitle(String title) {
@@ -66,7 +75,7 @@ public class SongTable {
                 result.add(new Song(rs.getInt("id"), rs.getString("title"), rs.getString("url")));
             }
         } catch (SQLException e) {
-            if(!DBManager.connected()) DBManager.connect();
+            if (!DBManager.connected()) DBManager.connect();
             e.printStackTrace();
         }
         return result;
@@ -83,7 +92,7 @@ public class SongTable {
                 result.add(new Song(rs.getInt("id"), rs.getString("title"), rs.getString("url")));
             }
         } catch (SQLException e) {
-            if(!DBManager.connected()) DBManager.connect();
+            if (!DBManager.connected()) DBManager.connect();
             e.printStackTrace();
         }
         return result;
@@ -95,9 +104,9 @@ public class SongTable {
 
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM songs WHERE url=\'" + uri + "\'");
-            if(rs.next()) return true;
+            if (rs.next()) return true;
         } catch (SQLException e) {
-            if(!DBManager.connected()) DBManager.connect();
+            if (!DBManager.connected()) DBManager.connect();
             e.printStackTrace();
         }
         return false;

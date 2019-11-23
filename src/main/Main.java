@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args) throws LoginException {
         //insert bot token here
         jda = new JDABuilder(AccountType.BOT)
-                .setToken("//").build();
+                .setToken("NTY2NjIwMzc0OTA1OTEzMzU1.XdlfYQ.BD9Vtrr9gWlSv6llTRB9NAFdqdo").build();
         jda.addEventListener(new MyEventListener(jda));
         jda.getTextChannelById("544815528179531776").sendMessage("starting the engine...").queue();
     }
