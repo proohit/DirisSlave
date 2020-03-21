@@ -42,17 +42,29 @@ public class TrackScheduler extends AudioEventAdapter {
         // Calling startTrack with the noInterrupt set to true will start the track only if nothing is currently playing. If
         // something is playing, it returns false and does nothing. In that case the player was already playing so this
         // track goes to the queue instead.
+
+        if (player.getPlayingTrack() == null) {
+            writeSongEntry(track);
+        }
+
+        if (!player.startTrack(track, true)) {
+            queue.offer(track);
+        } else {
+            Main.jda.getTextChannelById("621749238745006080").getManager().setTopic("*Now playing* " + track.getInfo().title).queue();
+        }
+    }
+
+    /**
+     * writes an entry in the DB for the played song (if not already inserted before) and attempts a history entry
+     * @param track
+     */
+    private void writeSongEntry(AudioTrack track) {
         Song song;
         if (SongTable.getSongsByUrl(track.getInfo().uri).size() == 0) {
             SongTable.insertSong(new Song(track.getInfo().title, track.getInfo().uri));
         }
         song = SongTable.getSongsByUrl(track.getInfo().uri).get(0);
         SongHistoryTable.insertHistoryItem(song);
-        if (!player.startTrack(track, true)) {
-            queue.offer(track);
-        } else {
-            Main.jda.getTextChannelById("621749238745006080").getManager().setTopic("*Now playing* " + track.getInfo().title).queue();
-        }
     }
 
     /**
@@ -67,10 +79,12 @@ public class TrackScheduler extends AudioEventAdapter {
         AudioTrack nextTrack = queue.poll();
         if (nextTrack == null) {
             player.stopTrack();
+            //TODO: When implementing songs listened together, this must be toggle-able!
             audioplayer.AudioPlayer.getLastManager().closeAudioConnection();
         } else {
             Main.jda.getTextChannelById("621749238745006080").getManager().setTopic("*Now playing* " + nextTrack.getInfo().title).queue();
             player.startTrack(nextTrack.makeClone(), false);
+            writeSongEntry(nextTrack);
         }
     }
 
