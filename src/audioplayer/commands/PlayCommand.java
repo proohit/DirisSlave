@@ -5,6 +5,8 @@ import main.Commands;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.Command;
 
+import java.util.Properties;
+
 public class PlayCommand extends Command {
     public PlayCommand() {
         setCommand(prefix + "pl");
@@ -30,8 +32,7 @@ public class PlayCommand extends Command {
                 trackUrl = argStrings[1];
             }
 
-            AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(), event.getMember().getVoiceState().getChannel());
-            Commands.player.loadAndPlay(event.getTextChannel(), trackUrl);
+            Commands.player.loadAndPlay(event, trackUrl);
         }
     }
 

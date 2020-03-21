@@ -12,6 +12,7 @@ import database.SongPlaylistTable;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.managers.AudioManager;
 
 import java.util.ArrayList;
@@ -100,18 +101,18 @@ public class AudioPlayer {
         return true;
     }
 
-    public void loadAndPlay(final TextChannel channel, final String trackUrl) {
-        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
-        lastManager = channel.getGuild().getAudioManager();
+    public void loadAndPlay(final MessageReceivedEvent event, final String trackUrl) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
+        lastManager = event.getGuild().getAudioManager();
         playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
                 float seconds = track.getDuration()/1000;
                 int minutes = (int)seconds/60;
                 seconds = seconds%60;
-                channel.sendMessage("Adding to queue " + track.getInfo().title+ " Duration: " + minutes + ":"+seconds + " minutes").queue();
-
-                play(channel.getGuild(), musicManager, track);
+                event.getTextChannel().sendMessage("Adding to queue " + track.getInfo().title+ " Duration: " + minutes + ":"+seconds + " minutes").queue();
+                AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(), event.getMember().getVoiceState().getChannel());
+                play(event.getGuild(), musicManager, track);
             }
 
             @Override
@@ -128,19 +129,19 @@ public class AudioPlayer {
                 String minutesString = String.valueOf(minutes);
                 if(secondsString.length() <2) secondsString="0" + secondsString;
                 if(minutesString.length() <2) minutesString = "0" + minutesString;
-                channel.sendMessage("Adding to queue " + firstTrack.getInfo().title + " Duration: " + minutesString + ":"+secondsString + " minutes").queue();
-
-                play(channel.getGuild(), musicManager, firstTrack);
+                event.getTextChannel().sendMessage("Adding to queue " + firstTrack.getInfo().title + " Duration: " + minutesString + ":"+secondsString + " minutes").queue();
+                AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(), event.getMember().getVoiceState().getChannel());
+                play(event.getGuild(), musicManager, firstTrack);
             }
 
             @Override
             public void noMatches() {
-                channel.sendMessage("Nothing found by " + trackUrl).queue();
+                event.getTextChannel().sendMessage("Nothing found by " + trackUrl).queue();
             }
 
             @Override
             public void loadFailed(FriendlyException exception) {
-                channel.sendMessage("Could not play: " + exception.getMessage()).queue();
+                event.getTextChannel().sendMessage("Could not play: " + exception.getMessage()).queue();
             }
         });
     }
