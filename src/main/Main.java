@@ -11,8 +11,9 @@ public class Main {
 
     public static void main(String[] args) throws LoginException {
         //insert bot token here
+        ReadPropertyFile rpf = new ReadPropertyFile();
         jda = new JDABuilder(AccountType.BOT)
-                .setToken("//").build();
+                .setToken(rpf.getJDAToken()).build();
         jda.addEventListener(new MyEventListener(jda));
         jda.getTextChannelById("544815528179531776").sendMessage("starting the engine...").queue();
     }
