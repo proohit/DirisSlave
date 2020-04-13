@@ -10,7 +10,7 @@ public class ReadPropertyFile {
 
     public ReadPropertyFile() {
         try {
-            FileInputStream ip = new FileInputStream("../config/config.properties");
+            FileInputStream ip = new FileInputStream("src/config/config.properties");
             prop = new Properties();
             prop.load(ip);
         } catch (FileNotFoundException e) {
