@@ -13,7 +13,6 @@ public class Startup {
         ReadPropertyFile rpf = new ReadPropertyFile();
         jda = JDABuilder.createDefault(rpf.getJDAToken()).build();
         jda.addEventListener(new MyEventListener(jda));
-        jda.getTextChannelById("544815528179531776").sendMessage("starting the engine...").queue();
     }
 
 }
