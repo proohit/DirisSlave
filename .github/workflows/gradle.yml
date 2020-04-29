@@ -23,7 +23,7 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew clean installDist
+      run: ./gradlew wrapper clean installDist
     - name: create Config File
       run: sh ./scripts/createConfig.sh ${{ secrets.JDATOKEN }}
     - name: FTP Deploy
