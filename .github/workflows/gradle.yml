@@ -23,7 +23,7 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew wrapper clean installDist
+      run: ./gradlew clean installDist
     - name: create Config File
       run: sh ./scripts/createConfig.sh ${{ secrets.JDATOKEN }}
     - name: FTP Deploy
@@ -36,7 +36,7 @@ jobs:
         # FTP account password
         ftp-password: ${{ secrets.password }}
         git-ftp-args: --insecure
-        local-dir: ./build/install/DirisSlave
+        local-dir: build/install/DirisSlave
     - name: SSH Commands
       uses: appleboy/ssh-action@v0.0.7
       with:
