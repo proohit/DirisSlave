@@ -6,7 +6,6 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.Command;
 
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Map;
 
 public class SongStatisticsCommand extends Command {

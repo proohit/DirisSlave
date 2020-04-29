@@ -8,7 +8,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import database.Song;
 import database.SongHistoryTable;
 import database.SongTable;
-import main.Main;
+import main.Startup;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -50,7 +50,7 @@ public class TrackScheduler extends AudioEventAdapter {
         if (!player.startTrack(track, true)) {
             queue.offer(track);
         } else {
-            Main.jda.getTextChannelById("621749238745006080").getManager().setTopic("*Now playing* " + track.getInfo().title).queue();
+            Startup.jda.getTextChannelById("621749238745006080").getManager().setTopic("*Now playing* " + track.getInfo().title).queue();
         }
     }
 
@@ -82,7 +82,7 @@ public class TrackScheduler extends AudioEventAdapter {
             //TODO: When implementing songs listened together, this must be toggle-able!
             audioplayer.AudioPlayer.getLastManager().closeAudioConnection();
         } else {
-            Main.jda.getTextChannelById("621749238745006080").getManager().setTopic("*Now playing* " + nextTrack.getInfo().title).queue();
+            Startup.jda.getTextChannelById("621749238745006080").getManager().setTopic("*Now playing* " + nextTrack.getInfo().title).queue();
             player.startTrack(nextTrack.makeClone(), false);
             writeSongEntry(nextTrack);
         }

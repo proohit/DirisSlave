@@ -1,15 +1,23 @@
 plugins {
     id 'java'
+    id 'application'
 }
-
+application {
+    mainClassName = 'main.Startup'
+}
+group 'org.example'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
 
 repositories {
+    mavenCentral()
     jcenter()
 }
-
+jar {
+    manifest {
+        attributes 'Main-Class': 'main.Startup'
+    }
+}
 dependencies {
     compile 'com.sedmelluq:lavaplayer:1.3.47'
     compile 'net.dv8tion:JDA:4.1.1_136'
