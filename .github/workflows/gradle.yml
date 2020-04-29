@@ -24,6 +24,8 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew clean installDist
+    - name: After Build
+      run: git reset --hard
     - name: create Config File
       run: sh ./scripts/createConfig.sh ${{ secrets.JDATOKEN }}
     - name: FTP Deploy
