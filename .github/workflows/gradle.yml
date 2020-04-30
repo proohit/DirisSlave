@@ -38,7 +38,6 @@ jobs:
         # FTP account password
         ftp-password: ${{ secrets.password }}
         git-ftp-args: --insecure
-        local-dir: build/install/DirisSlave
     - name: SSH Commands
       uses: appleboy/ssh-action@v0.0.7
       with:
