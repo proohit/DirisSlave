@@ -28,16 +28,19 @@ jobs:
       run: git reset --hard
     - name: create Config File
       run: sh ./scripts/createConfig.sh ${{ secrets.JDATOKEN }}
-    - name: FTP Deploy
-      uses: SamKirkland/FTP-Deploy-Action@3.0.0
+    - name: Deploy
+      uses: sebastianpopp/ftp-action@v2.0.0
       with:
-        # Deployment destination server & path. Formatted as protocol://domain.com:port/full/destination/path/
-        ftp-server: sftp://${{ secrets.host }}:${{ secrets.sftpport }}${{ secrets.destination }}
-        # FTP account username
-        ftp-username: ${{ secrets.username }}
-        # FTP account password
-        ftp-password: ${{ secrets.password }}
-        git-ftp-args: --insecure
+        # FTP host
+        host: ${{secrets.host}}
+        # FTP user
+        user: ${{secrets.username}}
+        # FTP password
+        password: ${{secrets.password}}
+        # Local directory
+        localDir: build/install/DirisSlave
+        # Remote directory
+        remoteDir: ${{secrets.destination}}
     - name: SSH Commands
       uses: appleboy/ssh-action@v0.0.7
       with:
