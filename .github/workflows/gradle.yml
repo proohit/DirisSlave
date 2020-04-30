@@ -41,6 +41,7 @@ jobs:
         localDir: build/install/DirisSlave
         # Remote directory
         remoteDir: ${{secrets.destination}}
+        forceSsl: true
     - name: SSH Commands
       uses: appleboy/ssh-action@v0.0.7
       with:
