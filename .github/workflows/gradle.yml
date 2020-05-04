@@ -26,20 +26,10 @@ jobs:
       run: git reset --hard
     - name: create Config File
       run: sh ./scripts/createConfig.sh ${{ secrets.JDATOKEN }}
-    - name: Deploy
-      uses: sebastianpopp/ftp-action@v2.0.0
-      with:
-        # FTP host
-        host: ${{secrets.host}}
-        # FTP user
-        user: ${{secrets.username}}
-        # FTP password
-        password: ${{secrets.password}}
-        # Local directory
-        localDir: build/install/DirisSlave
-        # Remote directory
-        remoteDir: ${{secrets.destination}}
-        forceSsl: true
+    - name: Install SSH
+      run: sudo apt-get update && sudo apt install -y openssh-client
+    - name: SCP To Remote
+      run:  sshpass -p ${{secrets.password}} scp ${{secrets.username}}@${{secrets.host}}:${{secrets.destination}} /build/install/DirisSlave
     - name: SSH Commands
       uses: appleboy/ssh-action@v0.0.7
       with:
