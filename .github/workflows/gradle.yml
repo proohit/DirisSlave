@@ -27,7 +27,7 @@ jobs:
     - name: Install SSH
       run: sudo apt-get update && sudo apt install -y openssh-client
     - name: SCP To Remote
-      run:  sshpass -p ${{secrets.password}} scp -r -v ./build/install/DirisSlave ${{secrets.username}}@${{secrets.host}}:${{secrets.destination}}
+      run:  sshpass -p ${{secrets.password}} scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -r -v ./build/install/DirisSlave ${{secrets.username}}@${{secrets.host}}:${{secrets.destination}}
     - name: SSH Commands
       uses: appleboy/ssh-action@v0.0.7
       with:
