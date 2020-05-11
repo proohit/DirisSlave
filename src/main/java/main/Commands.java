@@ -58,7 +58,7 @@ public class Commands {
         permissions.add(new WeatherCommand());
         permissions.add(new PauseCommand());
         permissions.add(new ResumeCommand());
-
+        permissions.add(new RecommendationCommand());
 
     }
 

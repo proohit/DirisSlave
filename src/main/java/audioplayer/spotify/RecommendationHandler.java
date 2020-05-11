@@ -1,21 +1,11 @@
 package audioplayer.spotify;
 
 import kong.unirest.json.JSONArray;
+import kong.unirest.json.JSONObject;
 
 import java.util.Arrays;
-import java.util.logging.Logger;
 
 public class RecommendationHandler extends SpotifyApi {
-    private static Logger LOGGER;
-
-    static {
-        String path = RecommendationHandler.class.getClassLoader()
-                .getResource("logging.properties")
-                .getFile();
-        System.setProperty("java.util.logging.config.file", path);
-        LOGGER = Logger.getLogger(RecommendationHandler.class.getName());
-    }
-
     private final String TRACKS_QUERY = "seed_tracks";
     private final String recommendationsUrl = spotifyUrlFactory.getRecommendationUrl();
 
@@ -29,8 +19,9 @@ public class RecommendationHandler extends SpotifyApi {
 
     public JSONArray getRecommendationsByTracks(String... seeds) {
         String seedsString = trimSeedArray(seeds);
-        LOGGER.fine(this.getClass().getName() + ": Fetching recommendations based on: " + seedsString);
-        return this.baseGetRequest(recommendationsUrl).queryString(TRACKS_QUERY, seedsString).asJson().getBody().getArray();
+        JSONObject fetchResult = this.baseGetRequest(recommendationsUrl).queryString(TRACKS_QUERY, seedsString).asJson().getBody().getObject();
+        JSONArray recommendedTracks = fetchResult.getJSONArray("tracks");
+        return recommendedTracks;
     }
 
     private String trimSeedArray(String[] seedArray) {
