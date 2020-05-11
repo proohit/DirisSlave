@@ -29,4 +29,12 @@ The Bot searches for a config file named `config.properties` in a root folder `c
 
 It is mandatory to provide a property `JDAToken` which can be retrieved from https://discordapp.com/developers/ in the Application/Bot section
 
-To easily create such a config file, there is a script [createConfig.sh](./scripts/createConfig.sh) in scripts, which expects a single argument, the token.
+To easily create such a config file, there is a script [createConfig.sh](./scripts/createConfig.sh) in scripts.
+
+createConfig.sh
+```shell script
+createConfig.sh
+    --jdatoken <token>
+    --spotifyClientId <clientId>
+    --spotifyClientSecret <clientSecret>
+```
