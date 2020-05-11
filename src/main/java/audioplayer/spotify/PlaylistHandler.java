@@ -21,8 +21,12 @@ public class PlaylistHandler extends SpotifyApi {
         return response.getObject();
     }
 
-    public String getPlaylistIdBySpotifyUri(String spotifyUri) {
-        return spotifyUri.split("spotify:playlist:")[1];
+    // TODO trim implementieren
+    public JSONArray trimTracks(JSONArray tracks) {
+        JSONArray trimmedArray = new JSONArray();
+        for (int tracksArrayPosition = 0; tracksArrayPosition < tracks.length(); tracksArrayPosition++) {
+            JSONObject object = tracks.getJSONObject(tracksArrayPosition);
+        }
+        return trimmedArray;
     }
-
 }

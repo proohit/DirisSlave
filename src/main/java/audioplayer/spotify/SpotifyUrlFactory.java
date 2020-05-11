@@ -40,8 +40,13 @@ public class SpotifyUrlFactory {
     }
 
     // Track
-
     public String getTrackUrl(String trackId) {
         return API_URL + "tracks/" + trackId;
     }
+
+    // Recommendations
+    public String getRecommendationUrl() {
+        return API_URL + "recommendations/";
+    }
+
 }
