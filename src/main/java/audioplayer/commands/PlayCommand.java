@@ -1,5 +1,11 @@
 package audioplayer.commands;
 
+import java.util.Arrays;
+import java.util.List;
+
+import audioplayer.spotify.RecommendationHandler;
+import kong.unirest.json.JSONArray;
+import kong.unirest.json.JSONObject;
 import main.Commands;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.Command;
@@ -19,18 +25,37 @@ public class PlayCommand extends Command {
             return;
         }
         if (argStrings.length >= 2) {
-            String trackUrl = "";
-            if (!(argStrings[1].contains("http") || argStrings[1].contains("https"))) {
-                trackUrl = "ytsearch: ";
-                for (int i = 1; i < argStrings.length; i++) {
-                    trackUrl += argStrings[i] + " ";
-                }
+            if (argStrings[1].equals("recommended")) {
+                RecommendationHandler recommendationHandler = new RecommendationHandler();
+                String[] searchQuery = extractSearchQueryFromArguments(argStrings);
+                JSONArray recommendedTracksJson = recommendationHandler
+                        .getRecommendationsByTrackSearchQuery(searchQuery);
+                List<JSONObject> recommendedTracks = recommendedTracksJson.toList();
+                recommendedTracks = recommendedTracks.subList(0, 2);
+                recommendedTracks.forEach(recommendedTrackObject -> {
+                    String firstArtist = recommendedTrackObject.getJSONArray("artists").getJSONObject(0)
+                            .getString("name");
+                    String trackName = recommendedTrackObject.getString("name");
+                    Commands.player.loadAndPlay(event, "ytsearch: " + firstArtist + " " + trackName);
+                });
             } else {
-                trackUrl = argStrings[1];
-            }
+                String trackUrl = "";
+                if (!(argStrings[1].contains("http") || argStrings[1].contains("https"))) {
+                    trackUrl = "ytsearch: ";
+                    for (int i = 1; i < argStrings.length; i++) {
+                        trackUrl += argStrings[i] + " ";
+                    }
+                } else {
+                    trackUrl = argStrings[1];
+                }
 
-            Commands.player.loadAndPlay(event, trackUrl);
+                Commands.player.loadAndPlay(event, trackUrl);
+            }
         }
+    }
+
+    private String[] extractSearchQueryFromArguments(String[] args) {
+        return Arrays.copyOfRange(args, 2, args.length);
     }
 
     @Override

@@ -24,24 +24,19 @@ public class RecommendationCommand extends Command {
         }
         if (argStrings.length >= 2) {
             RecommendationHandler recommendationHandler = new RecommendationHandler();
-            String[] songIds = extractSongIdsFromArguments(argStrings);
-            JSONArray tracks = recommendationHandler.getRecommendationsByTracks(songIds);
+            String[] searchQuery = extractSearchQueryFromArguments(argStrings);
+            JSONArray tracks = recommendationHandler.getRecommendationsByTrackSearchQuery(searchQuery);
             final StringBuilder recommendationsString = new StringBuilder();
             tracks.forEach(trackObject -> {
                 JSONObject track = (JSONObject) trackObject;
-                recommendationsString
-                        .append("\n")
-                        .append("Song name: ")
-                        .append(track.getString("name"))
-                        .append(", uri: ")
-                        .append(track.getString("uri"))
-                        .append("\n");
+                recommendationsString.append("\n").append("Song name: ").append(track.getString("name"))
+                        .append(", uri: ").append(track.getString("uri")).append("\n");
             });
             main.Commands.sendMessage(event, recommendationsString.toString());
         }
     }
 
-    private String[] extractSongIdsFromArguments(String[] args) {
+    private String[] extractSearchQueryFromArguments(String[] args) {
         return Arrays.copyOfRange(args, 1, args.length);
     }
 

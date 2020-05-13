@@ -8,6 +8,7 @@ import java.util.Arrays;
 public class RecommendationHandler extends SpotifyApi {
     private final String TRACKS_QUERY = "seed_tracks";
     private final String recommendationsUrl = spotifyUrlFactory.getRecommendationUrl();
+    private TrackHandler trackHandler = new TrackHandler();
 
     public RecommendationHandler() {
 
@@ -17,9 +18,16 @@ public class RecommendationHandler extends SpotifyApi {
         return this.baseGetRequest(recommendationsUrl).queryString(TRACKS_QUERY, trackId).asJson().getBody().getArray();
     }
 
-    public JSONArray getRecommendationsByTracks(String... seeds) {
-        String seedsString = trimSeedArray(seeds);
-        JSONObject fetchResult = this.baseGetRequest(recommendationsUrl).queryString(TRACKS_QUERY, seedsString).asJson().getBody().getObject();
+    public JSONArray getRecommendationsByTrackSearchQuery(String... searchQuery) {
+        String[] trackIds = trackHandler.getTrackIdsBySearchQuery(searchQuery);
+        JSONArray recommendations = getRecommendationsByTrackIds(trackIds);
+        return recommendations;
+    }
+
+    private JSONArray getRecommendationsByTrackIds(String... trackIds) {
+        String seedsString = trimSeedArray(trackIds);
+        JSONObject fetchResult = this.baseGetRequest(recommendationsUrl).queryString(TRACKS_QUERY, seedsString).asJson()
+                .getBody().getObject();
         JSONArray recommendedTracks = fetchResult.getJSONArray("tracks");
         return recommendedTracks;
     }
