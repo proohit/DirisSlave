@@ -20,11 +20,47 @@ public class PlaylistCommand extends Command {
         setPermission("everyone");
         setTopic("music");
         setDescription("lists options regarding playlists");
+
+        this.addSubCommand(new CreatePlaylistCommand());
+        this.addSubCommand(new DeletePlaylistCommand());
+        this.addSubCommand(new LoadPlaylistCommand());
+        this.addSubCommand(new ListPlaylistCommand());
+        this.addSubCommand(new SaveHistoryCommand());
+        this.addSubCommand(new AddToPlaylistCommand());
+        this.addSubCommand(new RemoveFromPlaylistCommand());
     }
 
     @Override
-    public void handle(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings.length <= 1) {
+    public String getHelp() {
+        StringBuilder help = new StringBuilder();
+
+        help.append("***" + getCommand() + "***");
+        help.append(" - " + getDescription() + "\n");
+
+        help.append("list [playlist name, optional]\n");
+        help.append("create <playlist name>\n");
+        help.append("load <playlist name>\n");
+        help.append("delete <playlist name>\n");
+        help.append("addto <playlist name> <keywords>\n");
+        help.append(
+                "remove <playlist name> <index of song in playlist. type playlist list playlistname to get indexes>\n");
+        help.append("savehistory <playlist name>\n");
+
+        return help.toString();
+    }
+
+    @Override
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        // TODO Auto-generated method stub
+        Command foundSubCommand = null;
+        try {
+            foundSubCommand = this.getSubCommands().stream()
+                    .filter(subCommand -> argStrings[0].equals(subCommand.getCommand())).findFirst().get();
+            foundSubCommand.handle(event, argStrings);
+        } catch (Exception e) {
+            return;
+        }
+        if (argStrings.length <= 0 || foundSubCommand == null) {
             main.Commands.sendMessage(event, getHelp());
             return;
         }
@@ -39,13 +75,15 @@ public class PlaylistCommand extends Command {
         } else if (argStrings[1].equals("delete")) {
             if (argStrings.length == 3) {
                 String result;
-                result = PlaylistTable.deletePlaylist(argStrings[2]) == 1 ? "deleted playlist " + argStrings[2] : "playlist " + argStrings[2] + " not found";
+                result = PlaylistTable.deletePlaylist(argStrings[2]) == 1 ? "deleted playlist " + argStrings[2]
+                        : "playlist " + argStrings[2] + " not found";
                 sendBeautifulMessage(event, result);
             }
         } else if (argStrings[1].equals("load")) {
             if (argStrings.length == 3) {
                 if (Commands.player.playPlaylist(event.getTextChannel(), argStrings[2])) {
-                    AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(), event.getMember().getVoiceState().getChannel());
+                    AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(),
+                            event.getMember().getVoiceState().getChannel());
                     Commands.sendBeautifulMessage(event, "loaded playlist " + argStrings[2]);
                 } else {
                     main.Commands.sendBeautifulMessage(event, argStrings[2] + " not found or no songs available");
@@ -100,8 +138,10 @@ public class PlaylistCommand extends Command {
                         if (!SongTable.hasSong(track.getInfo().uri))
                             SongTable.insertSong(new Song(track.getInfo().title, track.getInfo().uri));
                         Song song = SongTable.getSongsByUrl(track.getInfo().uri).get(0);
-                        if (SongPlaylistTable.insertSongIntoPlaylist(song, SongPlaylistTable.getPlaylistByName(argStrings[2])) != 0) {
-                            sendBeautifulMessage(event, "added \"" + track.getInfo().title + "\" to playlist " + argStrings[2]);
+                        if (SongPlaylistTable.insertSongIntoPlaylist(song,
+                                SongPlaylistTable.getPlaylistByName(argStrings[2])) != 0) {
+                            sendBeautifulMessage(event,
+                                    "added \"" + track.getInfo().title + "\" to playlist " + argStrings[2]);
                         } else {
                             sendBeautifulMessage(event, "there is no playlist " + argStrings[2]);
                         }
@@ -110,10 +150,13 @@ public class PlaylistCommand extends Command {
                     @Override
                     public void playlistLoaded(AudioPlaylist playlist) {
                         if (!SongTable.hasSong(playlist.getTracks().get(0).getInfo().uri))
-                            SongTable.insertSong(new Song(playlist.getTracks().get(0).getInfo().title, playlist.getTracks().get(0).getInfo().uri));
+                            SongTable.insertSong(new Song(playlist.getTracks().get(0).getInfo().title,
+                                    playlist.getTracks().get(0).getInfo().uri));
                         Song song = SongTable.getSongsByUrl(playlist.getTracks().get(0).getInfo().uri).get(0);
-                        if (SongPlaylistTable.insertSongIntoPlaylist(song, PlaylistTable.getPlaylist(argStrings[2])) != 0) {
-                            sendBeautifulMessage(event, "added \"" + song.getTitle() + "\" to playlist " + argStrings[2]);
+                        if (SongPlaylistTable.insertSongIntoPlaylist(song,
+                                PlaylistTable.getPlaylist(argStrings[2])) != 0) {
+                            sendBeautifulMessage(event,
+                                    "added \"" + song.getTitle() + "\" to playlist " + argStrings[2]);
                         } else {
                             sendBeautifulMessage(event, "there is no playlist " + argStrings[2]);
                         }
@@ -132,7 +175,8 @@ public class PlaylistCommand extends Command {
             }
         } else if (argStrings[1].equals("remove")) {
             if (argStrings.length == 4) {
-                Song song = SongPlaylistTable.getPlaylistByName(argStrings[2]).getSongs().get(Integer.parseInt(argStrings[3]) - 1);
+                Song song = SongPlaylistTable.getPlaylistByName(argStrings[2]).getSongs()
+                        .get(Integer.parseInt(argStrings[3]) - 1);
                 if (song != null) {
                     if (SongPlaylistTable.removeSongFromPlaylist(argStrings[2], song) != 0) {
                         sendBeautifulMessage(event, "deleted " + song.getTitle() + " from " + argStrings[2]);
@@ -142,23 +186,5 @@ public class PlaylistCommand extends Command {
                 }
             }
         }
-    }
-
-    @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
-
-        help.append("***" + getCommand() + "***");
-        help.append(" - " + getDescription() + "\n");
-
-        help.append("list [playlist name, optional]\n");
-        help.append("create <playlist name>\n");
-        help.append("load <playlist name>\n");
-        help.append("delete <playlist name>\n");
-        help.append("addto <playlist name> <keywords>\n");
-        help.append("remove <playlist name> <index of song in playlist. type playlist list playlistname to get indexes>\n");
-        help.append("savehistory <playlist name>\n");
-
-        return help.toString();
     }
 }
