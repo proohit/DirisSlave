@@ -31,6 +31,11 @@ public class PlayCommand extends Command {
                 JSONArray recommendedTracksJson = recommendationHandler
                         .getRecommendationsByTrackSearchQuery(searchQuery);
                 List<JSONObject> recommendedTracks = recommendedTracksJson.toList();
+                if (recommendedTracks.size() == 0) {
+                    Commands.sendBeautifulMessage(event, "No recommendations found...");
+                    return;
+                }
+                recommendedTracks.forEach(track -> System.out.println(track.get("name")));
                 recommendedTracks = recommendedTracks.subList(0, 2);
                 recommendedTracks.forEach(recommendedTrackObject -> {
                     String firstArtist = recommendedTrackObject.getJSONArray("artists").getJSONObject(0)

@@ -15,10 +15,15 @@ public class TrackHandler extends SpotifyApi {
 
     }
 
-    public String[] getTrackIdsBySearchQuery(String... searchQuery) {
-        JSONArray searchedTracks = searchHandler.getTracksByQuery(searchQuery);
-        String[] trackIds = extractTrackIds(searchedTracks);
-        return trackIds;
+    public String getTrackIdBySearchQuery(String... searchQuery) {
+        JSONObject foundTrack = searchHandler.getTrackByQuery(searchQuery);
+        String trackId = extractTrackId(foundTrack);
+        return trackId;
+    }
+
+    private String extractTrackId(JSONObject track) {
+        String id = track.getString(TRACK_ID);
+        return id;
     }
 
     private String[] extractTrackIds(JSONArray tracks) {

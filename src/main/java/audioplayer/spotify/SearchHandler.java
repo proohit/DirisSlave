@@ -13,6 +13,15 @@ public class SearchHandler extends SpotifyApi {
     private final String RESULT_TRACKS = "tracks";
     private final String RESULT_TRACKS_ITEMS = "items";
 
+    public JSONObject getTrackByQuery(String... query) {
+        String trimmedQueryString = trimQuery(query);
+        JSONObject result = baseGetRequest(searchUrl).queryString(QUERY_QUERY, trimmedQueryString)
+                .queryString(QUERY_TYPE, QUERY_TYPE_TRACK).asJson().getBody().getObject();
+        JSONObject tracks = result.getJSONObject(RESULT_TRACKS);
+        JSONArray trackItems = tracks.getJSONArray(RESULT_TRACKS_ITEMS);
+        return trackItems.getJSONObject(0);
+    }
+
     public JSONArray getTracksByQuery(String... query) {
         String trimmedQueryString = trimQuery(query);
         JSONObject result = baseGetRequest(searchUrl).queryString(QUERY_QUERY, trimmedQueryString)

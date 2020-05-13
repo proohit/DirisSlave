@@ -19,8 +19,8 @@ public class RecommendationHandler extends SpotifyApi {
     }
 
     public JSONArray getRecommendationsByTrackSearchQuery(String... searchQuery) {
-        String[] trackIds = trackHandler.getTrackIdsBySearchQuery(searchQuery);
-        JSONArray recommendations = getRecommendationsByTrackIds(trackIds);
+        String trackId = trackHandler.getTrackIdBySearchQuery(searchQuery);
+        JSONArray recommendations = getRecommendationsByTrackIds(trackId);
         return recommendations;
     }
 
