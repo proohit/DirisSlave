@@ -7,25 +7,24 @@ import util.UrlHandler;
 
 public class CoffeeCommand extends Command {
     public CoffeeCommand() {
-        setCommand(prefix+"coffee");
-        setPermission("everyone");
+        setCommand(prefix + "coffee");
+        addPermission("everyone");
         setTopic("images");
         setDescription("Enjoy your coffee with a gif");
-    }
-
-    @Override
-    public void handle(MessageReceivedEvent event, String[] argStrings) {
-        Commands.sendMessage(event, UrlHandler.getImage("https://nekobot.xyz/api/image?type=coffee"));
-
     }
 
     @Override
     public String getHelp() {
         StringBuilder help = new StringBuilder();
 
-        help.append("***" + getCommand()+"***");
+        help.append("***" + getCommand() + "***");
         help.append(" - " + getDescription() + "\n");
 
         return help.toString();
+    }
+
+    @Override
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        Commands.sendMessage(event, UrlHandler.getImage("https://nekobot.xyz/api/image?type=coffee"));
     }
 }

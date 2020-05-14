@@ -1,12 +1,13 @@
 package audioplayer.spotify;
 
+import java.util.Date;
+
+import api.SpotifyUrlFactory;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONObject;
 import main.ReadPropertyFile;
-
-import java.util.Date;
 
 public class TokenHandler {
     private static TokenHandler instance;
@@ -55,7 +56,9 @@ public class TokenHandler {
     private JSONObject fetch() {
         String spotifyClientId = ReadPropertyFile.getInstance().getSpotifyClientId();
         String spotifyClientSecret = ReadPropertyFile.getInstance().getSpotifyClientSecret();
-        HttpResponse<JsonNode> response = Unirest.post(SpotifyUrlFactory.getInstance().getTokenUrl()).basicAuth(spotifyClientId, spotifyClientSecret).header("Content-Type", CONTENT_TYPE).field(GRANT_TYPE, GRANT_TYPE_VALUE).asJson();
+        HttpResponse<JsonNode> response = Unirest.post(SpotifyUrlFactory.getTokenUrl())
+                .basicAuth(spotifyClientId, spotifyClientSecret).header("Content-Type", CONTENT_TYPE)
+                .field(GRANT_TYPE, GRANT_TYPE_VALUE).asJson();
         return response.getBody().getObject();
     }
 

@@ -1,13 +1,15 @@
 package audioplayer.spotify;
 
+import java.util.Arrays;
+
+import api.SpotifyApi;
+import api.SpotifyUrlFactory;
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
 
-import java.util.Arrays;
-
 public class RecommendationHandler extends SpotifyApi {
     private final String TRACKS_QUERY = "seed_tracks";
-    private final String recommendationsUrl = spotifyUrlFactory.getRecommendationUrl();
+    private final String recommendationsUrl = SpotifyUrlFactory.getRecommendationUrl();
     private TrackHandler trackHandler = new TrackHandler();
 
     public RecommendationHandler() {

@@ -7,14 +7,9 @@ import util.Command;
 public class SkipCommand extends Command {
     public SkipCommand() {
         setCommand(prefix + "skip");
-        setPermission("everyone");
+        addPermission("everyone");
         setTopic("music");
         setDescription("skip current playing song");
-    }
-
-    @Override
-    public void handle(MessageReceivedEvent event, String[] argStrings) {
-        Commands.player.skipTrack(event.getTextChannel());
     }
 
     @Override
@@ -25,5 +20,10 @@ public class SkipCommand extends Command {
         help.append(" - " + getDescription() + "\n");
 
         return help.toString();
+    }
+
+    @Override
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        Commands.player.skipTrack(event.getTextChannel());
     }
 }

@@ -6,21 +6,15 @@ import util.Command;
 
 public class JumptoCommand extends Command {
     public JumptoCommand() {
-        setCommand(prefix+"jumpto");
-        setPermission("everyone");
+        setCommand(prefix + "jumpto");
+        addPermission("everyone");
         setTopic("music");
         setDescription("sets the position of the current song");
-    }
-    @Override
-    public void handle(MessageReceivedEvent event, String[] argStrings) {
-        if(argStrings.length == 2) {
-            Commands.player.jumpto(event.getTextChannel(), Integer.parseInt(argStrings[1]));
-        }
     }
 
     @Override
     public String getHelp() {
-        StringBuilder help = new StringBuilder();
+        final StringBuilder help = new StringBuilder();
 
         help.append("***" + getCommand() + "***");
         help.append(" - " + getDescription() + "\n");
@@ -28,5 +22,12 @@ public class JumptoCommand extends Command {
         help.append("<position in seconds to skip in the current song>");
 
         return help.toString();
+    }
+
+    @Override
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        if (argStrings.length == 1) {
+            Commands.player.jumpto(event.getTextChannel(), Integer.parseInt(argStrings[1]));
+        }
     }
 }

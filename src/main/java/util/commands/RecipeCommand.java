@@ -9,7 +9,7 @@ import util.UrlHandler;
 public class RecipeCommand extends Command {
     public RecipeCommand() {
         setCommand(prefix + "recipe");
-        setPermission("everyone");
+        addPermission("everyone");
         setTopic("util");
         setDescription("displays you a recipe containing specific ingredients");
     }
@@ -47,5 +47,11 @@ public class RecipeCommand extends Command {
         help.append("<ingredient1> <ingredient2>...\n");
 
         return help.toString();
+    }
+
+    @Override
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        // TODO Auto-generated method stub
+
     }
 }

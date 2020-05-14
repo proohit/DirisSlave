@@ -7,7 +7,7 @@ import util.Command;
 public class StatsCommand extends Command {
     public StatsCommand() {
         setCommand(prefix + "stats");
-        setPermission("everyone");
+        addPermission("everyone");
         setTopic("util");
         setDescription("see the running-time");
     }
@@ -27,5 +27,11 @@ public class StatsCommand extends Command {
         help.append(" - " + getDescription() + "\n");
 
         return help.toString();
+    }
+
+    @Override
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        // TODO Auto-generated method stub
+
     }
 }

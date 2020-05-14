@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import api.SpotifyApi;
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
 

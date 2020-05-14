@@ -8,7 +8,7 @@ import java.io.IOException;
 public class RestartCommand extends Command {
     public RestartCommand() {
         setCommand(prefix + "restart");
-        setPermission("everyone");
+        addPermission("everyone");
         setTopic("util");
         setDescription("restarts the bot on the server");
     }
@@ -31,5 +31,11 @@ public class RestartCommand extends Command {
     @Override
     public String getHelp() {
         return null;
+    }
+
+    @Override
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        // TODO Auto-generated method stub
+
     }
 }

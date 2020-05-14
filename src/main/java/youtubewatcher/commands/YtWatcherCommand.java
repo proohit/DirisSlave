@@ -9,7 +9,7 @@ import youtubewatcher.YoutubeXML;
 public class YtWatcherCommand extends Command {
     public YtWatcherCommand() {
         setCommand(prefix + "yt");
-        setPermission("everyone");
+        addPermission("everyone");
         setTopic("ytwatcher");
         setDescription("get notified by your slave, if your followed youtuber has uploaded a new video");
     }
@@ -65,5 +65,11 @@ public class YtWatcherCommand extends Command {
         help.append("remove <name of channel, type #yt status to see current channels> \n");
 
         return help.toString();
+    }
+
+    @Override
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        // TODO Auto-generated method stub
+
     }
 }

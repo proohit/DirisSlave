@@ -7,34 +7,35 @@ import util.Command;
 public class RemoveCommand extends Command {
     public RemoveCommand() {
         setCommand(prefix + "remove");
-        setPermission("everyone");
+        addPermission("everyone");
         setTopic("music");
         setDescription("remove song from queue");
     }
 
     @Override
-    public void handle(MessageReceivedEvent event, String[] argStrings) {
-        if(argStrings.length < 2) {
-            main.Commands.sendMessage(event, getHelp());
-            return;
-        }
-        if (argStrings.length == 2) {
-            try {
-                Commands.player.remove(Integer.parseInt(argStrings[1]), event.getTextChannel());
-            } catch (NumberFormatException e) {
-                Commands.sendBeautifulMessage(event, "the position you have entered is invalid");
-            }
-        }
-    }
-    @Override
     public String getHelp() {
         StringBuilder help = new StringBuilder();
 
-        help.append("***" + getCommand()+"***");
+        help.append("***" + getCommand() + "***");
         help.append(" - " + getDescription() + "\n");
 
         help.append("<number of song in queue, type #q for queue>\n");
 
         return help.toString();
+    }
+
+    @Override
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        if (argStrings.length < 1) {
+            main.Commands.sendMessage(event, getHelp());
+            return;
+        } else {
+            int indexToRemove = Integer.parseInt(argStrings[0]);
+            try {
+                Commands.player.remove(indexToRemove, event.getTextChannel());
+            } catch (NumberFormatException e) {
+                Commands.sendBeautifulMessage(event, "the position you have entered is invalid");
+            }
+        }
     }
 }

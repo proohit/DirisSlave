@@ -8,7 +8,7 @@ import util.UrlHandler;
 public class ThighCommand extends Command {
     public ThighCommand() {
         setCommand(prefix+"thigh");
-        setPermission("Bananenchefs");
+        addPermission("Bananenchefs");
         setTopic("images");
         setDescription("Stockings, socks and pantys. Everything you desire");
     }
@@ -27,5 +27,11 @@ public class ThighCommand extends Command {
         help.append(" - " + getDescription() + "\n");
 
         return help.toString();
+    }
+
+    @Override
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        // TODO Auto-generated method stub
+
     }
 }

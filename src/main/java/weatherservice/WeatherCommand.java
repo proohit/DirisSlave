@@ -24,7 +24,7 @@ import java.io.IOException;
 public class WeatherCommand extends Command {
     public WeatherCommand() {
         setCommand(prefix + "weather");
-        setPermission("everyone");
+        addPermission("everyone");
         setTopic("weather");
         setDescription("shows the weather for the next 15 hours");
     }
@@ -105,5 +105,11 @@ public class WeatherCommand extends Command {
         help.append("<city name>\n");
 
         return help.toString();
+    }
+
+    @Override
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        // TODO Auto-generated method stub
+
     }
 }

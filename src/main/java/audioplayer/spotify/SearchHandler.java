@@ -2,11 +2,13 @@ package audioplayer.spotify;
 
 import java.util.Arrays;
 
+import api.SpotifyApi;
+import api.SpotifyUrlFactory;
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
 
 public class SearchHandler extends SpotifyApi {
-    private final String searchUrl = spotifyUrlFactory.getSearchUrl();
+    private final String searchUrl = SpotifyUrlFactory.getSearchUrl();
     private final String QUERY_QUERY = "q";
     private final String QUERY_TYPE = "type";
     private final String QUERY_TYPE_TRACK = "track";

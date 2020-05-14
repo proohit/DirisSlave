@@ -7,18 +7,9 @@ import util.Command;
 public class ShuffleCommand extends Command {
     public ShuffleCommand() {
         setCommand(prefix + "shuffle");
-        setPermission("everyone");
+        addPermission("everyone");
         setTopic("music");
         setDescription("bring some spice into the queue by shuffling it :man_dancing:");
-    }
-
-    @Override
-    public void handle(MessageReceivedEvent event, String[] argStrings) {
-        if (Commands.player.shuffle(event.getTextChannel())) {
-            Commands.sendMessage(event, "shuffled the music :man_dancing:");
-        } else {
-            Commands.sendBeautifulMessage(event, "queue is empty :( start rocking with " + prefix + "pl !");
-        }
     }
 
     @Override
@@ -29,5 +20,14 @@ public class ShuffleCommand extends Command {
         help.append(" - " + getDescription() + "\n");
 
         return help.toString();
+    }
+
+    @Override
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        if (Commands.player.shuffle(event.getTextChannel())) {
+            Commands.sendMessage(event, "shuffled the music :man_dancing:");
+        } else {
+            Commands.sendBeautifulMessage(event, "queue is empty :( start rocking with " + prefix + "pl !");
+        }
     }
 }

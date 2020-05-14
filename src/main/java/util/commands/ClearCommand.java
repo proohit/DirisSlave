@@ -10,23 +10,9 @@ import java.util.List;
 public class ClearCommand extends Command {
     public ClearCommand() {
         setCommand(prefix + "del");
-        setPermission("Bananenchefs");
+        addPermission("Bananenchefs");
         setTopic("util");
         setDescription("mass-delete messages from a channel");
-    }
-
-    @Override
-    public void handle(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings.length < 2) {
-            main.Commands.sendMessage(event, getHelp());
-            return;
-        }
-        int deleteMessageCount = Integer.parseInt(argStrings[1]);
-        MessageHistory history = new MessageHistory(event.getChannel());
-        List<Message> msgs;
-        msgs = history.retrievePast(deleteMessageCount + 1).complete();
-        event.getChannel().purgeMessages(msgs);
-        main.Commands.sendMessage(event, "Deleted " + deleteMessageCount + " messages.");
     }
 
     @Override
@@ -39,5 +25,19 @@ public class ClearCommand extends Command {
         help.append("<number of messages to delete> \n");
 
         return help.toString();
+    }
+
+    @Override
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        if (argStrings.length < 1) {
+            main.Commands.sendMessage(event, getHelp());
+            return;
+        }
+        int deleteMessageCount = Integer.parseInt(argStrings[0]);
+        MessageHistory history = new MessageHistory(event.getChannel());
+        List<Message> msgs;
+        msgs = history.retrievePast(deleteMessageCount + 1).complete();
+        event.getChannel().purgeMessages(msgs);
+        main.Commands.sendMessage(event, "Deleted " + deleteMessageCount + " messages.");
     }
 }

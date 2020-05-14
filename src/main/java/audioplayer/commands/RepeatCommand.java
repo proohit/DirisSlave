@@ -7,22 +7,9 @@ import util.Command;
 public class RepeatCommand extends Command {
     public RepeatCommand() {
         setCommand(prefix + "repeat");
-        setPermission("everyone");
+        addPermission("everyone");
         setTopic("music");
         setDescription("enables queue repetition. Now playing song will repeat as the last song");
-    }
-
-    @Override
-    public void handle(MessageReceivedEvent event, String[] argStrings) {
-        boolean isRepeat;
-        if (argStrings.length == 2) {
-            if (argStrings[1].equals("true") || argStrings[1].equals("false")) {
-                isRepeat = Boolean.parseBoolean(argStrings[1]);
-                main.Commands.sendBeautifulMessage(event, "Repetition of songs has been set to: " + Commands.player.setRepeat(event.getTextChannel(), isRepeat));
-            } else {
-                main.Commands.sendMessage(event, getHelp());
-            }
-        }
     }
 
     @Override
@@ -35,5 +22,21 @@ public class RepeatCommand extends Command {
         help.append("<true|false>\n");
 
         return help.toString();
+    }
+
+    @Override
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        if (argStrings.length >= 1) {
+            String inputBoolean = argStrings[0];
+            if (inputBoolean.equals("true") || inputBoolean.equals("false")) {
+                boolean isRepeat = Boolean.parseBoolean(inputBoolean);
+                main.Commands.sendBeautifulMessage(event, "Repetition of songs has been set to: "
+                        + Commands.player.setRepeat(event.getTextChannel(), isRepeat));
+            } else {
+                main.Commands.sendMessage(event, getHelp());
+            }
+        } else {
+            main.Commands.sendMessage(event, this.getHelpString());
+        }
     }
 }

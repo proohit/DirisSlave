@@ -7,7 +7,7 @@ import util.UrlHandler;
 public class GahCommand extends Command {
     public GahCommand() {
         setCommand(prefix + "gah");
-        setPermission("everyone");
+        addPermission("everyone");
         setTopic("images");
         setDescription("JUST. DO. IT.");
     }
@@ -26,5 +26,11 @@ public class GahCommand extends Command {
         help.append(" - " + getDescription() + "\n");
 
         return help.toString();
+    }
+
+    @Override
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        // TODO Auto-generated method stub
+
     }
 }

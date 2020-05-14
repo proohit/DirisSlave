@@ -8,16 +8,9 @@ import util.Command;
 public class StopCommand extends Command {
     public StopCommand() {
         setCommand(prefix + "stop");
-        setPermission("everyone");
+        addPermission("everyone");
         setTopic("music");
         setDescription("stop the current playlist and remove all songs from queue");
-    }
-
-    @Override
-    public void handle(MessageReceivedEvent event, String[] argStrings) {
-        AudioManager manager = event.getGuild().getAudioManager();
-        if (manager.isConnected() || manager.isAttemptingToConnect()) manager.closeAudioConnection();
-        Commands.player.stop(event.getTextChannel());
     }
 
     @Override
@@ -28,5 +21,13 @@ public class StopCommand extends Command {
         help.append(" - " + getDescription() + "\n");
 
         return help.toString();
+    }
+
+    @Override
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        AudioManager manager = event.getGuild().getAudioManager();
+        if (manager.isConnected() || manager.isAttemptingToConnect())
+            manager.closeAudioConnection();
+        Commands.player.stop(event.getTextChannel());
     }
 }

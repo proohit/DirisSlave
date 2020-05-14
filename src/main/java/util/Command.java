@@ -2,6 +2,7 @@ package util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.entities.Member;
@@ -11,18 +12,18 @@ public abstract class Command {
     protected String prefix = ".";
     String command;
     String description;
-    String permission;
+    ArrayList<String> permission = new ArrayList<>();
     String helpString;
     ArrayList<Command> subCommands = new ArrayList<>();
 
     String topic;
 
-    public void setPermission(String perm) {
-        permission = perm;
+    public void addPermission(String permissionToAdd) {
+        this.permission.add(permissionToAdd);
     }
 
-    public String getPermission() {
-        return permission;
+    protected List<String> getPermissions() {
+        return this.permission;
     }
 
     public void setCommand(String cmd) {
@@ -50,10 +51,29 @@ public abstract class Command {
     }
 
     public void handle(MessageReceivedEvent event, String[] argStrings) {
+        String[] cutArguments = cutArguments(argStrings, 1, argStrings.length);
         if (isAllowed(event.getMember())) {
-            handleImpl(event, cutArguments(argStrings, 1, argStrings.length));
+            if (cutArguments.length < 1) {
+                handleImpl(event, cutArguments);
+            }
+            Command foundSubCommand = findSubCommand(cutArguments[0]);
+            if (foundSubCommand == null) {
+                handleImpl(event, cutArguments);
+            } else {
+                foundSubCommand.handle(event, cutArguments);
+            }
         }
-    };
+    }
+
+    private Command findSubCommand(String argument) {
+        Command foundSubCommand = null;
+        for (Command subCommand : this.subCommands) {
+            if (subCommand.getCommand().equals(argument)) {
+                foundSubCommand = subCommand;
+            }
+        }
+        return foundSubCommand;
+    }
 
     protected abstract void handleImpl(MessageReceivedEvent event, String[] argStrings);
 
@@ -86,10 +106,10 @@ public abstract class Command {
     };
 
     public Boolean isAllowed(Member member) {
-        if (this.getPermission().equals("everyone"))
+        if (this.getPermissions().contains("everyone"))
             return true;
         for (Role role : member.getRoles()) {
-            if (role.getName().equals(this.getPermission()))
+            if (this.getPermissions().contains(role.getName()))
                 return true;
         }
         return false;

@@ -10,7 +10,7 @@ import java.util.Random;
 public class LizardCommand extends Command {
     public LizardCommand() {
         setCommand(prefix+"lizard");
-        setPermission("everyone");
+        addPermission("everyone");
         setTopic("images");
         setDescription(":lizard:");
     }
@@ -27,5 +27,11 @@ public class LizardCommand extends Command {
     @Override
     public String getHelp() {
         return null;
+    }
+
+    @Override
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        // TODO Auto-generated method stub
+
     }
 }

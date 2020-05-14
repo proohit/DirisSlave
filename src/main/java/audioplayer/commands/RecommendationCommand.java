@@ -11,29 +11,9 @@ import java.util.Arrays;
 public class RecommendationCommand extends Command {
     public RecommendationCommand() {
         setCommand(prefix + "recommendation");
-        setPermission("everyone");
+        addPermission("everyone");
         setTopic("music");
         setDescription("Get Recommendations based on up to 5 Spotify Tracks");
-    }
-
-    @Override
-    public void handle(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings.length <= 1) {
-            main.Commands.sendMessage(event, getHelp());
-            return;
-        }
-        if (argStrings.length >= 2) {
-            RecommendationHandler recommendationHandler = new RecommendationHandler();
-            String[] searchQuery = extractSearchQueryFromArguments(argStrings);
-            JSONArray tracks = recommendationHandler.getRecommendationsByTrackSearchQuery(searchQuery);
-            final StringBuilder recommendationsString = new StringBuilder();
-            tracks.forEach(trackObject -> {
-                JSONObject track = (JSONObject) trackObject;
-                recommendationsString.append("\n").append("Song name: ").append(track.getString("name"))
-                        .append(", uri: ").append(track.getString("uri")).append("\n");
-            });
-            main.Commands.sendMessage(event, recommendationsString.toString());
-        }
     }
 
     private String[] extractSearchQueryFromArguments(String[] args) {
@@ -50,5 +30,24 @@ public class RecommendationCommand extends Command {
         help.append("<spotify Track ids>");
 
         return help.toString();
+    }
+
+    @Override
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        if (argStrings.length <= 0) {
+            main.Commands.sendMessage(event, getHelp());
+            return;
+        } else {
+            RecommendationHandler recommendationHandler = new RecommendationHandler();
+            String[] searchQuery = extractSearchQueryFromArguments(argStrings);
+            JSONArray tracks = recommendationHandler.getRecommendationsByTrackSearchQuery(searchQuery);
+            final StringBuilder recommendationsString = new StringBuilder();
+            tracks.forEach(trackObject -> {
+                JSONObject track = (JSONObject) trackObject;
+                recommendationsString.append("\n").append("Song name: ").append(track.getString("name"))
+                        .append(", uri: ").append(track.getString("uri")).append("\n");
+            });
+            main.Commands.sendMessage(event, recommendationsString.toString());
+        }
     }
 }

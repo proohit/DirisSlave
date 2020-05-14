@@ -1,88 +1,74 @@
 package main;
 
-import audioplayer.AudioPlayer;
-import audioplayer.commands.*;
-import calculator.CalculatorCommand;
-import imageboards.*;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import util.Command;
-import util.commands.*;
-import weatherservice.WeatherCommand;
-import youtubewatcher.commands.YtWatcherCommand;
-
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
+import audioplayer.AudioPlayer;
+import audioplayer.commands.HistoryCommand;
+import audioplayer.commands.JumptoCommand;
+import audioplayer.commands.PauseCommand;
+import audioplayer.commands.QueueCommand;
+import audioplayer.commands.RecommendationCommand;
+import audioplayer.commands.RemoveCommand;
+import audioplayer.commands.RepeatCommand;
+import audioplayer.commands.ResumeCommand;
+import audioplayer.commands.SeekCommand;
+import audioplayer.commands.ShuffleCommand;
+import audioplayer.commands.SkipCommand;
+import audioplayer.commands.SkiptoCommand;
+import audioplayer.commands.SongStatisticsCommand;
+import audioplayer.commands.StopCommand;
+import audioplayer.commands.play.PlayCommand;
+import audioplayer.commands.playlist.PlaylistCommand;
+import calculator.CalculatorCommand;
+import imageboards.DanbooruCommand;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import util.Command;
+import util.commands.ClearCommand;
+
 public class Commands {
 
-    //TODO ändern in HashMap<util.Command, String>
+    // TODO ändern in HashMap<util.Command, String>
     public static ArrayList<util.Command> permissions = new ArrayList<>();
-    //    public static HashMap<util.Command, String> permissions = new HashMap<>();
+    // public static HashMap<util.Command, String> permissions = new HashMap<>();
     public static AudioPlayer player;
 
     public Commands() {
         player = new AudioPlayer();
 
-        //TODO für jeden command ändern in put(command Objekt, command Objekt.getCommand())
-        permissions.add(new PlayCommand());
+        // TODO für jeden command ändern in put(command Objekt, command
+        // Objekt.getCommand())
         permissions.add(new PlaylistCommand());
-        permissions.add(new HistoryCommand());
-        permissions.add(new SongStatisticsCommand());
-        permissions.add(new SkiptoCommand());
-        permissions.add(new RemoveCommand());
-        permissions.add(new QueueCommand());
-        permissions.add(new StopCommand());
-        permissions.add(new ShuffleCommand());
-        permissions.add(new RepeatCommand());
-        permissions.add(new SeekCommand());
-        permissions.add(new JumptoCommand());
-        permissions.add(new YtWatcherCommand());
-        permissions.add(new SkipCommand());
         permissions.add(new CalculatorCommand());
-        permissions.add(new CoffeeCommand());
-        permissions.add(new DanbooruCommand());
-        permissions.add(new ThighCommand());
-//        permissions.add(pgifCommand);
-//        permissions.add(nekoCommand);
-//        permissions.add(hentaiCommand);
-        permissions.add(new GahCommand());
-        permissions.add(new ClearCommand());
-        permissions.add(new RecipeCommand());
-        permissions.add(new HelpCommand());
-        permissions.add(new RestartCommand());
-        permissions.add(new StatsCommand());
-        permissions.add(new LizardCommand());
-        permissions.add(new WeatherCommand());
+        permissions.add(new HistoryCommand());
+        permissions.add(new JumptoCommand());
         permissions.add(new PauseCommand());
-        permissions.add(new ResumeCommand());
+        permissions.add(new QueueCommand());
         permissions.add(new RecommendationCommand());
-
-    }
-
-    public static boolean isAllowed(Member member, String inputCommand) {
-
-        boolean isAllowed = false;
-        Command currentCommand = permissions.stream().filter(command -> command.getCommand().equals(inputCommand)).findFirst().get();
-        if (currentCommand.getPermission().equals("everyone")) return true;
-        for (Role role : member.getRoles()) {
-            if (role.getName().equals(currentCommand.getPermission()))
-                isAllowed = true;
-        }
-        return isAllowed;
+        permissions.add(new RemoveCommand());
+        permissions.add(new RepeatCommand());
+        permissions.add(new ResumeCommand());
+        permissions.add(new SeekCommand());
+        permissions.add(new ShuffleCommand());
+        permissions.add(new SkipCommand());
+        permissions.add(new SkiptoCommand());
+        permissions.add(new SongStatisticsCommand());
+        permissions.add(new StopCommand());
+        permissions.add(new DanbooruCommand());
+        permissions.add(new ClearCommand());
+        permissions.add(new PlayCommand());
     }
 
     public void handle(MessageReceivedEvent event) {
         String[] argStrings = getArgs(event);
-        //find the command that equals the input string
+        // find the command that equals the input string
         try {
-            Command insertedCommand = permissions.stream().filter(command -> command.getCommand().equals(argStrings[0])).findFirst().get();
-            //when there is no command that suits the input
-            if (insertedCommand == null) return;
-            //check if user is allowed to type command
-            if (!isAllowed(event.getMember(), insertedCommand.getCommand()))
+            Command insertedCommand = permissions.stream().filter(command -> {
+                return command.getCommand().equals(argStrings[0]);
+            }).findFirst().get();
+            // when there is no command that suits the input
+            if (insertedCommand == null)
                 return;
             insertedCommand.handle(event, argStrings);
         } catch (NoSuchElementException e) {

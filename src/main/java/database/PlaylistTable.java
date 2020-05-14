@@ -21,8 +21,10 @@ public class PlaylistTable {
                 playlists.add(new Playlist(rs.getString("name")));
             }
         } catch (SQLException e) {
-            if(!DBManager.connected()) DBManager.connect();
-            e.printStackTrace();        }
+            if (!DBManager.connected())
+                DBManager.connect();
+            e.printStackTrace();
+        }
         return playlists;
     }
 
@@ -33,35 +35,45 @@ public class PlaylistTable {
             return stmt.executeUpdate("DELETE FROM playlist WHERE name='" + playlist + "'");
 
         } catch (SQLException e) {
-            if(!DBManager.connected()) DBManager.connect();
-            e.printStackTrace();        }
+            if (!DBManager.connected())
+                DBManager.connect();
+            e.printStackTrace();
+        }
         return 0;
     }
 
-    public static int createPlaylist(String name) {
+    public static Playlist createPlaylist(String name) {
+        Playlist createdPlaylist = null;
         try {
             Connection con = DBManager.connect();
 
             Statement stmt = con.createStatement();
-            return stmt.executeUpdate("INSERT INTO playlist(name) VALUES('" + name + "')");
+            stmt.executeUpdate("INSERT INTO playlist(name) VALUES('" + name + "')");
+            createdPlaylist = getPlaylist(name);
 
         } catch (SQLException e) {
-            if(!DBManager.connected()) DBManager.connect();
-            e.printStackTrace();        }
-        return 0;
+            if (!DBManager.connected())
+                DBManager.connect();
+            e.printStackTrace();
+        }
+
+        return createdPlaylist;
     }
 
     public static Playlist getPlaylist(String name) {
-        Playlist playlist;
+        Playlist playlist = null;
         try {
             Connection con = DBManager.connect();
 
             Statement stmt = con.createStatement();
-            ResultSet rs=stmt.executeQuery("SELECT * FROM playlist WHERE name='"+name+"'");
-            if(rs.next()) return new Playlist(rs.getString("name"));
+            ResultSet rs = stmt.executeQuery("SELECT * FROM playlist WHERE name='" + name + "'");
+            if (rs.next())
+                playlist = new Playlist(rs.getString("name"));
         } catch (SQLException e) {
-            if(!DBManager.connected()) DBManager.connect();
-            e.printStackTrace();        }
-        return null;
+            if (!DBManager.connected())
+                DBManager.connect();
+            e.printStackTrace();
+        }
+        return playlist;
     }
 }
