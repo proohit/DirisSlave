@@ -36,15 +36,15 @@ public class PlayCommand extends Command {
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
 
-        if (argStrings.length <= 1) {
+        if (argStrings.length < 1) {
             main.Commands.sendMessage(event, getHelp());
             return;
         }
-        if (argStrings.length >= 2) {
+        if (argStrings.length >= 1) {
             String trackUrl = "";
-            if (!(argStrings[1].contains("http") || argStrings[1].contains("https"))) {
+            if (!(argStrings[0].contains("http") || argStrings[0].contains("https"))) {
                 trackUrl = "ytsearch: ";
-                for (int i = 1; i < argStrings.length; i++) {
+                for (int i = 0; i < argStrings.length; i++) {
                     trackUrl += argStrings[i] + " ";
                 }
             } else {
