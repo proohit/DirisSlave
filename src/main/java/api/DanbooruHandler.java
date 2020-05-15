@@ -1,12 +1,10 @@
-package imageboards.apis;
+package api;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-import api.DanbooruApi;
-import api.DanbooruUrlFactory;
+import exceptions.ImageNotFoundException;
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
 
@@ -21,19 +19,25 @@ public class DanbooruHandler extends DanbooruApi {
     final String QUERY_TAGS_SEARCH_NAME_MATCHES = "search[name_matches]";
     final String TAG_NAME = "name";
 
-    public String getImageByQuery(String tag) {
+    public String getImageByQuery(String tag) throws ImageNotFoundException {
         JSONArray response = this.baseGetRequest(DanbooruUrlFactory.getPostsUrl())
                 .queryString(QUERY_ENCODING, "%E2%9C%93").queryString(QUERY_LIMIT, "200").queryString(QUERY_TAGS, tag)
                 .asJson().getBody().getArray();
+        if (response.length() < 1) {
+            throw new ImageNotFoundException();
+        }
         JSONObject randomPostOfReponse = getRandomPost(response);
         String imageUrl = getImageUrlOfPost(randomPostOfReponse);
         return imageUrl;
     }
 
-    public String getImageByQuery(String tag1, String tag2) {
+    public String getImageByQuery(String tag1, String tag2) throws ImageNotFoundException {
         JSONArray response = this.baseGetRequest(DanbooruUrlFactory.getPostsUrl())
                 .queryString(QUERY_ENCODING, "%E2%9C%93").queryString(QUERY_LIMIT, "200")
                 .queryString(QUERY_TAGS, new String[] { tag1, tag2 }).asJson().getBody().getArray();
+        if (response.length() < 1) {
+            throw new ImageNotFoundException();
+        }
         JSONObject randomPostOfReponse = getRandomPost(response);
         String imageUrl = getImageUrlOfPost(randomPostOfReponse);
         return imageUrl;
@@ -49,20 +53,13 @@ public class DanbooruHandler extends DanbooruApi {
         return (JSONObject) posts.get(rand);
     }
 
-    public ArrayList<String> getTagsByQuery(String query) {
+    public JSONArray getTagsByQuery(String query) {
         Map<String, Object> queryStrings = new HashMap<>();
         queryStrings.put(QUERY_TAGS_SEARCH_HIDE_EMPTY, "true");
         queryStrings.put(QUERY_TAGS_SEARCH_ORDER, "count");
         queryStrings.put(QUERY_TAGS_SEARCH_NAME_MATCHES, "*" + query + "*");
         JSONArray response = this.baseGetRequest(DanbooruUrlFactory.getTagsUrl()).queryString(queryStrings).asJson()
                 .getBody().getArray();
-        final ArrayList<String> tags = new ArrayList<>();
-        response.forEach(tagObject -> {
-            JSONObject tag = (JSONObject) tagObject;
-            tags.add(tag.getString(TAG_NAME));
-        });
-
-        return tags;
-
+        return response;
     }
 }
