@@ -21,7 +21,10 @@ import audioplayer.commands.StopCommand;
 import audioplayer.commands.play.PlayCommand;
 import audioplayer.commands.playlist.PlaylistCommand;
 import calculator.CalculatorCommand;
+import imageboards.CoffeeCommand;
 import imageboards.DanbooruCommand;
+import imageboards.GahCommand;
+import imageboards.ThighCommand;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.Command;
@@ -58,6 +61,9 @@ public class Commands {
         permissions.add(new DanbooruCommand());
         permissions.add(new ClearCommand());
         permissions.add(new PlayCommand());
+        permissions.add(new ThighCommand());
+        permissions.add(new GahCommand());
+        permissions.add(new CoffeeCommand());
     }
 
     public void handle(MessageReceivedEvent event) {
@@ -73,6 +79,10 @@ public class Commands {
             insertedCommand.handle(event, argStrings);
         } catch (NoSuchElementException e) {
         }
+    }
+
+    public static void registerCommand(Command commandToRegister) {
+        permissions.add(commandToRegister);
     }
 
     public static void sendMessage(MessageReceivedEvent event, String text) {

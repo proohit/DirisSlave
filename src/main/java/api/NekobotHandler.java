@@ -1,7 +1,5 @@
-package imageboards.apis;
+package api;
 
-import api.NekobotApi;
-import api.NekobotUrlFactory;
 import kong.unirest.json.JSONObject;
 
 public class NekobotHandler extends NekobotApi {

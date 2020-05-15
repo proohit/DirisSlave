@@ -1,9 +1,9 @@
 package imageboards;
 
+import api.NekobotHandler;
 import main.Commands;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.Command;
-import util.UrlHandler;
 
 public class CoffeeCommand extends Command {
     public CoffeeCommand() {
@@ -25,6 +25,8 @@ public class CoffeeCommand extends Command {
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
-        Commands.sendMessage(event, UrlHandler.getImage("https://nekobot.xyz/api/image?type=coffee"));
+        NekobotHandler nekobotHandler = new NekobotHandler();
+        String imageUrl = nekobotHandler.getCoffeImage();
+        Commands.sendMessage(event, imageUrl);
     }
 }
