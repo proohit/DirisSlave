@@ -8,7 +8,7 @@ import exceptions.ImageNotFoundException;
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
 
-public class DanbooruHandler extends DanbooruApi {
+public class DanbooruHandler extends BasicApi {
 
     final String QUERY_LIMIT = "limit";
     final String QUERY_ENCODING = "utf8";

@@ -6,7 +6,7 @@ import kong.unirest.HttpRequest;
 import kong.unirest.HttpRequestWithBody;
 import kong.unirest.Unirest;
 
-public abstract class SpotifyApi implements BaseApi {
+public class SpotifyApi extends BasicApi {
     protected TokenHandler tokenHandler = TokenHandler.getInstance();
 
     /**
@@ -23,10 +23,12 @@ public abstract class SpotifyApi implements BaseApi {
         return request.header("Authorization", "Bearer " + tokenHandler.getToken());
     }
 
+    @Override
     public GetRequest baseGetRequest(String url) {
         return buildHeaders(Unirest.get(url));
     }
 
+    @Override
     public HttpRequestWithBody basePostRequest(String url) {
         return buildHeaders(Unirest.post(url));
     }

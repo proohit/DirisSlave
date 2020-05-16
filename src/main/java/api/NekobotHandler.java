@@ -2,7 +2,7 @@ package api;
 
 import kong.unirest.json.JSONObject;
 
-public class NekobotHandler extends NekobotApi {
+public class NekobotHandler extends BasicApi {
 
     final String QUERY_TYPE = "type";
     final String QUERY_TYPE_COFFEE = "coffee";
