@@ -24,6 +24,7 @@ import calculator.CalculatorCommand;
 import imageboards.CoffeeCommand;
 import imageboards.DanbooruCommand;
 import imageboards.GahCommand;
+import imageboards.LizardCommand;
 import imageboards.ThighCommand;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -66,6 +67,7 @@ public class Commands {
         permissions.add(new GahCommand());
         permissions.add(new CoffeeCommand());
         permissions.add(new WeatherCommand());
+        permissions.add(new LizardCommand());
     }
 
     public void handle(MessageReceivedEvent event) {

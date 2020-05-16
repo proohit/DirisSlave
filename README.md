@@ -44,9 +44,10 @@ createConfig.sh
 
 ```shell script
 createConfig.sh
-    --jdatoken <token>
-    --spotifyClientId <clientId>
-    --spotifyClientSecret <clientSecret>
-    --owmappid <OpenWeatherMapAppId>
+    --jdatoken <JDA Token>
+    [--spotifyClientId <clientId>]
+    [--spotifyClientSecret <clientSecret>]
+    [--owmappid <OpenWeatherMapAppId>]
+    [--pixabaykey <PixabayKey>]
     -o <output directory>
 ```

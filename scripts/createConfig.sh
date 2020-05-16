@@ -23,6 +23,11 @@ case $key in
     shift # past argument
     shift # past value
     ;;
+    --pixabaykey)
+    PixabayKey="$2"
+    shift # past argument
+    shift # past value
+    ;;
     -o)
     output="$2"
     shift # past argument
@@ -45,3 +50,4 @@ echo JDAToken=$JDAToken >> config.properties
 echo SpotifyClientId=$SpotifyClientId >> config.properties
 echo SpotifyClientSecret=$SpotifyClientSecret >> config.properties
 echo OWMAppid=$OWMAppid >> config.properties
+echo PixabayKey=$PixabayKey >> config.properties

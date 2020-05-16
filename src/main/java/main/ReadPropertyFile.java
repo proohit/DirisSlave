@@ -42,4 +42,8 @@ public class ReadPropertyFile {
         return prop.getProperty("OWMAppid");
     }
 
+	public String getPixabayKey() {
+        return prop.getProperty("PixabayKey");
+	}
+
 }

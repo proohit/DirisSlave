@@ -8,7 +8,7 @@ public class BasicApi {
     /**
      * 
      */
-    public GetRequest baseGetRequest(String url) {
+    protected GetRequest baseGetRequest(String url) {
         return Unirest.get(url);
     }
 
@@ -18,7 +18,7 @@ public class BasicApi {
      * @param url
      * @return
      */
-    public HttpRequestWithBody basePostRequest(String url) {
+    protected HttpRequestWithBody basePostRequest(String url) {
         return Unirest.post(url);
     }
 }
