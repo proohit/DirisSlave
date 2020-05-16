@@ -38,4 +38,8 @@ public class ReadPropertyFile {
         return prop.getProperty("SpotifyClientSecret");
     }
 
+    public String getOpenWeatherMapsAppId() {
+        return prop.getProperty("OWMAppid");
+    }
+
 }
