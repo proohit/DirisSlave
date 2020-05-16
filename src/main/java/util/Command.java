@@ -64,12 +64,13 @@ public abstract class Command {
         if (isAllowed(event.getMember())) {
             if (cutArguments.length < 1) {
                 handleImpl(event, cutArguments);
-            }
-            Command foundSubCommand = findSubCommand(cutArguments[0]);
-            if (foundSubCommand == null) {
-                handleImpl(event, cutArguments);
             } else {
-                foundSubCommand.handle(event, cutArguments);
+                Command foundSubCommand = findSubCommand(cutArguments[0]);
+                if (foundSubCommand == null) {
+                    handleImpl(event, cutArguments);
+                } else {
+                    foundSubCommand.handle(event, cutArguments);
+                }
             }
         }
     }
