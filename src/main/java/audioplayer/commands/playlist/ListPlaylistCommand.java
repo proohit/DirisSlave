@@ -1,13 +1,14 @@
 package audioplayer.commands.playlist;
 
+import static main.Commands.sendBeautifulMessage;
+
 import java.util.ArrayList;
 
 import database.Playlist;
 import database.PlaylistTable;
 import database.SongPlaylistTable;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import util.Command;
-import static main.Commands.sendBeautifulMessage;;
+import util.Command;;
 
 public class ListPlaylistCommand extends Command {
     public ListPlaylistCommand() {
@@ -22,7 +23,7 @@ public class ListPlaylistCommand extends Command {
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
         if (argStrings.length == 0) {
-            ArrayList<Playlist> playlists = (ArrayList) PlaylistTable.getPlaylists();
+            ArrayList<Playlist> playlists = (ArrayList<Playlist>) PlaylistTable.getPlaylists();
             if (playlists.size() == 0) {
                 sendBeautifulMessage(event, "no playlists found");
                 return;

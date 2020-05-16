@@ -1,6 +1,8 @@
 package audioplayer.commands.play;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import audioplayer.spotify.RecommendationHandler;
@@ -27,7 +29,7 @@ public class PlayRecommendedCommand extends Command {
         RecommendationHandler recommendationHandler = new RecommendationHandler();
         String[] searchQuery = extractSearchQueryFromArguments(argStrings);
         JSONArray recommendedTracksJson = recommendationHandler.getRecommendationsByTrackSearchQuery(searchQuery);
-        List<JSONObject> recommendedTracks = recommendedTracksJson.toList();
+        List<JSONObject> recommendedTracks = castList(JSONObject.class, recommendedTracksJson.toList());
         if (recommendedTracks.size() == 0) {
             Commands.sendBeautifulMessage(event, "No recommendations found...");
             return;
@@ -43,5 +45,12 @@ public class PlayRecommendedCommand extends Command {
 
     private String[] extractSearchQueryFromArguments(String[] args) {
         return Arrays.copyOfRange(args, 0, args.length);
+    }
+
+    public static <T> List<T> castList(Class<? extends T> clazz, Collection<?> c) {
+        List<T> r = new ArrayList<T>(c.size());
+        for (Object o : c)
+            r.add(clazz.cast(o));
+        return r;
     }
 }

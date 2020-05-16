@@ -1,11 +1,5 @@
 package audioplayer.commands.play;
 
-import java.util.Arrays;
-import java.util.List;
-
-import audioplayer.spotify.RecommendationHandler;
-import kong.unirest.json.JSONArray;
-import kong.unirest.json.JSONObject;
 import main.Commands;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.Command;

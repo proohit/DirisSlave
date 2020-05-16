@@ -9,6 +9,15 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 
 public abstract class Command {
+
+    protected Command() {
+
+    }
+
+    protected Command(String topic) {
+        setTopic(topic);
+    }
+
     protected String prefix = ".";
     String command;
     String description;

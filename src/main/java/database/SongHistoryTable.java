@@ -18,7 +18,8 @@ public class SongHistoryTable {
             DBManager.setDebug(false);
             con = DBManager.connect();
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT count(songId),songId, songs.title FROM `HistorySongs`,`songs` where HistorySongs.songId = songs.id group by songId order by count(songId) desc limit 10");
+            rs = stmt.executeQuery(
+                    "SELECT count(songId),songId, songs.title FROM `HistorySongs`,`songs` where HistorySongs.songId = songs.id group by songId order by count(songId) desc limit 10");
             while (rs.next()) {
                 statistics.put(SongTable.getSongById(rs.getInt("songId")), rs.getInt("count(songId)"));
             }
@@ -32,8 +33,8 @@ public class SongHistoryTable {
                 DBManager.setDebug(true);
             } catch (SQLException e) {
             }
-            return statistics;
         }
+        return statistics;
     }
 
     public static Map<Integer, Song> getLastSongs() {
@@ -50,7 +51,8 @@ public class SongHistoryTable {
                 songs.put(rs.getInt("historyId"), song);
             }
         } catch (SQLException e) {
-            if (!DBManager.connected()) DBManager.connect();
+            if (!DBManager.connected())
+                DBManager.connect();
             e.printStackTrace();
         }
         return songs;
@@ -64,7 +66,8 @@ public class SongHistoryTable {
             stmt.executeUpdate("INSERT INTO Song_history(songId) VALUES (" + song.getId() + ")");
 
         } catch (SQLException e) {
-            if (!DBManager.connected()) DBManager.connect();
+            if (!DBManager.connected())
+                DBManager.connect();
             e.printStackTrace();
         }
     }
@@ -75,10 +78,12 @@ public class SongHistoryTable {
             Connection con = DBManager.connect();
 
             Statement stmt = con.createStatement();
-            if (stmt.executeQuery("SELECT * FROM Song_history where songId=" + song.getId()).next()) hasEntry = true;
+            if (stmt.executeQuery("SELECT * FROM Song_history where songId=" + song.getId()).next())
+                hasEntry = true;
 
         } catch (SQLException e) {
-            if (!DBManager.connected()) DBManager.connect();
+            if (!DBManager.connected())
+                DBManager.connect();
             e.printStackTrace();
         }
         return hasEntry;
@@ -91,7 +96,8 @@ public class SongHistoryTable {
             Statement stmt = con.createStatement();
             stmt.executeUpdate("UPDATE Song_history set timestamp = CURRENT_TIMESTAMP WHERE songId=" + song.getId());
         } catch (SQLException e) {
-            if (!DBManager.connected()) DBManager.connect();
+            if (!DBManager.connected())
+                DBManager.connect();
             e.printStackTrace();
         }
     }

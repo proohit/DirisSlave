@@ -4,7 +4,6 @@ import api.NekobotHandler;
 import main.Commands;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.Command;
-import util.UrlHandler;
 
 public class GahCommand extends Command {
     public GahCommand() {

@@ -15,15 +15,19 @@ public abstract class SpotifyApi implements BaseApi {
      * @param request Request to add authentication headers to
      * @return
      */
-    private HttpRequest buildHeaders(HttpRequest request) {
+    private HttpRequestWithBody buildHeaders(HttpRequestWithBody request) {
+        return request.header("Authorization", "Bearer " + tokenHandler.getToken());
+    }
+
+    private GetRequest buildHeaders(HttpRequest<GetRequest> request) {
         return request.header("Authorization", "Bearer " + tokenHandler.getToken());
     }
 
     public GetRequest baseGetRequest(String url) {
-        return (GetRequest) buildHeaders(Unirest.get(url));
+        return buildHeaders(Unirest.get(url));
     }
 
     public HttpRequestWithBody basePostRequest(String url) {
-        return (HttpRequestWithBody) buildHeaders(Unirest.post(url));
+        return buildHeaders(Unirest.post(url));
     }
 }
