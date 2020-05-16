@@ -29,6 +29,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.Command;
 import util.commands.ClearCommand;
+import weatherservice.WeatherCommand;
 
 public class Commands {
 
@@ -64,6 +65,7 @@ public class Commands {
         permissions.add(new ThighCommand());
         permissions.add(new GahCommand());
         permissions.add(new CoffeeCommand());
+        permissions.add(new WeatherCommand());
     }
 
     public void handle(MessageReceivedEvent event) {
