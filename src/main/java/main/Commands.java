@@ -2,6 +2,7 @@ package main;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
+import java.util.function.Consumer;
 
 import audioplayer.AudioPlayer;
 import audioplayer.commands.HistoryCommand;
@@ -26,55 +27,55 @@ import imageboards.DanbooruCommand;
 import imageboards.GahCommand;
 import imageboards.LizardCommand;
 import imageboards.ThighCommand;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.Command;
 import util.commands.ClearCommand;
+import util.commands.HelpCommand;
 import weatherservice.WeatherCommand;
 
 public class Commands {
 
     // TODO ändern in HashMap<util.Command, String>
-    public static ArrayList<util.Command> permissions = new ArrayList<>();
+    public static ArrayList<util.Command> registeredCommands = new ArrayList<>();
     // public static HashMap<util.Command, String> permissions = new HashMap<>();
     public static AudioPlayer player;
 
     public Commands() {
         player = new AudioPlayer();
-
-        // TODO für jeden command ändern in put(command Objekt, command
-        // Objekt.getCommand())
-        permissions.add(new PlaylistCommand());
-        permissions.add(new CalculatorCommand());
-        permissions.add(new HistoryCommand());
-        permissions.add(new JumptoCommand());
-        permissions.add(new PauseCommand());
-        permissions.add(new QueueCommand());
-        permissions.add(new RecommendationCommand());
-        permissions.add(new RemoveCommand());
-        permissions.add(new RepeatCommand());
-        permissions.add(new ResumeCommand());
-        permissions.add(new SeekCommand());
-        permissions.add(new ShuffleCommand());
-        permissions.add(new SkipCommand());
-        permissions.add(new SkiptoCommand());
-        permissions.add(new SongStatisticsCommand());
-        permissions.add(new StopCommand());
-        permissions.add(new DanbooruCommand());
-        permissions.add(new ClearCommand());
-        permissions.add(new PlayCommand());
-        permissions.add(new ThighCommand());
-        permissions.add(new GahCommand());
-        permissions.add(new CoffeeCommand());
-        permissions.add(new WeatherCommand());
-        permissions.add(new LizardCommand());
+        registeredCommands.add(new PlaylistCommand());
+        registeredCommands.add(new CalculatorCommand());
+        registeredCommands.add(new HistoryCommand());
+        registeredCommands.add(new JumptoCommand());
+        registeredCommands.add(new PauseCommand());
+        registeredCommands.add(new QueueCommand());
+        registeredCommands.add(new RecommendationCommand());
+        registeredCommands.add(new RemoveCommand());
+        registeredCommands.add(new RepeatCommand());
+        registeredCommands.add(new ResumeCommand());
+        registeredCommands.add(new SeekCommand());
+        registeredCommands.add(new ShuffleCommand());
+        registeredCommands.add(new SkipCommand());
+        registeredCommands.add(new SkiptoCommand());
+        registeredCommands.add(new SongStatisticsCommand());
+        registeredCommands.add(new StopCommand());
+        registeredCommands.add(new DanbooruCommand());
+        registeredCommands.add(new ClearCommand());
+        registeredCommands.add(new PlayCommand());
+        registeredCommands.add(new ThighCommand());
+        registeredCommands.add(new GahCommand());
+        registeredCommands.add(new CoffeeCommand());
+        registeredCommands.add(new WeatherCommand());
+        registeredCommands.add(new LizardCommand());
+        registeredCommands.add(new HelpCommand());
     }
 
     public void handle(MessageReceivedEvent event) {
         String[] argStrings = getArgs(event);
         // find the command that equals the input string
         try {
-            Command insertedCommand = permissions.stream().filter(command -> {
+            Command insertedCommand = registeredCommands.stream().filter(command -> {
                 return command.getCommand().equals(argStrings[0]);
             }).findFirst().get();
             // when there is no command that suits the input
@@ -86,11 +87,15 @@ public class Commands {
     }
 
     public static void registerCommand(Command commandToRegister) {
-        permissions.add(commandToRegister);
+        registeredCommands.add(commandToRegister);
     }
 
     public static void sendMessage(MessageReceivedEvent event, String text) {
         event.getChannel().sendMessage(text).queue();
+    }
+
+    public static void sendMessage(MessageReceivedEvent event, String text, Consumer<? super Message> callback) {
+        event.getChannel().sendMessage(text).queue(callback);
     }
 
     public static void sendMessage(TextChannel channel, String text) {

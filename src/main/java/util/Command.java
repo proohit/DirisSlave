@@ -3,10 +3,11 @@ package util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public abstract class Command {
 
@@ -31,7 +32,7 @@ public abstract class Command {
         this.permission.add(permissionToAdd);
     }
 
-    protected List<String> getPermissions() {
+    public List<String> getPermissions() {
         return this.permission;
     }
 
@@ -123,6 +124,11 @@ public abstract class Command {
                 return true;
         }
         return false;
+    }
+
+    public List<Command> getAllowedCommands(Member member) {
+        return this.subCommands.stream().filter(command -> command.isAllowed(member))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     protected String[] cutArguments(String[] args, int startIndex, int endIndex) {
