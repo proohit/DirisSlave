@@ -37,9 +37,7 @@ import weatherservice.WeatherCommand;
 
 public class Commands {
 
-    // TODO ändern in HashMap<util.Command, String>
     public static ArrayList<util.Command> registeredCommands = new ArrayList<>();
-    // public static HashMap<util.Command, String> permissions = new HashMap<>();
     public static AudioPlayer player;
 
     public Commands() {

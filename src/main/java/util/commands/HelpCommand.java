@@ -26,41 +26,6 @@ public class HelpCommand extends Command {
         addPermission("everyone");
         setTopic("util");
         setDescription("lists options for tags [arguments]");
-        // final StringBuilder help = new StringBuilder();
-
-        // if (argStrings.length == 2) {
-        // ArrayList<Command> allowList = new ArrayList<>();
-        // Commands.permissions.stream().filter(command ->
-        // Commands.isAllowed(event.getMember(), command.getCommand())).forEach(command
-        // -> allowList.add(command));
-        // try {
-        // Command requestedCommand = allowList.stream().filter(command ->
-        // command.getCommand().equals(prefix + argStrings[1])).findFirst().get();
-        // help.append(requestedCommand.getHelp());
-        // } catch (NoSuchElementException e) {
-
-        // }
-        // } else {
-        // ArrayList<Command> allowList = new ArrayList<>();
-        // Commands.permissions.stream().filter(command ->
-        // Commands.isAllowed(event.getMember(), command.getCommand())).forEach(command
-        // -> allowList.add(command));
-        // Map<String, List<Command>> topics =
-        // allowList.stream().collect(Collectors.groupingBy(Command::getTopic));
-
-        // help.append("__**Welcome, master ");
-        // help.append(event.getAuthor().getName());
-        // help.append("!**__\n\n");
-        // topics.keySet().stream().forEach(topic -> {
-        // help.append("***" + topic + "*** functions" + "\n");
-        // topics.get(topic).stream().forEach(command -> help.append("\t" +
-        // command.getCommand() + " - " + command.getDescription() + "\n"));
-        // });
-
-        // help.append("\n If you find any bugs or have feature suggestions, pm me or
-        // send an email to direnc99@gmail.com. I will look into it A$AP.");
-        // }
-        // main.Commands.sendMessage(event, help.toString());
     }
 
     public static HelpCommand getInstance() {
@@ -73,7 +38,7 @@ public class HelpCommand extends Command {
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
         if (argStrings.length > 1) {
-            
+            // TODO implement command specific help
         } else {
             List<Command> allowedCommands = getAllAllowedCommands(event.getMember());
             StringBuilder helpString = new StringBuilder();
@@ -148,6 +113,8 @@ public class HelpCommand extends Command {
                 pageHelpString.append("\n");
             });
         });
+        pageHelpString.append(
+                "\n If you find any bugs or have feature suggestions, pm me or send an email to direnc99@gmail.com. I will look into it A$AP.");
         return pageHelpString.toString();
 
     }
