@@ -33,25 +33,23 @@ public class MyEventListener extends ListenerAdapter {
 
     @Override
     public void onMessageReactionAdd(MessageReactionAddEvent event) {
-        String ARROW_LEFT = "U+25c0U+fe0f";
-        String ARROW_RIGHT = "U+25b6U+fe0f";
-
-        if (event.getUser().isBot())
+        if (event.getUser().isBot()) {
             return;
-        String emoji = event.getReaction().getReactionEmote().getAsCodepoints();
-        if (emoji.equals(ARROW_LEFT) || emoji.equals(ARROW_RIGHT)) {
-            HelpCommand.handlePageRequest(event);
+        } else {
+            HelpCommand.getInstance().handlePageRequest(event);
         }
     }
 
     @Override
     public void onMessageReactionRemove(MessageReactionRemoveEvent event) {
-        Message lastSentHelpMessage = HelpCommand.getLastSentHelpMessage();
+        HelpCommand helpCommand = HelpCommand.getInstance();
+        Message lastSentHelpMessage = helpCommand.getLastSentHelpMessage();
         if (lastSentHelpMessage == null) {
             return;
         }
         if (event.getMessageId().equals(lastSentHelpMessage.getId())) {
             lastSentHelpMessage.addReaction(event.getReactionEmote().getEmoji()).queue();
+            helpCommand.handlePageRequest(event);
         }
     }
 

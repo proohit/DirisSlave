@@ -11,14 +11,6 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public abstract class Command {
 
-    protected Command() {
-
-    }
-
-    protected Command(String topic) {
-        setTopic(topic);
-    }
-
     protected String prefix = ".";
     String command;
     String description;
@@ -27,6 +19,14 @@ public abstract class Command {
     ArrayList<Command> subCommands = new ArrayList<>();
 
     String topic;
+
+    protected Command() {
+
+    }
+
+    protected Command(String topic) {
+        setTopic(topic);
+    }
 
     public void addPermission(String permissionToAdd) {
         this.permission.add(permissionToAdd);

@@ -68,7 +68,7 @@ public class Commands {
         registeredCommands.add(new CoffeeCommand());
         registeredCommands.add(new WeatherCommand());
         registeredCommands.add(new LizardCommand());
-        registeredCommands.add(new HelpCommand());
+        registeredCommands.add(HelpCommand.getInstance());
     }
 
     public void handle(MessageReceivedEvent event) {
