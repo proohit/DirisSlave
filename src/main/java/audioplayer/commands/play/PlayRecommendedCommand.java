@@ -16,8 +16,8 @@ public class PlayRecommendedCommand extends Command {
     public PlayRecommendedCommand() {
         setCommand("recommended");
         setTopic("music");
-        setDescription("Play music by adding a search-term or by adding a link");
-        setHelpString("");
+        setDescription("Play music based on recommendations for provided search term");
+        setHelpString("<search term to search for on spotify>");
         this.addPermission("everyone");
     }
 

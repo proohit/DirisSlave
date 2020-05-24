@@ -10,8 +10,8 @@ public class RemoveFromPlaylistCommand extends Command {
 
     public RemoveFromPlaylistCommand() {
         this.setCommand("remove");
-        this.setDescription("");
-        this.setHelpString("");
+        this.setDescription("removes the given index from the playlist");
+        this.setHelpString("<playlist name> <index of song in playlist. type playlist list playlistname to get indexes>\n");
         this.setTopic("music");
 
         this.addPermission("everyone");

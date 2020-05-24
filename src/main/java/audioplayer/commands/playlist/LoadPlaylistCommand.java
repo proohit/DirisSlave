@@ -8,8 +8,8 @@ import util.Command;
 public class LoadPlaylistCommand extends Command {
     public LoadPlaylistCommand() {
         this.setCommand("load");
-        this.setDescription("");
-        this.setHelpString("");
+        this.setDescription("loads the playlist in the queue");
+        this.setHelpString("<playlist name>\n");
         this.setTopic("music");
 
         this.addPermission("everyone");

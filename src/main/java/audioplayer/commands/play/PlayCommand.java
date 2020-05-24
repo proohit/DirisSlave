@@ -9,22 +9,10 @@ public class PlayCommand extends Command {
         setCommand(this.prefix + "pl");
         setTopic("music");
         setDescription("Play music by adding a search-term or by adding a link");
-
+        setHelpString("<youtube search term> | <youtube url>" + "\n");
         this.addSubCommand(new PlayRecommendedCommand());
 
         this.addPermission("everyone");
-    }
-
-    @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
-
-        help.append("***" + getCommand() + "***");
-        help.append(" - " + getDescription() + "\n");
-
-        help.append("<search term>");
-
-        return help.toString();
     }
 
     @Override

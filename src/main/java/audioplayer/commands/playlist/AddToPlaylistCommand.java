@@ -17,8 +17,8 @@ import static main.Commands.sendBeautifulMessage;
 public class AddToPlaylistCommand extends Command {
     public AddToPlaylistCommand() {
         this.setCommand("addto");
-        this.setDescription("");
-        this.setHelpString("");
+        this.setDescription("Searches for a song with the keywords and adds it to the given playlist");
+        this.setHelpString("<playlist name> <keywords>\n");
         this.setTopic("music");
 
         this.addPermission("everyone");

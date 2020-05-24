@@ -8,8 +8,8 @@ import util.Command;
 public class DeletePlaylistCommand extends Command {
     public DeletePlaylistCommand() {
         this.setCommand("delete");
-        this.setDescription("");
-        this.setHelpString("");
+        this.setDescription("Deletes the playlist with the given name");
+        this.setHelpString("<playlist name>\n");
         this.setTopic("music");
 
         this.addPermission("everyone");

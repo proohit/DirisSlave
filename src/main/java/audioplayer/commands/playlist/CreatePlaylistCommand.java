@@ -9,8 +9,8 @@ public class CreatePlaylistCommand extends Command {
 
     public CreatePlaylistCommand() {
         this.setCommand("create");
-        this.setDescription("description");
-        this.setHelpString("");
+        this.setDescription("creates a new empty playlist with the given name");
+        this.setHelpString("<playlist name>\n");
         this.addPermission("everyone");
     }
 

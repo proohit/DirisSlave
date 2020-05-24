@@ -13,10 +13,10 @@ import util.Command;;
 public class ListPlaylistCommand extends Command {
     public ListPlaylistCommand() {
         this.setCommand("list");
-        this.setDescription("");
+        this.setDescription("lists all playlists or the songs of a playlist");
         this.setHelpString("");
         this.setTopic("music");
-
+        setHelpString("[playlist name, optional]\n");
         this.addPermission("everyone");
     }
 

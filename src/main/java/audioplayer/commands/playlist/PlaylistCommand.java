@@ -8,7 +8,7 @@ public class PlaylistCommand extends Command {
         setCommand(prefix + "playlist");
         setTopic("music");
         setDescription("lists options regarding playlists");
-
+        setHelpString("");
         this.addSubCommand(new CreatePlaylistCommand());
         this.addSubCommand(new DeletePlaylistCommand());
         this.addSubCommand(new LoadPlaylistCommand());
@@ -18,25 +18,6 @@ public class PlaylistCommand extends Command {
         this.addSubCommand(new RemoveFromPlaylistCommand());
 
         this.addPermission("everyone");
-    }
-
-    @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
-
-        help.append("***" + getCommand() + "***");
-        help.append(" - " + getDescription() + "\n");
-
-        help.append("list [playlist name, optional]\n");
-        help.append("create <playlist name>\n");
-        help.append("load <playlist name>\n");
-        help.append("delete <playlist name>\n");
-        help.append("addto <playlist name> <keywords>\n");
-        help.append(
-                "remove <playlist name> <index of song in playlist. type playlist list playlistname to get indexes>\n");
-        help.append("savehistory <playlist name>\n");
-
-        return help.toString();
     }
 
     @Override
