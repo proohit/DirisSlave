@@ -15,7 +15,7 @@ public abstract class Command {
     String command;
     String description;
     ArrayList<String> permission = new ArrayList<>();
-    String helpString;
+    String helpString = "";
     ArrayList<Command> subCommands = new ArrayList<>();
 
     String topic;
@@ -76,7 +76,7 @@ public abstract class Command {
         }
     }
 
-    private Command findSubCommand(String argument) {
+    public Command findSubCommand(String argument) {
         Command foundSubCommand = null;
         for (Command subCommand : this.subCommands) {
             if (subCommand.getCommand().equals(argument)) {
@@ -91,10 +91,12 @@ public abstract class Command {
     public String getHelp() {
         final StringBuilder helpString = new StringBuilder();
 
-        helpString.append(this.helpString).append("\n");
-
+        helpString.append(this.helpString).append("\n\n");
+        if (!this.subCommands.isEmpty()) {
+            helpString.append("available subcommands:").append("\n");
+        }
         this.subCommands.forEach(subCommand -> {
-            helpString.append(subCommand.getHelp()).append("\n");
+            helpString.append(subCommand.getCommand()).append(" - ").append(subCommand.getDescription()).append("\n");
         });
 
         return helpString.toString();
@@ -105,7 +107,9 @@ public abstract class Command {
     }
 
     public void setHelpString(String helpString) {
-        this.helpString = helpString;
+        this.helpString += "***" + getCommand() + "***";
+        this.helpString += " - " + getDescription() + "\n";
+        this.helpString += helpString;
     }
 
     public ArrayList<Command> getSubCommands() {

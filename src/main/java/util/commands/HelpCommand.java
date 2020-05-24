@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import main.Commands;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.GenericMessageReactionEvent;
 import util.Command;
@@ -37,25 +38,48 @@ public class HelpCommand extends Command {
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings.length > 1) {
-            // TODO implement command specific help
-        } else {
+        if (argStrings.length >= 1) {
             List<Command> allowedCommands = getAllAllowedCommands(event.getMember());
-            StringBuilder helpString = new StringBuilder();
+            try {
+                Command requestedCommand = allowedCommands.stream().filter(
+                        registeredCommand -> registeredCommand.getCommand().replace(prefix, "").equals(argStrings[0]))
+                        .findFirst().get();
+                for (int subCommandIterator = 1; !requestedCommand.getSubCommands().isEmpty()
+                        && subCommandIterator < argStrings.length; subCommandIterator++) {
+                    Command tmpCommand = requestedCommand;
+                    requestedCommand = requestedCommand.findSubCommand(argStrings[subCommandIterator]);
+                    if (requestedCommand == null) {
+                        requestedCommand = tmpCommand;
+                    }
+                }
+                Commands.sendMessage(event, requestedCommand.getHelp());
+            } catch (Exception e) {
+                return;
+            }
 
-            helpString.append("__**Welcome, master ");
-            helpString.append(event.getAuthor().getName());
-            helpString.append("!**__\n\n");
+        } else
+
+        {
+            List<Command> allowedCommands = getAllAllowedCommands(event.getMember());
 
             currentPage = 0;
             lastPage = (allowedCommands.size() / HELP_PER_PAGE) - 1;
             restCommands = allowedCommands.size() % HELP_PER_PAGE;
             if (restCommands > 0)
                 lastPage++;
-            helpString.append(getHelpForPage(currentPage, allowedCommands));
-
-            Commands.sendMessage(event, helpString.toString(), new MessageSentHandler());
+            String helpString = buildHelpString(event.getAuthor(), allowedCommands);
+            Commands.sendMessage(event, helpString, new MessageSentHandler());
         }
+    }
+
+    private String buildHelpString(User author, List<Command> allowedCommands) {
+        StringBuilder helpString = new StringBuilder();
+        helpString.append("__**Welcome, master ");
+        helpString.append(author.getName());
+        helpString.append("!**__\n\n");
+        helpString.append(getHelpForPage(currentPage, allowedCommands));
+        helpString.append("\n\n current page: ").append(currentPage).append("/").append(lastPage);
+        return helpString.toString();
     }
 
     /**
@@ -133,7 +157,7 @@ public class HelpCommand extends Command {
                 currentPage = currentPage + 1 > lastPage ? 0 : currentPage + 1;
             }
             List<Command> allAllowedCommands = getAllAllowedCommands(event.getMember());
-            lastSentHelpMessage.editMessage(getHelpForPage(currentPage, allAllowedCommands)).queue();
+            lastSentHelpMessage.editMessage(buildHelpString(event.getUser(), allAllowedCommands)).queue();
         }
     }
 
