@@ -10,18 +10,7 @@ public class JumptoCommand extends Command {
         addPermission("everyone");
         setTopic("music");
         setDescription("sets the position of the current song");
-    }
-
-    @Override
-    public String getHelp() {
-        final StringBuilder help = new StringBuilder();
-
-        help.append("***" + getCommand() + "***");
-        help.append(" - " + getDescription() + "\n");
-
-        help.append("<position in seconds to skip in the current song>");
-
-        return help.toString();
+        setHelpString("<position in seconds to skip to in the current playing song>");
     }
 
     @Override

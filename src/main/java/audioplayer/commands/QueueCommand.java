@@ -13,16 +13,7 @@ public class QueueCommand extends Command {
         addPermission("everyone");
         setTopic("music");
         setDescription("shows the queue");
-    }
-
-    @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
-
-        help.append("***" + getCommand() + "***");
-        help.append(" - " + getDescription() + "\n");
-
-        return help.toString();
+        setHelpString("");
     }
 
     @Override

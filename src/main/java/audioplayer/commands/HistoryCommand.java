@@ -16,16 +16,7 @@ public class HistoryCommand extends Command {
         addPermission("everyone");
         setTopic("music");
         setDescription("shows you already played songs");
-    }
-
-    @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
-
-        help.append("***" + getCommand() + "***");
-        help.append(" - " + getDescription() + "\n");
-
-        return help.toString();
+        setHelpString("");
     }
 
     @Override

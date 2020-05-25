@@ -10,18 +10,7 @@ public class RepeatCommand extends Command {
         addPermission("everyone");
         setTopic("music");
         setDescription("enables queue repetition. Now playing song will repeat as the last song");
-    }
-
-    @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
-
-        help.append("***" + getCommand() + "***");
-        help.append(" - " + getDescription() + "\n");
-
-        help.append("<true|false>\n");
-
-        return help.toString();
+        setHelpString("<true|false>");
     }
 
     @Override
