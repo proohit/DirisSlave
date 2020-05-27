@@ -23,7 +23,7 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew clean installDist
     - name: create Config File
-      run: sh ./scripts/createConfig.sh --jdatoken ${{ secrets.JDATOKEN }} --spotifyClientId ${{secrets.spotifyClientId}} --spotifyClientSecret ${{secrets.spotifyClientSecret}} --owmappid ${{secrets.owmappid}} --pixabaykey {{secrets.pixabaykey}} -o ./build/install/DirisSlave/bin
+      run: sh ./scripts/createConfig.sh --jdatoken ${{ secrets.JDATOKEN }} --spotifyClientId ${{secrets.spotifyClientId}} --spotifyClientSecret ${{secrets.spotifyClientSecret}} --owmappid ${{secrets.owmappid}} --pixabaykey ${{secrets.pixabaykey}} -o ./build/install/DirisSlave/bin
     - name: Install SSH
       run: sudo apt-get update && sudo apt install -y openssh-client
     - name: SCP To Remote
