@@ -9,22 +9,7 @@ import util.Command;
 
 public class WeatherCommand extends Command {
     public WeatherCommand() {
-        setCommand(prefix + "weather");
         addPermission("everyone");
-        setTopic("weather");
-        setDescription("shows the weather for the next 15 hours");
-    }
-
-    @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
-
-        help.append("***" + getCommand() + "***");
-        help.append(" - " + getDescription() + "\n");
-
-        help.append("<city name>\n");
-
-        return help.toString();
     }
 
     @Override
@@ -50,5 +35,25 @@ public class WeatherCommand extends Command {
             query += subString + " ";
         }
         return query;
+    }
+
+    @Override
+    protected String defineCommand() {
+        return prefix + "weather";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "shows the weather for the next 15 hours";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "weather";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "<city name>\n";
     }
 }

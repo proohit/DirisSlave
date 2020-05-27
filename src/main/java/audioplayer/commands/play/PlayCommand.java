@@ -6,10 +6,6 @@ import util.Command;
 
 public class PlayCommand extends Command {
     public PlayCommand() {
-        setCommand(this.prefix + "pl");
-        setTopic("music");
-        setDescription("Play music by adding a search-term or by adding a link");
-        setHelpString("<youtube search term> | <youtube url>" + "\n");
         this.addSubCommand(new PlayRecommendedCommand());
 
         this.addPermission("everyone");
@@ -30,10 +26,30 @@ public class PlayCommand extends Command {
                     trackUrl += argStrings[i] + " ";
                 }
             } else {
-                trackUrl = argStrings[1];
+                trackUrl = argStrings[0];
             }
 
             Commands.player.loadAndPlay(event, trackUrl);
         }
+    }
+
+    @Override
+    protected String defineCommand() {
+        return this.prefix + "pl";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "Play music by adding a search-term or by adding a link";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "<youtube search term> | <youtube url>";
     }
 }

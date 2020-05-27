@@ -10,10 +10,7 @@ import java.util.Arrays;
 
 public class RecommendationCommand extends Command {
     public RecommendationCommand() {
-        setCommand(prefix + "recommendation");
         addPermission("everyone");
-        setTopic("music");
-        setDescription("Get Recommendations based on up to 5 Spotify Tracks");
     }
 
     private String[] extractSearchQueryFromArguments(String[] args) {
@@ -49,5 +46,25 @@ public class RecommendationCommand extends Command {
             });
             main.Commands.sendMessage(event, recommendationsString.toString());
         }
+    }
+
+    @Override
+    protected String defineCommand() {
+        return prefix + "recommendation";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "Get Recommendations based on up to 5 Spotify Tracks";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "<spotify song URI>";
     }
 }

@@ -12,11 +12,6 @@ import util.Command;;
 
 public class ListPlaylistCommand extends Command {
     public ListPlaylistCommand() {
-        this.setCommand("list");
-        this.setDescription("lists all playlists or the songs of a playlist");
-        this.setHelpString("");
-        this.setTopic("music");
-        setHelpString("[playlist name, optional]\n");
         this.addPermission("everyone");
     }
 
@@ -44,6 +39,26 @@ public class ListPlaylistCommand extends Command {
             }
             sendBeautifulMessage(event, result.toString());
         }
+    }
+
+    @Override
+    protected String defineCommand() {
+        return "list";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "lists all playlists or the songs of a playlist";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "[playlist name, optional]";
     }
 
 }

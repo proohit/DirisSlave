@@ -6,11 +6,7 @@ import util.Command;
 
 public class RemoveCommand extends Command {
     public RemoveCommand() {
-        setCommand(prefix + "remove");
         addPermission("everyone");
-        setTopic("music");
-        setDescription("remove song from queue");
-        setHelpString("<number of song in queue> type " + prefix + "q to see queue");
     }
 
     @Override
@@ -26,5 +22,25 @@ public class RemoveCommand extends Command {
                 Commands.sendBeautifulMessage(event, "the position you have entered is invalid");
             }
         }
+    }
+
+    @Override
+    protected String defineCommand() {
+        return prefix + "remove";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "remove song from queue";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "<number of song in queue> type " + prefix + "q to see queue";
     }
 }

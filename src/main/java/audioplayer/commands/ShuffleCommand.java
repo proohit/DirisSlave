@@ -6,20 +6,7 @@ import util.Command;
 
 public class ShuffleCommand extends Command {
     public ShuffleCommand() {
-        setCommand(prefix + "shuffle");
         addPermission("everyone");
-        setTopic("music");
-        setDescription("bring some spice into the queue by shuffling it :man_dancing:");
-    }
-
-    @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
-
-        help.append("***" + getCommand() + "***");
-        help.append(" - " + getDescription() + "\n");
-
-        return help.toString();
     }
 
     @Override
@@ -29,5 +16,25 @@ public class ShuffleCommand extends Command {
         } else {
             Commands.sendBeautifulMessage(event, "queue is empty :( start rocking with " + prefix + "pl !");
         }
+    }
+
+    @Override
+    protected String defineCommand() {
+        return prefix + "shuffle";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "bring some spice into the queue by shuffling it :man_dancing:";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "";
     }
 }

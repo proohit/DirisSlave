@@ -7,11 +7,6 @@ import util.Command;
 
 public class DeletePlaylistCommand extends Command {
     public DeletePlaylistCommand() {
-        this.setCommand("delete");
-        this.setDescription("Deletes the playlist with the given name");
-        this.setHelpString("<playlist name>\n");
-        this.setTopic("music");
-
         this.addPermission("everyone");
     }
 
@@ -23,6 +18,26 @@ public class DeletePlaylistCommand extends Command {
                     : "playlist " + argStrings[0] + " not found";
             Commands.sendBeautifulMessage(event, result);
         }
+    }
+
+    @Override
+    protected String defineCommand() {
+        return "delete";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "Deletes the playlist with the given name";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "<playlist name>";
     }
 
 }

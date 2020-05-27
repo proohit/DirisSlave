@@ -16,11 +16,6 @@ import static main.Commands.sendBeautifulMessage;
 
 public class AddToPlaylistCommand extends Command {
     public AddToPlaylistCommand() {
-        this.setCommand("addto");
-        this.setDescription("Searches for a song with the keywords and adds it to the given playlist");
-        this.setHelpString("<playlist name> <keywords>\n");
-        this.setTopic("music");
-
         this.addPermission("everyone");
     }
 
@@ -73,6 +68,26 @@ public class AddToPlaylistCommand extends Command {
                 }
             });
         }
+    }
+
+    @Override
+    protected String defineCommand() {
+        return "addto";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "Searches for a song with the keywords and adds it to the given playlist";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "<playlist name> <keywords>";
     }
 
 }

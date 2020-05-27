@@ -7,20 +7,7 @@ import util.Command;
 
 public class GahCommand extends Command {
     public GahCommand() {
-        setCommand(prefix + "gah");
         addPermission("everyone");
-        setTopic("images");
-        setDescription("JUST. DO. IT.");
-    }
-
-    @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
-
-        help.append("***" + getCommand() + "***");
-        help.append(" - " + getDescription() + "\n");
-
-        return help.toString();
     }
 
     @Override
@@ -28,5 +15,25 @@ public class GahCommand extends Command {
         NekobotHandler nekobotHandler = new NekobotHandler();
         String imageUrl = nekobotHandler.getGahImage();
         Commands.sendMessage(event, imageUrl);
+    }
+
+    @Override
+    protected String defineCommand() {
+        return prefix + "gah";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "JUST. DO. IT.";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "images";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "";
     }
 }

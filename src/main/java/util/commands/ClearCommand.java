@@ -9,22 +9,7 @@ import java.util.List;
 
 public class ClearCommand extends Command {
     public ClearCommand() {
-        setCommand(prefix + "del");
         addPermission("Bananenchefs");
-        setTopic("util");
-        setDescription("mass-delete messages from a channel");
-    }
-
-    @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
-
-        help.append("***" + getCommand() + "***");
-        help.append(" - " + getDescription() + "\n");
-
-        help.append("<number of messages to delete> \n");
-
-        return help.toString();
     }
 
     @Override
@@ -39,5 +24,25 @@ public class ClearCommand extends Command {
         msgs = history.retrievePast(deleteMessageCount + 1).complete();
         event.getChannel().purgeMessages(msgs);
         main.Commands.sendMessage(event, "Deleted " + deleteMessageCount + " messages.");
+    }
+
+    @Override
+    protected String defineCommand() {
+        return prefix + "del";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "mass-delete messages from a channel";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "util";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "<number of messages to delete>";
     }
 }

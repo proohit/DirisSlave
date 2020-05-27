@@ -6,11 +6,7 @@ import util.Command;
 
 public class JumptoCommand extends Command {
     public JumptoCommand() {
-        setCommand(prefix + "jumpto");
         addPermission("everyone");
-        setTopic("music");
-        setDescription("sets the position of the current song");
-        setHelpString("<position in seconds to skip to in the current playing song>");
     }
 
     @Override
@@ -18,5 +14,25 @@ public class JumptoCommand extends Command {
         if (argStrings.length == 1) {
             Commands.player.jumpto(event.getTextChannel(), Integer.parseInt(argStrings[1]));
         }
+    }
+
+    @Override
+    protected String defineCommand() {
+        return prefix + "jumpto";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "sets the position of the current song";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "<position in seconds to skip to in the current playing song>";
     }
 }

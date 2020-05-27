@@ -14,10 +14,6 @@ import util.Command;
 
 public class PlayRecommendedCommand extends Command {
     public PlayRecommendedCommand() {
-        setCommand("recommended");
-        setTopic("music");
-        setDescription("Play music based on recommendations for provided search term");
-        setHelpString("<search term to search for on spotify>");
         this.addPermission("everyone");
     }
 
@@ -52,5 +48,25 @@ public class PlayRecommendedCommand extends Command {
         for (Object o : c)
             r.add(clazz.cast(o));
         return r;
+    }
+
+    @Override
+    protected String defineCommand() {
+        return "recommended";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "Play music based on recommendations for provided search term";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "<search term to search for on spotify>";
     }
 }

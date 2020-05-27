@@ -7,11 +7,6 @@ import util.Command;
 
 public class LoadPlaylistCommand extends Command {
     public LoadPlaylistCommand() {
-        this.setCommand("load");
-        this.setDescription("loads the playlist in the queue");
-        this.setHelpString("<playlist name>\n");
-        this.setTopic("music");
-
         this.addPermission("everyone");
     }
 
@@ -27,6 +22,26 @@ public class LoadPlaylistCommand extends Command {
                 main.Commands.sendBeautifulMessage(event, playlistNameToBeLoaded + " not found or no songs available");
             }
         }
+    }
+
+    @Override
+    protected String defineCommand() {
+        return "load";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "loads the playlist in the queue";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "<playlist name>";
     }
 
 }

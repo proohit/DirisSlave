@@ -6,22 +6,7 @@ import util.Command;
 
 public class SeekCommand extends Command {
     public SeekCommand() {
-        setCommand(prefix + "seek");
         addPermission("everyone");
-        setTopic("music");
-        setDescription("seeks forward in the current playing song");
-    }
-
-    @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
-
-        help.append("***" + getCommand() + "***");
-        help.append(" - " + getDescription() + "\n");
-
-        help.append("<seconds to skip in the current song>");
-
-        return help.toString();
     }
 
     @Override
@@ -44,5 +29,25 @@ public class SeekCommand extends Command {
                 Commands.sendBeautifulMessage(event, "skipped to minute " + minutesString + ":" + secondsString);
             }
         }
+    }
+
+    @Override
+    protected String defineCommand() {
+        return prefix + "seek";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "seeks forward in the current playing song";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "<seconds to skip in the current song>";
     }
 }

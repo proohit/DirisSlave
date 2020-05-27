@@ -6,10 +6,7 @@ import util.Command;
 
 public class CalculatorCommand extends Command {
     public CalculatorCommand() {
-        setCommand(prefix + "calc");
         addPermission("everyone");
-        setTopic("calculator");
-        setDescription("Solve calculations by typing the term.");
     }
 
     @Override
@@ -31,5 +28,25 @@ public class CalculatorCommand extends Command {
             System.out.println(e.getMessage());
             Commands.sendMessage(event.getTextChannel(), "#calc usage:\n number (+ - * /) number");
         }
+    }
+
+    @Override
+    protected String defineCommand() {
+        return prefix + "calc";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "Solve calculations by typing the term.";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "calculator";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "<number1> <+|-|*|/|(|)> <number2>";
     }
 }

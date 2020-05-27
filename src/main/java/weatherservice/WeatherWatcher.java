@@ -1,11 +1,12 @@
 package weatherservice;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageHistory;
-import net.dv8tion.jda.api.entities.TextChannel;
+import java.io.File;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -19,14 +20,10 @@ import org.jfree.data.xy.XYDataset;
 
 import api.OpenWeatherMapHandler;
 import kong.unirest.json.JSONArray;
-import util.UrlHandler;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageHistory;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 public class WeatherWatcher {
     public static void start(JDA jda) {
@@ -88,8 +85,7 @@ public class WeatherWatcher {
                 dataset.addSeries(stuttgart);
                 dataset.addSeries(dortmund);
 
-                JFreeChart chart = ChartFactory.createTimeSeriesChart(
-                        "Weather in Stuttgart and Dortmund today", "time",
+                JFreeChart chart = ChartFactory.createTimeSeriesChart("Weather in Stuttgart and Dortmund today", "time",
                         "temperature in °C", dataset, true, true, false);
                 XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) chart.getXYPlot().getRenderer();
                 // enable data points labeling, gets the Y value of the item i1 in the series i

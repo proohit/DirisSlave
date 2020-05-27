@@ -9,11 +9,7 @@ import java.util.Iterator;
 
 public class QueueCommand extends Command {
     public QueueCommand() {
-        setCommand(prefix + "q");
         addPermission("everyone");
-        setTopic("music");
-        setDescription("shows the queue");
-        setHelpString("");
     }
 
     @Override
@@ -25,5 +21,25 @@ public class QueueCommand extends Command {
             queue.append(i++).append(" ").append(it.next().getInfo().title).append("\n");
         }
         Commands.sendBeautifulMessage(event, queue.toString());
+    }
+
+    @Override
+    protected String defineCommand() {
+        return prefix + "q";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "shows the queue";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "";
     }
 }

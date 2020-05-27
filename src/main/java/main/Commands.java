@@ -34,6 +34,7 @@ import util.Command;
 import util.commands.ClearCommand;
 import util.commands.HelpCommand;
 import weatherservice.WeatherCommand;
+import youtubewatcher.commands.YtWatcherCommand;
 
 public class Commands {
 
@@ -66,6 +67,7 @@ public class Commands {
         registeredCommands.add(new CoffeeCommand());
         registeredCommands.add(new WeatherCommand());
         registeredCommands.add(new LizardCommand());
+        registeredCommands.add(new YtWatcherCommand());
         registeredCommands.add(HelpCommand.getInstance());
     }
 

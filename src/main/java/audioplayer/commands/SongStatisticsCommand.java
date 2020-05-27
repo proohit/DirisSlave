@@ -10,15 +10,7 @@ import java.util.Map;
 
 public class SongStatisticsCommand extends Command {
     public SongStatisticsCommand() {
-        setCommand(prefix + "statistics");
-        setDescription("displays the top 10 most played songs");
         addPermission("everyone");
-        setTopic("music");
-    }
-
-    @Override
-    public String getHelp() {
-        return null;
     }
 
     @Override
@@ -39,5 +31,25 @@ public class SongStatisticsCommand extends Command {
             result.append(sortedItem.getValue()).append(" times, ").append(sortedItem.getKey().getTitle()).append("\n");
         });
         main.Commands.sendBeautifulMessage(event, result.toString());
+    }
+
+    @Override
+    protected String defineCommand() {
+        return prefix + "statistics";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "displays the top 10 most played songs";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "";
     }
 }

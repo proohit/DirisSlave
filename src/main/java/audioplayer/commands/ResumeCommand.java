@@ -6,10 +6,7 @@ import util.Command;
 
 public class ResumeCommand extends Command {
     public ResumeCommand() {
-        setCommand(prefix + "resume");
-        setTopic("music");
         addPermission("everyone");
-        setDescription("resumes the current paused playback");
     }
 
     @Override
@@ -26,5 +23,25 @@ public class ResumeCommand extends Command {
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
         Commands.player.togglePause(event.getTextChannel(), false);
         Commands.sendMessage(event, "resuming the playback...");
+    }
+
+    @Override
+    protected String defineCommand() {
+        return prefix + "resume";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "resumes the current paused playback";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "";
     }
 }

@@ -6,15 +6,7 @@ import util.Command;
 
 public class LizardCommand extends Command {
     public LizardCommand() {
-        setCommand(prefix + "lizard");
         addPermission("everyone");
-        setTopic("images");
-        setDescription(":lizard:");
-    }
-
-    @Override
-    public String getHelp() {
-        return null;
     }
 
     @Override
@@ -22,5 +14,25 @@ public class LizardCommand extends Command {
         PixabayHandler pixabayHandler = new PixabayHandler();
         String geckoImageUrl = pixabayHandler.getRandomImageUrlByQuery("gecko");
         main.Commands.sendMessage(event, geckoImageUrl);
+    }
+
+    @Override
+    protected String defineCommand() {
+        return prefix + "lizard";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return ":lizard:";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "images";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "";
     }
 }

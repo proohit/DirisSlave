@@ -6,11 +6,7 @@ import util.Command;
 
 public class RepeatCommand extends Command {
     public RepeatCommand() {
-        setCommand(prefix + "repeat");
         addPermission("everyone");
-        setTopic("music");
-        setDescription("enables queue repetition. Now playing song will repeat as the last song");
-        setHelpString("<true|false>");
     }
 
     @Override
@@ -27,5 +23,25 @@ public class RepeatCommand extends Command {
         } else {
             main.Commands.sendMessage(event, this.getHelpString());
         }
+    }
+
+    @Override
+    protected String defineCommand() {
+        return prefix + "repeat";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "enables queue repetition. Now playing song will repeat as the last song";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "<true|false>";
     }
 }

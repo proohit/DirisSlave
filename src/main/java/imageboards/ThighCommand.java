@@ -7,20 +7,7 @@ import util.Command;
 
 public class ThighCommand extends Command {
     public ThighCommand() {
-        setCommand(prefix + "thigh");
         addPermission("Bananenchefs");
-        setTopic("images");
-        setDescription("Stockings, socks and pantys. Everything you desire");
-    }
-
-    @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
-
-        help.append("***" + getCommand() + "***");
-        help.append(" - " + getDescription() + "\n");
-
-        return help.toString();
     }
 
     @Override
@@ -28,5 +15,25 @@ public class ThighCommand extends Command {
         NekobotHandler nekobotHandler = new NekobotHandler();
         String imageUrl = nekobotHandler.getThighImage();
         Commands.sendMessage(event, imageUrl);
+    }
+
+    @Override
+    protected String defineCommand() {
+        return prefix + "thigh";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "Stockings, socks and pantys. Everything you desire";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "images";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "";
     }
 }

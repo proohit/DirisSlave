@@ -12,11 +12,7 @@ import static main.Commands.sendBeautifulMessage;
 
 public class HistoryCommand extends Command {
     public HistoryCommand() {
-        setCommand(prefix + "history");
         addPermission("everyone");
-        setTopic("music");
-        setDescription("shows you already played songs");
-        setHelpString("");
     }
 
     @Override
@@ -25,5 +21,25 @@ public class HistoryCommand extends Command {
         Map<Integer, Song> history = (HashMap<Integer, Song>) SongHistoryTable.getLastSongs();
         history.forEach((id, song) -> result.append(id).append(" ").append(song.toString()).append("\n"));
         sendBeautifulMessage(event, result.toString());
+    }
+
+    @Override
+    protected String defineCommand() {
+        return prefix + "history";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "shows you already played songs";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "";
     }
 }

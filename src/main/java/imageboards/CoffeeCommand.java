@@ -7,20 +7,7 @@ import util.Command;
 
 public class CoffeeCommand extends Command {
     public CoffeeCommand() {
-        setCommand(prefix + "coffee");
         addPermission("everyone");
-        setTopic("images");
-        setDescription("Enjoy your coffee with a gif");
-    }
-
-    @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
-
-        help.append("***" + getCommand() + "***");
-        help.append(" - " + getDescription() + "\n");
-
-        return help.toString();
     }
 
     @Override
@@ -28,5 +15,25 @@ public class CoffeeCommand extends Command {
         NekobotHandler nekobotHandler = new NekobotHandler();
         String imageUrl = nekobotHandler.getCoffeImage();
         Commands.sendMessage(event, imageUrl);
+    }
+
+    @Override
+    protected String defineCommand() {
+        return prefix + "coffee";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "Enjoy your coffee with a gif";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "images";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "";
     }
 }

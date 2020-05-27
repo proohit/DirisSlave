@@ -21,11 +21,10 @@ public abstract class Command {
     String topic;
 
     protected Command() {
-
-    }
-
-    protected Command(String topic) {
-        setTopic(topic);
+        setCommand(defineCommand());
+        setTopic(defineTopic());
+        setDescription(defineDescription());
+        setHelpString(defineHelpString());
     }
 
     public void addPermission(String permissionToAdd) {
@@ -44,6 +43,8 @@ public abstract class Command {
         return command;
     };
 
+    protected abstract String defineCommand();
+
     public String getDescription() {
         return description;
     };
@@ -52,6 +53,8 @@ public abstract class Command {
         this.description = description;
     }
 
+    protected abstract String defineDescription();
+
     public String getTopic() {
         return topic;
     }
@@ -59,6 +62,8 @@ public abstract class Command {
     public void setTopic(String topic) {
         this.topic = topic;
     }
+
+    protected abstract String defineTopic();
 
     public void handle(MessageReceivedEvent event, String[] argStrings) {
         String[] cutArguments = cutArguments(argStrings, 1, argStrings.length);
@@ -111,6 +116,8 @@ public abstract class Command {
         this.helpString += " - " + getDescription() + "\n";
         this.helpString += helpString;
     }
+
+    protected abstract String defineHelpString();
 
     public ArrayList<Command> getSubCommands() {
         return subCommands;

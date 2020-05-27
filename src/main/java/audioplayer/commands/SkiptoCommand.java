@@ -8,22 +8,7 @@ import static main.Commands.sendBeautifulMessage;
 
 public class SkiptoCommand extends Command {
     public SkiptoCommand() {
-        setCommand(prefix + "skipto");
         addPermission("everyone");
-        setTopic("music");
-        setDescription("skip songs to specific index in queue");
-    }
-
-    @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
-
-        help.append("***" + getCommand() + "***");
-        help.append(" - " + getDescription() + "\n");
-
-        help.append("<number of song to skip to in the queue, type #q for queue>\n");
-
-        return help.toString();
     }
 
     @Override
@@ -39,5 +24,25 @@ public class SkiptoCommand extends Command {
             main.Commands.sendMessage(event, getHelp());
             return;
         }
+    }
+
+    @Override
+    protected String defineCommand() {
+        return prefix + "skipto";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "skip songs to specific index in queue";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "<number of song to skip to in the queue, type #q for queue>";
     }
 }

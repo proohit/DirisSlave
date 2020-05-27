@@ -23,10 +23,7 @@ public class HelpCommand extends Command {
     private static HelpCommand instance;
 
     private HelpCommand() {
-        setCommand(prefix + "help");
         addPermission("everyone");
-        setTopic("util");
-        setDescription("lists options for tags [arguments]");
     }
 
     public static HelpCommand getInstance() {
@@ -179,5 +176,25 @@ public class HelpCommand extends Command {
 
     public void setLastSentHelpMessage(Message lastSentHelpMessage) {
         this.lastSentHelpMessage = lastSentHelpMessage;
+    }
+
+    @Override
+    protected String defineCommand() {
+        return prefix + "help";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "lists options for tags [arguments]";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "util";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "[<command to get help for>]";
     }
 }

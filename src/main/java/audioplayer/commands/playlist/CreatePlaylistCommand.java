@@ -8,9 +8,6 @@ import util.Command;
 public class CreatePlaylistCommand extends Command {
 
     public CreatePlaylistCommand() {
-        this.setCommand("create");
-        this.setDescription("creates a new empty playlist with the given name");
-        this.setHelpString("<playlist name>\n");
         this.addPermission("everyone");
     }
 
@@ -24,5 +21,25 @@ public class CreatePlaylistCommand extends Command {
                 main.Commands.sendBeautifulMessage(event, "this playlist has already been created before");
             }
         }
+    }
+
+    @Override
+    protected String defineCommand() {
+        return "create";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "creates a new empty playlist with the given name";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "<playlist name>";
     }
 }

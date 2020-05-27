@@ -5,10 +5,6 @@ import util.Command;
 
 public class PlaylistCommand extends Command {
     public PlaylistCommand() {
-        setCommand(prefix + "playlist");
-        setTopic("music");
-        setDescription("lists options regarding playlists");
-        setHelpString("");
         this.addSubCommand(new CreatePlaylistCommand());
         this.addSubCommand(new DeletePlaylistCommand());
         this.addSubCommand(new LoadPlaylistCommand());
@@ -23,5 +19,25 @@ public class PlaylistCommand extends Command {
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
 
+    }
+
+    @Override
+    protected String defineCommand() {
+        return prefix + "playlist";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "lists options regarding playlists";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "";
     }
 }

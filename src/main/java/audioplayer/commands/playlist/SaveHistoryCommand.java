@@ -11,11 +11,6 @@ import util.Command;
 
 public class SaveHistoryCommand extends Command {
     public SaveHistoryCommand() {
-        this.setCommand("savehistory");
-        this.setDescription("Creates a new playlist with the given name and adds the last 10 songs from history to it");
-        this.setHelpString("<playlist name>\n");
-        this.setTopic("music");
-
         this.addPermission("everyone");
     }
 
@@ -36,6 +31,26 @@ public class SaveHistoryCommand extends Command {
 
             }
         }
+    }
+
+    @Override
+    protected String defineCommand() {
+        return "savehistory";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "Creates a new playlist with the given name and adds the last 10 songs from history to it";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "<playlist name>";
     }
 
 }

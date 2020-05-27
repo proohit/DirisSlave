@@ -10,22 +10,7 @@ import util.Command;
 
 public class DanbooruCommand extends Command {
     public DanbooruCommand() {
-        setCommand(prefix + "danbooru");
         addPermission("Bananenchefs");
-        setTopic("images");
-        setDescription("Sexy pictures of hot waifus are waiting for you. Just add your tag");
-    }
-
-    @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
-
-        help.append("***" + getCommand() + "***");
-        help.append(" - " + getDescription() + "\n");
-
-        help.append("<tag1> <tag2 (optional)>\n");
-
-        return help.toString();
     }
 
     @Override
@@ -70,5 +55,25 @@ public class DanbooruCommand extends Command {
                     .append(similarTag.getInt("post_count")).append("\n");
         });
         Commands.sendMessage(event, similarTagsString.toString());
+    }
+
+    @Override
+    protected String defineCommand() {
+        return prefix + "danbooru";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "Sexy pictures of hot waifus are waiting for you. Just add your tag";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "images";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "<tag1> <tag2 (optional)>";
     }
 }

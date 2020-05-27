@@ -9,11 +9,6 @@ import static main.Commands.sendBeautifulMessage;
 public class RemoveFromPlaylistCommand extends Command {
 
     public RemoveFromPlaylistCommand() {
-        this.setCommand("remove");
-        this.setDescription("removes the given index from the playlist");
-        this.setHelpString("<playlist name> <index of song in playlist. type playlist list playlistname to get indexes>\n");
-        this.setTopic("music");
-
         this.addPermission("everyone");
     }
 
@@ -31,6 +26,26 @@ public class RemoveFromPlaylistCommand extends Command {
                 sendBeautifulMessage(event, "playlist or song not found.");
             }
         }
+    }
+
+    @Override
+    protected String defineCommand() {
+        return "remove";
+    }
+
+    @Override
+    protected String defineDescription() {
+        return "removes the given index from the playlist";
+    }
+
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "<playlist name> <index of song in playlist. type playlist list playlistname to get indexes>";
     }
 
 }
