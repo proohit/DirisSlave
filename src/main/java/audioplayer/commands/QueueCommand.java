@@ -7,17 +7,13 @@ import util.Command;
 
 import java.util.Iterator;
 
-
 public class QueueCommand extends Command {
     public QueueCommand() {
-        setCommand(prefix + "q");
-        setPermission("everyone");
-        setTopic("music");
-        setDescription("shows the queue");
+        addPermission("everyone");
     }
 
     @Override
-    public void handle(MessageReceivedEvent event, String[] argStrings) {
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
         StringBuilder queue = new StringBuilder("current queue: \n");
         Iterator<AudioTrack> it = Commands.player.getQueue(event.getTextChannel()).iterator();
         int i = 1;
@@ -26,13 +22,24 @@ public class QueueCommand extends Command {
         }
         Commands.sendBeautifulMessage(event, queue.toString());
     }
+
     @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
+    protected String defineCommand() {
+        return prefix + "q";
+    }
 
-        help.append("***" + getCommand()+"***");
-        help.append(" - " + getDescription() + "\n");
+    @Override
+    protected String defineDescription() {
+        return "shows the queue";
+    }
 
-        return help.toString();
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "";
     }
 }

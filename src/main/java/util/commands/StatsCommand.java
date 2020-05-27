@@ -6,26 +6,32 @@ import util.Command;
 
 public class StatsCommand extends Command {
     public StatsCommand() {
-        setCommand(prefix + "stats");
-        setPermission("everyone");
-        setTopic("util");
-        setDescription("see the running-time");
+        addPermission("everyone");
     }
 
     @Override
-    public void handle(MessageReceivedEvent event, String[] argStrings) {
-        main.Commands.sendBeautifulMessage(event, MetaHandler.greet() + MetaHandler.runtime() + MetaHandler.helpMessage());
-
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        main.Commands.sendBeautifulMessage(event,
+                MetaHandler.greet() + MetaHandler.runtime() + MetaHandler.helpMessage());
     }
 
+    @Override
+    protected String defineCommand() {
+        return prefix + "stats";
+    }
 
     @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
+    protected String defineDescription() {
+        return "see the running-time";
+    }
 
-        help.append("***" + getCommand() + "***");
-        help.append(" - " + getDescription() + "\n");
+    @Override
+    protected String defineTopic() {
+        return "util";
+    }
 
-        return help.toString();
+    @Override
+    protected String defineHelpString() {
+        return "";
     }
 }

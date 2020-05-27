@@ -9,19 +9,16 @@ import java.util.List;
 
 public class ClearCommand extends Command {
     public ClearCommand() {
-        setCommand(prefix + "del");
-        setPermission("Bananenchefs");
-        setTopic("util");
-        setDescription("mass-delete messages from a channel");
+        addPermission("Bananenchefs");
     }
 
     @Override
-    public void handle(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings.length < 2) {
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        if (argStrings.length < 1) {
             main.Commands.sendMessage(event, getHelp());
             return;
         }
-        int deleteMessageCount = Integer.parseInt(argStrings[1]);
+        int deleteMessageCount = Integer.parseInt(argStrings[0]);
         MessageHistory history = new MessageHistory(event.getChannel());
         List<Message> msgs;
         msgs = history.retrievePast(deleteMessageCount + 1).complete();
@@ -30,14 +27,22 @@ public class ClearCommand extends Command {
     }
 
     @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
+    protected String defineCommand() {
+        return prefix + "del";
+    }
 
-        help.append("***" + getCommand() + "***");
-        help.append(" - " + getDescription() + "\n");
+    @Override
+    protected String defineDescription() {
+        return "mass-delete messages from a channel";
+    }
 
-        help.append("<number of messages to delete> \n");
+    @Override
+    protected String defineTopic() {
+        return "util";
+    }
 
-        return help.toString();
+    @Override
+    protected String defineHelpString() {
+        return "<number of messages to delete>";
     }
 }

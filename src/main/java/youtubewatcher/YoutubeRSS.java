@@ -13,7 +13,6 @@ public class YoutubeRSS {
 	String channelid;
 
 	public YoutubeRSS(String channelid) {
-		// TODO Auto-generated constructor stub
 		try {
 			this.channelid = channelid;
 			URL urlString = new URL("https://www.youtube.com/feeds/videos.xml?channel_id=" + channelid);
@@ -24,7 +23,6 @@ public class YoutubeRSS {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			// TODO: handle exception
 		}
 	}
 

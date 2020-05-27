@@ -1,30 +1,39 @@
 package imageboards;
 
+import api.NekobotHandler;
+import main.Commands;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.Command;
-import util.UrlHandler;
 
 public class GahCommand extends Command {
     public GahCommand() {
-        setCommand(prefix + "gah");
-        setPermission("everyone");
-        setTopic("images");
-        setDescription("JUST. DO. IT.");
+        addPermission("everyone");
     }
 
     @Override
-    public void handle(MessageReceivedEvent event, String[] argStrings) {
-        main.Commands.sendMessage(event, UrlHandler.getImage("https://nekobot.xyz/api/image?type=gah"));
-
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        NekobotHandler nekobotHandler = new NekobotHandler();
+        String imageUrl = nekobotHandler.getGahImage();
+        Commands.sendMessage(event, imageUrl);
     }
 
     @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
+    protected String defineCommand() {
+        return prefix + "gah";
+    }
 
-        help.append("***" + getCommand()+"***");
-        help.append(" - " + getDescription() + "\n");
+    @Override
+    protected String defineDescription() {
+        return "JUST. DO. IT.";
+    }
 
-        return help.toString();
+    @Override
+    protected String defineTopic() {
+        return "images";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "";
     }
 }

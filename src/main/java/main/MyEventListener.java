@@ -1,13 +1,17 @@
 package main;
 
+import javax.annotation.Nonnull;
+
 import database.DBManager;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
+import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import util.commands.HelpCommand;
 import weatherservice.WeatherWatcher;
-
-import javax.annotation.Nonnull;
 
 public class MyEventListener extends ListenerAdapter {
     Commands commander;
@@ -25,6 +29,28 @@ public class MyEventListener extends ListenerAdapter {
         if (event.getAuthor().isBot())
             return;
         commander.handle(event);
+    }
+
+    @Override
+    public void onMessageReactionAdd(MessageReactionAddEvent event) {
+        if (event.getUser().isBot()) {
+            return;
+        } else {
+            HelpCommand.getInstance().handlePageRequest(event);
+        }
+    }
+
+    @Override
+    public void onMessageReactionRemove(MessageReactionRemoveEvent event) {
+        HelpCommand helpCommand = HelpCommand.getInstance();
+        Message lastSentHelpMessage = helpCommand.getLastSentHelpMessage();
+        if (lastSentHelpMessage == null) {
+            return;
+        }
+        if (event.getMessageId().equals(lastSentHelpMessage.getId())) {
+            lastSentHelpMessage.addReaction(event.getReactionEmote().getEmoji()).queue();
+            helpCommand.handlePageRequest(event);
+        }
     }
 
     @Override

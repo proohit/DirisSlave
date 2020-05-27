@@ -8,37 +8,41 @@ import static main.Commands.sendBeautifulMessage;
 
 public class SkiptoCommand extends Command {
     public SkiptoCommand() {
-        setCommand(prefix + "skipto");
-        setPermission("everyone");
-        setTopic("music");
-        setDescription("skip songs to specific index in queue");
+        addPermission("everyone");
     }
 
     @Override
-    public void handle(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings.length < 2) {
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        if (argStrings.length == 1) {
+            int indexToSkipTo = Integer.parseInt(argStrings[0]);
+            try {
+                Commands.player.skipTo(indexToSkipTo, event.getTextChannel());
+            } catch (NumberFormatException e) {
+                sendBeautifulMessage(event, "the position you have entered is invalid");
+            }
+        } else {
             main.Commands.sendMessage(event, getHelp());
             return;
         }
-        if (argStrings.length == 2) {
-            try {
-                Commands.player.skipTo(Integer.parseInt(argStrings[1]), event.getTextChannel());
-            } catch (NumberFormatException e) {
-                sendBeautifulMessage(event, "the position you have entered is invalid");
-
-            }
-        }
     }
 
     @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
+    protected String defineCommand() {
+        return prefix + "skipto";
+    }
 
-        help.append("***" + getCommand() + "***");
-        help.append(" - " + getDescription() + "\n");
+    @Override
+    protected String defineDescription() {
+        return "skip songs to specific index in queue";
+    }
 
-        help.append("<number of song to skip to in the queue, type #q for queue>\n");
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
 
-        return help.toString();
+    @Override
+    protected String defineHelpString() {
+        return "<number of song to skip to in the queue, type #q for queue>";
     }
 }

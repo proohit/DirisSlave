@@ -6,29 +6,31 @@ import util.Command;
 
 public class PauseCommand extends Command {
     public PauseCommand() {
-        setCommand(prefix+"pause");
-        setTopic("music");
-        setPermission("everyone");
-        setDescription("pauses the current playback");
+        addPermission("everyone");
     }
 
     @Override
-    public void handle(MessageReceivedEvent event, String[] argStrings) {
-        if(argStrings.length==1) {
-            Commands.player.togglePause(event.getTextChannel(), true);
-            Commands.sendMessage(event, "pausing the playback...");
-        } else {
-            Commands.sendMessage(event, getHelp());
-        }
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        Commands.player.togglePause(event.getTextChannel(), true);
     }
 
     @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
+    protected String defineCommand() {
+        return prefix + "pause";
+    }
 
-        help.append("***" + getCommand()+"***");
-        help.append(" - " + getDescription() + "\n");
+    @Override
+    protected String defineDescription() {
+        return "pauses the current playback";
+    }
 
-        return help.toString();
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "";
     }
 }

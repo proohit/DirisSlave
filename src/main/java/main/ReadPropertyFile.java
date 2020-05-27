@@ -6,8 +6,9 @@ import java.util.Properties;
 
 public class ReadPropertyFile {
     Properties prop = null;
+    private static ReadPropertyFile single_instance = null;
 
-    public ReadPropertyFile() {
+    private ReadPropertyFile() {
         try {
             FileInputStream ip = new FileInputStream("config/config.properties");
             prop = new Properties();
@@ -17,9 +18,32 @@ public class ReadPropertyFile {
         }
     }
 
+    // static method to create instance of Singleton class
+    public static ReadPropertyFile getInstance() {
+        if (single_instance == null)
+            single_instance = new ReadPropertyFile();
+
+        return single_instance;
+    }
+
     public String getJDAToken() {
         return prop.getProperty("JDAToken");
     }
 
+    public String getSpotifyClientId() {
+        return prop.getProperty("SpotifyClientId");
+    }
+
+    public String getSpotifyClientSecret() {
+        return prop.getProperty("SpotifyClientSecret");
+    }
+
+    public String getOpenWeatherMapsAppId() {
+        return prop.getProperty("OWMAppid");
+    }
+
+	public String getPixabayKey() {
+        return prop.getProperty("PixabayKey");
+	}
 
 }
