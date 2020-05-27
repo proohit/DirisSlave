@@ -10,7 +10,7 @@ public class Startup {
 
     public static void main(String[] args) throws LoginException {
         //insert bot token here
-        ReadPropertyFile rpf = new ReadPropertyFile();
+        ReadPropertyFile rpf = ReadPropertyFile.getInstance();
         jda = JDABuilder.createDefault(rpf.getJDAToken()).build();
         jda.addEventListener(new MyEventListener(jda));
     }

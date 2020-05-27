@@ -12,29 +12,34 @@ import static main.Commands.sendBeautifulMessage;
 
 public class HistoryCommand extends Command {
     public HistoryCommand() {
-        setCommand(prefix + "history");
-        setPermission("everyone");
-        setTopic("music");
-        setDescription("shows you already played songs");
+        addPermission("everyone");
     }
 
     @Override
-    public void handle(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings.length == 1) {
-            StringBuilder result = new StringBuilder("History: \n");
-            Map<Integer, Song> history = (HashMap<Integer, Song>) SongHistoryTable.getLastSongs();
-            history.forEach((id,song) -> result.append(id).append(" ").append(song.toString()).append("\n"));
-            sendBeautifulMessage(event, result.toString());
-        }
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        StringBuilder result = new StringBuilder("History: \n");
+        Map<Integer, Song> history = (HashMap<Integer, Song>) SongHistoryTable.getLastSongs();
+        history.forEach((id, song) -> result.append(id).append(" ").append(song.toString()).append("\n"));
+        sendBeautifulMessage(event, result.toString());
     }
 
     @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
+    protected String defineCommand() {
+        return prefix + "history";
+    }
 
-        help.append("***" + getCommand()+"***");
-        help.append(" - " + getDescription() + "\n");
+    @Override
+    protected String defineDescription() {
+        return "shows you already played songs";
+    }
 
-        return help.toString();
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "";
     }
 }

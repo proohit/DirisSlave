@@ -6,20 +6,17 @@ import util.Command;
 
 public class CalculatorCommand extends Command {
     public CalculatorCommand() {
-        setCommand(prefix + "calc");
-        setPermission("everyone");
-        setTopic("calculator");
-        setDescription("Solve calculations by typing the term.");
+        addPermission("everyone");
     }
 
     @Override
-    public void handle(MessageReceivedEvent event, String[] argStrings) {
-        if(argStrings.length <2) {
-            main.Commands.sendMessage(event,getHelp());
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        if (argStrings.length <= 0) {
+            main.Commands.sendMessage(event, getHelp());
             return;
         }
         String term = "";
-        for (int i = 1; i < argStrings.length; i++) {
+        for (int i = 0; i < argStrings.length; i++) {
             term += argStrings[i];
         }
         Calculator calculator = new Calculator();
@@ -34,14 +31,22 @@ public class CalculatorCommand extends Command {
     }
 
     @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
+    protected String defineCommand() {
+        return prefix + "calc";
+    }
 
-        help.append("***" + getCommand() + "***");
-        help.append(" - " + getDescription() + "\n");
+    @Override
+    protected String defineDescription() {
+        return "Solve calculations by typing the term.";
+    }
 
-        help.append("<number> <+ - * / ( )> <number> ... \n");
+    @Override
+    protected String defineTopic() {
+        return "calculator";
+    }
 
-        return help.toString();
+    @Override
+    protected String defineHelpString() {
+        return "<number1> <+|-|*|/|(|)> <number2>";
     }
 }

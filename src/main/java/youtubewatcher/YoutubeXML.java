@@ -31,9 +31,7 @@ public class YoutubeXML extends XMLParser {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			// TODO: handle exception
 		}
-		// TODO Auto-generated constructor stub
 	}
 	public String getChannelName() {
 		return getRSS().getTitles().get(0);

@@ -7,26 +7,34 @@ import util.Command;
 
 public class StopCommand extends Command {
     public StopCommand() {
-        setCommand(prefix + "stop");
-        setPermission("everyone");
-        setTopic("music");
-        setDescription("stop the current playlist and remove all songs from queue");
+        addPermission("everyone");
     }
 
     @Override
-    public void handle(MessageReceivedEvent event, String[] argStrings) {
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
         AudioManager manager = event.getGuild().getAudioManager();
-        if (manager.isConnected() || manager.isAttemptingToConnect()) manager.closeAudioConnection();
+        if (manager.isConnected() || manager.isAttemptingToConnect())
+            manager.closeAudioConnection();
         Commands.player.stop(event.getTextChannel());
     }
 
     @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
+    protected String defineCommand() {
+        return prefix + "stop";
+    }
 
-        help.append("***" + getCommand() + "***");
-        help.append(" - " + getDescription() + "\n");
+    @Override
+    protected String defineDescription() {
+        return "stop the current playlist and remove all songs from queue";
+    }
 
-        return help.toString();
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "";
     }
 }

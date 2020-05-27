@@ -6,14 +6,11 @@ import util.Command;
 
 public class ShuffleCommand extends Command {
     public ShuffleCommand() {
-        setCommand(prefix + "shuffle");
-        setPermission("everyone");
-        setTopic("music");
-        setDescription("bring some spice into the queue by shuffling it :man_dancing:");
+        addPermission("everyone");
     }
 
     @Override
-    public void handle(MessageReceivedEvent event, String[] argStrings) {
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
         if (Commands.player.shuffle(event.getTextChannel())) {
             Commands.sendMessage(event, "shuffled the music :man_dancing:");
         } else {
@@ -22,12 +19,22 @@ public class ShuffleCommand extends Command {
     }
 
     @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
+    protected String defineCommand() {
+        return prefix + "shuffle";
+    }
 
-        help.append("***" + getCommand() + "***");
-        help.append(" - " + getDescription() + "\n");
+    @Override
+    protected String defineDescription() {
+        return "bring some spice into the queue by shuffling it :man_dancing:";
+    }
 
-        return help.toString();
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "";
     }
 }

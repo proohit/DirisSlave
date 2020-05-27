@@ -1,31 +1,39 @@
 package imageboards;
 
+import api.NekobotHandler;
 import main.Commands;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.Command;
-import util.UrlHandler;
 
 public class ThighCommand extends Command {
     public ThighCommand() {
-        setCommand(prefix+"thigh");
-        setPermission("Bananenchefs");
-        setTopic("images");
-        setDescription("Stockings, socks and pantys. Everything you desire");
+        addPermission("Bananenchefs");
     }
 
     @Override
-    public void handle(MessageReceivedEvent event, String[] argStrings) {
-        Commands.sendMessage(event, UrlHandler.getImage("https://nekobot.xyz/api/image?type=thigh"));
-
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        NekobotHandler nekobotHandler = new NekobotHandler();
+        String imageUrl = nekobotHandler.getThighImage();
+        Commands.sendMessage(event, imageUrl);
     }
 
     @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
+    protected String defineCommand() {
+        return prefix + "thigh";
+    }
 
-        help.append("***" + getCommand()+"***");
-        help.append(" - " + getDescription() + "\n");
+    @Override
+    protected String defineDescription() {
+        return "Stockings, socks and pantys. Everything you desire";
+    }
 
-        return help.toString();
+    @Override
+    protected String defineTopic() {
+        return "images";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "";
     }
 }

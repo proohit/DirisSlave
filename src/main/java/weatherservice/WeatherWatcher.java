@@ -1,11 +1,12 @@
 package weatherservice;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageHistory;
-import net.dv8tion.jda.api.entities.TextChannel;
+import java.io.File;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -16,17 +17,17 @@ import org.jfree.data.time.Hour;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
-import util.UrlHandler;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import api.OpenWeatherMapHandler;
+import kong.unirest.json.JSONArray;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageHistory;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 public class WeatherWatcher {
     public static void start(JDA jda) {
+        OpenWeatherMapHandler openWeatherMapHandler = new OpenWeatherMapHandler();
 
         Timer task = new Timer();
         Calendar c = Calendar.getInstance();
@@ -40,68 +41,61 @@ public class WeatherWatcher {
             @Override
             public void run() {
                 System.out.println("new job");
-                String result = "*The temperature in Stuttgart for the next 15 hours* \n";
 
-                JsonObject root = UrlHandler.parseJson("http://api.openweathermap.org/data/2.5/forecast?q=Stuttgart&units=metric&appid=057f5d829942a1293eedbb094f8a5c71");
-
-                JsonArray list = root.get("list").getAsJsonArray();
+                final JSONArray dortmundData = openWeatherMapHandler.getWeatherDataOfCity("Dortmund");
+                final JSONArray stuttgartData = openWeatherMapHandler.getWeatherDataOfCity("Stuttgart");
                 final TimeSeries stuttgart = new TimeSeries("Stuttgart");
                 final TimeSeries dortmund = new TimeSeries("Dortmund");
 
-                Double[] temperatures = new Double[6];
-                String[] time = new String[6];
-                String[] weather1 = new String[6];
+                Double[] dortmundTemperatures = new Double[6];
+                String[] dortmundTime = new String[6];
+                String[] dortmundWeather = new String[6];
                 for (int i = 1; i < 6; i++) {
-                    temperatures[i] = Double.parseDouble(list.get(i).getAsJsonObject().get("main").getAsJsonObject().get("temp").getAsString());
-                    time[i] = list.get(i).getAsJsonObject().get("dt_txt").getAsString();
-                    weather1[i] = list.get(i).getAsJsonObject().get("weather").getAsJsonArray().get(0).getAsJsonObject().get("main").getAsString();
-                    String date = time[i].split(" ")[0];
-                    String timeString = time[i].split(" ")[1];
+                    dortmundTemperatures[i] = openWeatherMapHandler
+                            .getTemperatuteOfWeatherData(dortmundData.getJSONObject(i));
+                    dortmundTime[i] = openWeatherMapHandler.getTimeOfWeatherData(dortmundData.getJSONObject(i));
+                    dortmundWeather[i] = openWeatherMapHandler
+                            .getWeatherConditionOfWeatherData(dortmundData.getJSONObject(i));
+                    String date = dortmundTime[i].split(" ")[0];
+                    String timeString = dortmundTime[i].split(" ")[1];
                     int hour = Integer.parseInt(timeString.split(":")[0]);
                     int day = Integer.parseInt(date.split("-")[2]);
                     int month = Integer.parseInt(date.split("-")[1]);
                     int year = Integer.parseInt(date.split("-")[0]);
-                    stuttgart.add(new Hour(hour, new Day(day, month, year)), temperatures[i]);
+                    stuttgart.add(new Hour(hour, new Day(day, month, year)), dortmundTemperatures[i]);
                 }
-                root = UrlHandler.parseJson("http://api.openweathermap.org/data/2.5/forecast?q=Dortmund&units=metric&appid=057f5d829942a1293eedbb094f8a5c71");
-                list = root.get("list").getAsJsonArray();
-                String[] weather2 = new String[6];
 
+                String[] stuttgartWeather = new String[6];
                 for (int i = 1; i < 6; i++) {
-                    temperatures[i] = Double.parseDouble(list.get(i).getAsJsonObject().get("main").getAsJsonObject().get("temp").getAsString());
-                    time[i] = list.get(i).getAsJsonObject().get("dt_txt").getAsString();
-                    weather2[i] = list.get(i).getAsJsonObject().get("weather").getAsJsonArray().get(0).getAsJsonObject().get("main").getAsString();
-                    String date = time[i].split(" ")[0];
-                    String timeString = time[i].split(" ")[1];
+                    dortmundTemperatures[i] = openWeatherMapHandler
+                            .getTemperatuteOfWeatherData(stuttgartData.getJSONObject(i));
+                    dortmundTime[i] = openWeatherMapHandler.getTimeOfWeatherData(stuttgartData.getJSONObject(i));
+                    stuttgartWeather[i] = openWeatherMapHandler
+                            .getWeatherConditionOfWeatherData(stuttgartData.getJSONObject(i));
+                    String date = dortmundTime[i].split(" ")[0];
+                    String timeString = dortmundTime[i].split(" ")[1];
                     int hour = Integer.parseInt(timeString.split(":")[0]);
                     int day = Integer.parseInt(date.split("-")[2]);
                     int month = Integer.parseInt(date.split("-")[1]);
                     int year = Integer.parseInt(date.split("-")[0]);
-                    dortmund.add(new Hour(hour, new Day(day, month, year)), temperatures[i]);
+                    dortmund.add(new Hour(hour, new Day(day, month, year)), dortmundTemperatures[i]);
                 }
                 TimeSeriesCollection dataset = new TimeSeriesCollection();
 
                 dataset.addSeries(stuttgart);
                 dataset.addSeries(dortmund);
 
-                JFreeChart chart = ChartFactory.createTimeSeriesChart(
-                        "Weather in Stuttgart and Dortmund" + " on " + time[1].split(" ")[0],
-                        "time",
-                        "temperature in °C",
-                        dataset,
-                        true,
-                        true,
-                        false
-                );
+                JFreeChart chart = ChartFactory.createTimeSeriesChart("Weather in Stuttgart and Dortmund today", "time",
+                        "temperature in °C", dataset, true, true, false);
                 XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) chart.getXYPlot().getRenderer();
-                //enable data points labeling, gets the Y value of the item i1 in the series i
+                // enable data points labeling, gets the Y value of the item i1 in the series i
                 renderer.setBaseItemLabelGenerator(new XYItemLabelGenerator() {
                     @Override
                     public String generateLabel(XYDataset xyDataset, int i, int i1) {
                         if (i == 0) {
-                            return String.valueOf(xyDataset.getYValue(i, i1)) + " " + weather1[i1 + 1];
+                            return String.valueOf(xyDataset.getYValue(i, i1)) + " " + dortmundWeather[i1 + 1];
                         } else {
-                            return String.valueOf(xyDataset.getYValue(i, i1)) + " " + weather2[i1 + 1];
+                            return String.valueOf(xyDataset.getYValue(i, i1)) + " " + stuttgartWeather[i1 + 1];
                         }
                     }
                 });

@@ -1,31 +1,39 @@
 package imageboards;
 
+import api.NekobotHandler;
 import main.Commands;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.Command;
-import util.UrlHandler;
 
 public class CoffeeCommand extends Command {
     public CoffeeCommand() {
-        setCommand(prefix+"coffee");
-        setPermission("everyone");
-        setTopic("images");
-        setDescription("Enjoy your coffee with a gif");
+        addPermission("everyone");
     }
 
     @Override
-    public void handle(MessageReceivedEvent event, String[] argStrings) {
-        Commands.sendMessage(event, UrlHandler.getImage("https://nekobot.xyz/api/image?type=coffee"));
-
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        NekobotHandler nekobotHandler = new NekobotHandler();
+        String imageUrl = nekobotHandler.getCoffeImage();
+        Commands.sendMessage(event, imageUrl);
     }
 
     @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
+    protected String defineCommand() {
+        return prefix + "coffee";
+    }
 
-        help.append("***" + getCommand()+"***");
-        help.append(" - " + getDescription() + "\n");
+    @Override
+    protected String defineDescription() {
+        return "Enjoy your coffee with a gif";
+    }
 
-        return help.toString();
+    @Override
+    protected String defineTopic() {
+        return "images";
+    }
+
+    @Override
+    protected String defineHelpString() {
+        return "";
     }
 }

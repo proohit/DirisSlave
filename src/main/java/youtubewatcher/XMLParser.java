@@ -9,7 +9,6 @@ public class XMLParser {
 	protected String file = "";
 
 	public XMLParser() {
-		// TODO Auto-generated constructor stub
 	}
 
 	XMLParser(String url) {
@@ -23,7 +22,6 @@ public class XMLParser {
 			}
 
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 

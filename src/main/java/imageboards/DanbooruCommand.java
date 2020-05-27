@@ -1,77 +1,79 @@
 package imageboards;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import api.DanbooruHandler;
+import exceptions.ImageNotFoundException;
+import kong.unirest.json.JSONArray;
+import kong.unirest.json.JSONObject;
 import main.Commands;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import util.Command;
-import util.UrlHandler;
 
 public class DanbooruCommand extends Command {
     public DanbooruCommand() {
-        setCommand(prefix + "danbooru");
-        setPermission("Bananenchefs");
-        setTopic("images");
-        setDescription("Sexy pictures of hot waifus are waiting for you. Just add your tag");
+        addPermission("Bananenchefs");
     }
 
     @Override
-    public void handle(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings.length < 2) {
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        if (argStrings.length < 1) {
             main.Commands.sendMessage(event, getHelp());
             return;
         }
-        String URL = "https://danbooru.donmai.us/posts.json/?utf8=%E2%9C%93&limit=200&tags=";
-        if (argStrings.length > 3)
+        if (argStrings.length > 2) {
             Commands.sendMessage(event, "`you cannot search for more than 2 tags!`");
-        for (int i = 1; i < argStrings.length; i++) {
-            argStrings[i] = argStrings[i].replace('-', '_');
-            URL += argStrings[i] + "+";
+            return;
         }
-        if (argStrings.length == 2)
-            Commands.sendMessage(event, getDanbooru(URL, argStrings[1]));
-        if (argStrings.length == 3)
-            Commands.sendMessage(event, getDanbooru(URL, argStrings[1], argStrings[2]));
-
-    }
-
-    private static String getDanbooruTags(String tag) {
-        JsonArray object = UrlHandler.parseJsonArray(
-                "https://danbooru.donmai.us/tags.json/?search[hide_empty]=true&search[order]=count&search[name_matches]="
-                        + "*" + tag + "*");
-        String tags = "`";
-        for (int i = 0; i < object.size() / 2; i++) {
-            JsonObject element = (JsonObject) object.get(i);
-            tags += element.get("name") + " post count: " + element.get("post_count") + "\n";
+        DanbooruHandler danbooruHandler = new DanbooruHandler();
+        if (argStrings.length == 1) {
+            try {
+                String imageUrl = danbooruHandler.getImageByQuery(argStrings[0]);
+                System.out.println(imageUrl);
+                Commands.sendMessage(event, imageUrl);
+            } catch (ImageNotFoundException e) {
+                sendSimilarTags(event, argStrings[0]);
+            }
         }
-        tags += "`";
-        return tags;
+        if (argStrings.length == 2) {
+            try {
+                String imageUrl = danbooruHandler.getImageByQuery(argStrings[0], argStrings[1]);
+                System.out.println(imageUrl);
+                Commands.sendMessage(event, imageUrl);
+            } catch (Exception e) {
+                Commands.sendMessage(event, "Nothing found for those tags");
+            }
+        }
     }
 
-    private static String getDanbooru(String URL, String tag1) {
-        JsonArray object = UrlHandler.parseJsonArray(URL);
-        if (object.size() == 0)
-            return "no posts found, searching for matching tags\n" + tag1 + "\n" + getDanbooruTags(tag1);
-        return UrlHandler.getRandomObject(object).get("file_url").getAsString();
-    }
-
-    private static String getDanbooru(String URL, String tag1, String tag2) {
-        JsonArray object = UrlHandler.parseJsonArray(URL);
-        if (object.size() == 0)
-            return "no posts found, searching for matching tags\n" + tag1 + "\n" + getDanbooruTags(tag1) + "\n" + tag2
-                    + "\n" + getDanbooruTags(tag2);
-        return UrlHandler.getRandomObject(object).get("file_url").getAsString();
+    private void sendSimilarTags(MessageReceivedEvent event, String initialTag) {
+        DanbooruHandler danbooruHandler = new DanbooruHandler();
+        JSONArray similarTags = danbooruHandler.getTagsByQuery(initialTag);
+        StringBuilder similarTagsString = new StringBuilder();
+        similarTagsString.append("No tags found for ").append(initialTag).append(". Searching for similar tags...\n");
+        similarTags.forEach(similarTagObject -> {
+            JSONObject similarTag = (JSONObject) similarTagObject;
+            similarTagsString.append(similarTag.getString("name")).append(", count: ")
+                    .append(similarTag.getInt("post_count")).append("\n");
+        });
+        Commands.sendMessage(event, similarTagsString.toString());
     }
 
     @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
+    protected String defineCommand() {
+        return prefix + "danbooru";
+    }
 
-        help.append("***" + getCommand() + "***");
-        help.append(" - " + getDescription() + "\n");
+    @Override
+    protected String defineDescription() {
+        return "Sexy pictures of hot waifus are waiting for you. Just add your tag";
+    }
 
-        help.append("<tag1> <tag2 (optional)>\n");
+    @Override
+    protected String defineTopic() {
+        return "images";
+    }
 
-        return help.toString();
+    @Override
+    protected String defineHelpString() {
+        return "<tag1> <tag2 (optional)>";
     }
 }

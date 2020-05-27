@@ -6,35 +6,41 @@ import util.Command;
 
 public class RemoveCommand extends Command {
     public RemoveCommand() {
-        setCommand(prefix + "remove");
-        setPermission("everyone");
-        setTopic("music");
-        setDescription("remove song from queue");
+        addPermission("everyone");
     }
 
     @Override
-    public void handle(MessageReceivedEvent event, String[] argStrings) {
-        if(argStrings.length < 2) {
+    protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        if (argStrings.length < 1) {
             main.Commands.sendMessage(event, getHelp());
             return;
-        }
-        if (argStrings.length == 2) {
+        } else {
+            int indexToRemove = Integer.parseInt(argStrings[0]);
             try {
-                Commands.player.remove(Integer.parseInt(argStrings[1]), event.getTextChannel());
+                Commands.player.remove(indexToRemove, event.getTextChannel());
             } catch (NumberFormatException e) {
                 Commands.sendBeautifulMessage(event, "the position you have entered is invalid");
             }
         }
     }
+
     @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
+    protected String defineCommand() {
+        return prefix + "remove";
+    }
 
-        help.append("***" + getCommand()+"***");
-        help.append(" - " + getDescription() + "\n");
+    @Override
+    protected String defineDescription() {
+        return "remove song from queue";
+    }
 
-        help.append("<number of song in queue, type #q for queue>\n");
+    @Override
+    protected String defineTopic() {
+        return "music";
+    }
 
-        return help.toString();
+    @Override
+    protected String defineHelpString() {
+        return "<number of song in queue> type " + prefix + "q to see queue";
     }
 }
