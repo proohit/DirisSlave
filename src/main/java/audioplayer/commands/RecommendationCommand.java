@@ -1,12 +1,12 @@
 package audioplayer.commands;
 
-import audioplayer.spotify.RecommendationHandler;
+import java.util.Arrays;
+
+import audioplayer.api.RecommendationHandler;
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import util.Command;
-
-import java.util.Arrays;
+import shared.commands.Command;
 
 public class RecommendationCommand extends Command {
     public RecommendationCommand() {

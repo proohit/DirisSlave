@@ -1,14 +1,14 @@
 package audioplayer.commands;
 
-import database.Song;
-import database.SongHistoryTable;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import util.Command;
+import static main.Commands.sendBeautifulMessage;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static main.Commands.sendBeautifulMessage;
+import database.Song;
+import database.SongHistoryTable;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import shared.commands.Command;
 
 public class HistoryCommand extends Command {
     public HistoryCommand() {

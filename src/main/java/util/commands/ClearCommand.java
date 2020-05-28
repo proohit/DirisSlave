@@ -1,11 +1,11 @@
 package util.commands;
 
+import java.util.List;
+
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import util.Command;
-
-import java.util.List;
+import shared.commands.Command;
 
 public class ClearCommand extends Command {
     public ClearCommand() {

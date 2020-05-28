@@ -8,7 +8,7 @@ import database.Playlist;
 import database.PlaylistTable;
 import database.SongPlaylistTable;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import util.Command;;
+import shared.commands.Command;;
 
 public class ListPlaylistCommand extends Command {
     public ListPlaylistCommand() {

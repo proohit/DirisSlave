@@ -114,3 +114,9 @@ hs_err_pid*
 
 # config
 config/
+
+# eclipse
+.settings
+
+#bin
+/bin

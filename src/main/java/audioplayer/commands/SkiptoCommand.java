@@ -1,10 +1,10 @@
 package audioplayer.commands;
 
+import static main.Commands.sendBeautifulMessage;
+
 import main.Commands;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import util.Command;
-
-import static main.Commands.sendBeautifulMessage;
+import shared.commands.Command;
 
 public class SkiptoCommand extends Command {
     public SkiptoCommand() {

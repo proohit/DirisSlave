@@ -1,10 +1,11 @@
 package audioplayer.commands.playlist;
 
+import static main.Commands.sendBeautifulMessage;
+
 import database.Song;
 import database.SongPlaylistTable;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import util.Command;
-import static main.Commands.sendBeautifulMessage;
+import shared.commands.Command;
 
 public class RemoveFromPlaylistCommand extends Command {
 

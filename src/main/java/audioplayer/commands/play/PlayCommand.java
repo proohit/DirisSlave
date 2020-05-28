@@ -2,7 +2,7 @@ package audioplayer.commands.play;
 
 import main.Commands;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import util.Command;
+import shared.commands.Command;
 
 public class PlayCommand extends Command {
     public PlayCommand() {

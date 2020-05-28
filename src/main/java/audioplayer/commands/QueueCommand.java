@@ -1,11 +1,12 @@
 package audioplayer.commands;
 
+import java.util.Iterator;
+
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+
 import main.Commands;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import util.Command;
-
-import java.util.Iterator;
+import shared.commands.Command;
 
 public class QueueCommand extends Command {
     public QueueCommand() {

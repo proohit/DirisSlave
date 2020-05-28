@@ -1,8 +1,9 @@
 package audioplayer;
 
-import audioplayer.commands.AudioPlayerSendHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
+
+import audioplayer.commands.AudioPlayerSendHandler;
 /**
  * Holder for both the player and a track scheduler for one guild.
  */

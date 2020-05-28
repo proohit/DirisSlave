@@ -2,7 +2,7 @@ package util.commands;
 
 import metahandler.MetaHandler;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import util.Command;
+import shared.commands.Command;
 
 public class StatsCommand extends Command {
     public StatsCommand() {

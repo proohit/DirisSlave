@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.GenericMessageReactionEvent;
-import util.Command;
+import shared.commands.Command;
 
 public class HelpCommand extends Command {
     private int HELP_PER_PAGE = 5;

@@ -3,7 +3,7 @@ package audioplayer.commands;
 import main.Commands;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.managers.AudioManager;
-import util.Command;
+import shared.commands.Command;
 
 public class StopCommand extends Command {
     public StopCommand() {

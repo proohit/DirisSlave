@@ -1,12 +1,12 @@
 package audioplayer.commands;
 
+import java.util.Comparator;
+import java.util.Map;
+
 import database.Song;
 import database.SongHistoryTable;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import util.Command;
-
-import java.util.Comparator;
-import java.util.Map;
+import shared.commands.Command;
 
 public class SongStatisticsCommand extends Command {
     public SongStatisticsCommand() {

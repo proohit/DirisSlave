@@ -1,14 +1,18 @@
 package youtubewatcher;
 
-import main.Commands;
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.TextChannel;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import main.Commands;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 public class YoutubeWatcher {
 

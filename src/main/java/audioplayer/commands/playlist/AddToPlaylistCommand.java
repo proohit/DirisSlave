@@ -1,5 +1,7 @@
 package audioplayer.commands.playlist;
 
+import static main.Commands.sendBeautifulMessage;
+
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
@@ -11,8 +13,7 @@ import database.SongPlaylistTable;
 import database.SongTable;
 import main.Commands;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import util.Command;
-import static main.Commands.sendBeautifulMessage;
+import shared.commands.Command;
 
 public class AddToPlaylistCommand extends Command {
     public AddToPlaylistCommand() {

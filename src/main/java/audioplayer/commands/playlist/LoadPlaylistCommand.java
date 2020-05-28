@@ -3,7 +3,7 @@ package audioplayer.commands.playlist;
 import audioplayer.AudioPlayer;
 import main.Commands;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import util.Command;
+import shared.commands.Command;
 
 public class LoadPlaylistCommand extends Command {
     public LoadPlaylistCommand() {

@@ -21,24 +21,24 @@ import audioplayer.commands.SongStatisticsCommand;
 import audioplayer.commands.StopCommand;
 import audioplayer.commands.play.PlayCommand;
 import audioplayer.commands.playlist.PlaylistCommand;
-import calculator.CalculatorCommand;
-import imageboards.CoffeeCommand;
-import imageboards.DanbooruCommand;
-import imageboards.GahCommand;
-import imageboards.LizardCommand;
-import imageboards.ThighCommand;
+import calculator.commands.CalculatorCommand;
+import imageboards.commands.CoffeeCommand;
+import imageboards.commands.DanbooruCommand;
+import imageboards.commands.GahCommand;
+import imageboards.commands.LizardCommand;
+import imageboards.commands.ThighCommand;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import util.Command;
+import shared.commands.Command;
 import util.commands.ClearCommand;
 import util.commands.HelpCommand;
-import weatherservice.WeatherCommand;
+import weather.commands.WeatherCommand;
 import youtubewatcher.commands.YtWatcherCommand;
 
 public class Commands {
 
-    public static ArrayList<util.Command> registeredCommands = new ArrayList<>();
+    public static ArrayList<Command> registeredCommands = new ArrayList<>();
     public static AudioPlayer player;
 
     public Commands() {

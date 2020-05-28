@@ -1,9 +1,9 @@
 package util.commands;
 
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import util.Command;
-
 import java.io.IOException;
+
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import shared.commands.Command;
 
 public class RestartCommand extends Command {
     public RestartCommand() {

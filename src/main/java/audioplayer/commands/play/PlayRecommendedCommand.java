@@ -5,12 +5,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import audioplayer.spotify.RecommendationHandler;
+import audioplayer.api.RecommendationHandler;
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
 import main.Commands;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import util.Command;
+import shared.commands.Command;
 
 public class PlayRecommendedCommand extends Command {
     public PlayRecommendedCommand() {

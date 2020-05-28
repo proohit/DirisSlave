@@ -1,7 +1,7 @@
 package youtubewatcher.commands;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import util.Command;
+import shared.commands.Command;
 
 public class YtWatcherCommand extends Command {
     public YtWatcherCommand() {
