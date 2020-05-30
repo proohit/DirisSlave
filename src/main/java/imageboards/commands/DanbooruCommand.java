@@ -9,6 +9,8 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 
 public class DanbooruCommand extends Command {
+    DanbooruHandler danbooruHandler = new DanbooruHandler();
+
     public DanbooruCommand() {
         addPermission("Bananenchefs");
     }
@@ -23,11 +25,9 @@ public class DanbooruCommand extends Command {
             Commands.sendMessage(event, "`you cannot search for more than 2 tags!`");
             return;
         }
-        DanbooruHandler danbooruHandler = new DanbooruHandler();
         if (argStrings.length == 1) {
             try {
-                String imageUrl = danbooruHandler.getImageByQuery(argStrings[0]);
-                System.out.println(imageUrl);
+                String imageUrl = danbooruHandler.getRandomImageByQuery(argStrings[0]);
                 Commands.sendMessage(event, imageUrl);
             } catch (ImageNotFoundException e) {
                 sendSimilarTags(event, argStrings[0]);
@@ -35,8 +35,7 @@ public class DanbooruCommand extends Command {
         }
         if (argStrings.length == 2) {
             try {
-                String imageUrl = danbooruHandler.getImageByQuery(argStrings[0], argStrings[1]);
-                System.out.println(imageUrl);
+                String imageUrl = danbooruHandler.getRandomImageByQuery(argStrings[0], argStrings[1]);
                 Commands.sendMessage(event, imageUrl);
             } catch (Exception e) {
                 Commands.sendMessage(event, "Nothing found for those tags");
@@ -45,7 +44,6 @@ public class DanbooruCommand extends Command {
     }
 
     private void sendSimilarTags(MessageReceivedEvent event, String initialTag) {
-        DanbooruHandler danbooruHandler = new DanbooruHandler();
         JSONArray similarTags = danbooruHandler.getTagsByQuery(initialTag);
         StringBuilder similarTagsString = new StringBuilder();
         similarTagsString.append("No tags found for ").append(initialTag).append(". Searching for similar tags...\n");
