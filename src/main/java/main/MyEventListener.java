@@ -52,10 +52,4 @@ public class MyEventListener extends ListenerAdapter {
             helpCommand.handlePageRequest(event);
         }
     }
-
-    @Override
-    public void onReady(@Nonnull ReadyEvent event) {
-        super.onReady(event);
-        Startup.jda.getTextChannelById("544815528179531776").sendMessage("starting the engine...").queue();
-    }
 }

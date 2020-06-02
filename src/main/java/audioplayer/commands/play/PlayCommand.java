@@ -7,7 +7,7 @@ import shared.commands.Command;
 public class PlayCommand extends Command {
     public PlayCommand() {
         this.addSubCommand(new PlayRecommendedCommand());
-
+        this.addSubCommand(new PlayRandomCommand());
         this.addPermission("everyone");
     }
 
