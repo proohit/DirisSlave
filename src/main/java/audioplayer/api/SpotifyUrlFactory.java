@@ -38,4 +38,8 @@ public class SpotifyUrlFactory {
         return API_URL + "recommendations/";
     }
 
+    public static String getAvailableGenreSeedsUrl() {
+        return getRecommendationUrl() + "available-genre-seeds/";
+    }
+
 }
