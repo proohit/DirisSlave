@@ -47,45 +47,50 @@ public class AudioPlayer {
 
         return musicManager;
     }
+
     public boolean shuffle(TextChannel channel) {
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
         return musicManager.scheduler.shuffle();
     }
+
     public void togglePause(TextChannel channel, boolean setPause) {
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
-        if(setPause == true) {
+        if (setPause) {
             musicManager.scheduler.pause();
-        } else if(setPause == false) {
+        } else {
             musicManager.scheduler.resume();
         }
     }
+
     public void fetchAudioTrack(final TextChannel channel, final String trackUrl, AudioLoadResultHandler handler) {
         lastManager = channel.getGuild().getAudioManager();
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
         playerManager.loadItemOrdered(musicManager, trackUrl, handler);
     }
-    public boolean setRepeat(TextChannel channel,boolean repeat) {
+
+    public boolean setRepeat(TextChannel channel, boolean repeat) {
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
         return musicManager.scheduler.setRepeat(repeat);
     }
+
     public boolean playPlaylist(final TextChannel channel, final String playlist) {
         lastManager = channel.getGuild().getAudioManager();
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
 
         ArrayList<Song> songs = (ArrayList<Song>) SongPlaylistTable.getSongsByPlaylist(playlist);
-        if(songs.size() == 0) {
+        if (songs.isEmpty()) {
             return false;
         }
         for (Song song : songs) {
             playerManager.loadItemOrdered(musicManager, song.getUrl(), new AudioLoadResultHandler() {
                 @Override
                 public void trackLoaded(AudioTrack track) {
-                    play(channel.getGuild(), musicManager, track);
+                    play(musicManager, track);
                 }
 
                 @Override
                 public void playlistLoaded(AudioPlaylist playlist) {
-                    play(channel.getGuild(), musicManager, playlist.getTracks().get(0));
+                    play(musicManager, playlist.getTracks().get(0));
                 }
 
                 @Override
@@ -108,12 +113,11 @@ public class AudioPlayer {
         playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
-                float seconds = track.getDuration()/1000;
-                int minutes = (int)seconds/60;
-                seconds = seconds%60;
-                event.getTextChannel().sendMessage("Adding to queue " + track.getInfo().title+ " Duration: " + minutes + ":"+seconds + " minutes").queue();
-                AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(), event.getMember().getVoiceState().getChannel());
-                play(event.getGuild(), musicManager, track);
+                SearchResultEmbed searchResultEmbed = new SearchResultEmbed(track);
+                event.getTextChannel().sendMessage(searchResultEmbed.getEmbed()).queue();
+                AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(),
+                        event.getMember().getVoiceState().getChannel());
+                play(musicManager, track);
             }
 
             @Override
@@ -123,16 +127,11 @@ public class AudioPlayer {
                 if (firstTrack == null) {
                     firstTrack = playlist.getTracks().get(0);
                 }
-                int seconds = (int)firstTrack.getDuration()/1000;
-                int minutes = (int)seconds/60;
-                seconds = seconds%60;
-                String secondsString = String.valueOf(seconds);
-                String minutesString = String.valueOf(minutes);
-                if(secondsString.length() <2) secondsString="0" + secondsString;
-                if(minutesString.length() <2) minutesString = "0" + minutesString;
-                event.getTextChannel().sendMessage("Adding to queue " + firstTrack.getInfo().title + " Duration: " + minutesString + ":"+secondsString + " minutes").queue();
-                AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(), event.getMember().getVoiceState().getChannel());
-                play(event.getGuild(), musicManager, firstTrack);
+                SearchResultEmbed searchResultEmbed = new SearchResultEmbed(firstTrack);
+                event.getTextChannel().sendMessage(searchResultEmbed.getEmbed()).queue();
+                AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(),
+                        event.getMember().getVoiceState().getChannel());
+                play(musicManager, firstTrack);
             }
 
             @Override
@@ -152,7 +151,7 @@ public class AudioPlayer {
         return musicManager.scheduler.getQueue();
     }
 
-    public void play(Guild guild, GuildMusicManager musicManager, AudioTrack track) {
+    public void play(GuildMusicManager musicManager, AudioTrack track) {
         musicManager.scheduler.queue(track);
     }
 
@@ -160,6 +159,7 @@ public class AudioPlayer {
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
         musicManager.scheduler.stop();
     }
+
     public long seek(TextChannel channel, int seconds) {
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
         return musicManager.scheduler.seek(seconds);
@@ -169,6 +169,7 @@ public class AudioPlayer {
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
         musicManager.scheduler.jumpto(seconds);
     }
+
     public void skipTrack(TextChannel channel) {
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
         musicManager.scheduler.nextTrack();
@@ -191,8 +192,9 @@ public class AudioPlayer {
     }
 
     public static void connectToUserVoiceChannel(AudioManager audioManager, VoiceChannel channel) {
-        if (!audioManager.isConnected() && !audioManager.isAttemptingToConnect()) {
+        if (!audioManager.isConnected()) {
             audioManager.openAudioConnection(channel);
         }
     }
+
 }
