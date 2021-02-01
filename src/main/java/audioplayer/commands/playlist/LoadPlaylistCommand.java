@@ -1,26 +1,31 @@
 package audioplayer.commands.playlist;
 
+import java.util.Arrays;
+import java.util.List;
+
 import audioplayer.AudioPlayer;
 import main.Commands;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 
 public class LoadPlaylistCommand extends Command {
+    private final List<String> SHUFFLE_PARAMETERS = Arrays.asList("shuffle", "random", "rnd");
+
     public LoadPlaylistCommand() {
         this.addPermission("everyone");
     }
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings.length == 1) {
+        Boolean isShuffle = false;
+        if (argStrings.length >= 2) {
+            isShuffle = SHUFFLE_PARAMETERS.contains(argStrings[1]);
+        }
+        if (argStrings.length >= 1) {
             String playlistNameToBeLoaded = argStrings[0];
-            if (Commands.player.playPlaylist(event.getTextChannel(), playlistNameToBeLoaded)) {
-                AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(),
-                        event.getMember().getVoiceState().getChannel());
-                Commands.sendBeautifulMessage(event, "loaded playlist " + playlistNameToBeLoaded);
-            } else {
-                main.Commands.sendBeautifulMessage(event, playlistNameToBeLoaded + " not found or no songs available");
-            }
+            Commands.player.playPlaylist(event.getTextChannel(), playlistNameToBeLoaded, isShuffle);
+            AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(),
+                    event.getMember().getVoiceState().getChannel());
         }
     }
 
@@ -41,7 +46,7 @@ public class LoadPlaylistCommand extends Command {
 
     @Override
     protected String defineHelpString() {
-        return "<playlist name>";
+        return "<playlist name> [shuffle|random|rnd]";
     }
 
 }
