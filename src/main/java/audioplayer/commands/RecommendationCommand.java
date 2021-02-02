@@ -18,18 +18,6 @@ public class RecommendationCommand extends Command {
     }
 
     @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
-
-        help.append("***" + getCommand() + "***");
-        help.append(" - " + getDescription() + "\n");
-
-        help.append("<spotify Track ids>");
-
-        return help.toString();
-    }
-
-    @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
         if (argStrings.length <= 0) {
             main.Commands.sendMessage(event, getHelp());
@@ -55,7 +43,7 @@ public class RecommendationCommand extends Command {
 
     @Override
     protected String defineDescription() {
-        return "Get Recommendations based on up to 5 Spotify Tracks";
+        return "Get recommendations based on a song query";
     }
 
     @Override

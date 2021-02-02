@@ -10,16 +10,6 @@ public class ResumeCommand extends Command {
     }
 
     @Override
-    public String getHelp() {
-        StringBuilder help = new StringBuilder();
-
-        help.append("***" + getCommand() + "***");
-        help.append(" - " + getDescription() + "\n");
-
-        return help.toString();
-    }
-
-    @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
         Commands.player.togglePause(event.getTextChannel(), false);
         Commands.sendMessage(event, "resuming the playback...");
