@@ -7,6 +7,10 @@ import shared.commands.Command;
 public class SeekCommand extends Command {
     public SeekCommand() {
         addPermission("everyone");
+        addCommendPrefix("seek");
+        setDescription("seeks forward in the current playing song");
+        setTopic("music");
+        setHelpString("<seconds to skip in the current song>");
     }
 
     @Override
@@ -18,7 +22,7 @@ public class SeekCommand extends Command {
             long position = Commands.player.seek(event.getTextChannel(), inputSeconds);
             if (position > 0) {
                 int seconds = (int) position / 1000;
-                int minutes = (int) seconds / 60;
+                int minutes = seconds / 60;
                 seconds = seconds % 60;
                 String secondsString = String.valueOf(seconds);
                 String minutesString = String.valueOf(minutes);
@@ -31,23 +35,4 @@ public class SeekCommand extends Command {
         }
     }
 
-    @Override
-    protected String defineCommand() {
-        return prefix + "seek";
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "seeks forward in the current playing song";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "music";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "<seconds to skip in the current song>";
-    }
 }

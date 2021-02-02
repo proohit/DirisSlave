@@ -7,6 +7,9 @@ import shared.commands.Command;
 public class LizardCommand extends Command {
     public LizardCommand() {
         addPermission("everyone");
+        addCommendPrefix("lizard");
+        setDescription(":lizard:");
+        setTopic("images");
     }
 
     @Override
@@ -16,23 +19,4 @@ public class LizardCommand extends Command {
         main.Commands.sendMessage(event, geckoImageUrl);
     }
 
-    @Override
-    protected String defineCommand() {
-        return prefix + "lizard";
-    }
-
-    @Override
-    protected String defineDescription() {
-        return ":lizard:";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "images";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "";
-    }
 }

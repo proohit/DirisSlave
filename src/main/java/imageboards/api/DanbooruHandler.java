@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import imageboards.exceptions.ImageNotFoundException;
 import kong.unirest.GetRequest;
@@ -14,15 +13,14 @@ import shared.api.BasicApi;
 
 public class DanbooruHandler extends BasicApi {
 
-    final String QUERY_LIMIT = "limit";
-    final String QUERY_ENCODING = "utf8";
-    final String QUERY_TAGS = "tags";
-    final String QUERY_RANDOM = "random";
-    final String POST_FILE_URL = "file_url";
-    final String QUERY_TAGS_SEARCH_HIDE_EMPTY = "search[hide_empty]";
-    final String QUERY_TAGS_SEARCH_ORDER = "search[order]";
-    final String QUERY_TAGS_SEARCH_NAME_MATCHES = "search[name_matches]";
-    final String TAG_NAME = "name";
+    private static final String QUERY_LIMIT = "limit";
+    private static final String QUERY_ENCODING = "utf8";
+    private static final String QUERY_TAGS = "tags";
+    private static final String QUERY_RANDOM = "random";
+    private static final String POST_FILE_URL = "file_url";
+    private static final String QUERY_TAGS_SEARCH_HIDE_EMPTY = "search[hide_empty]";
+    private static final String QUERY_TAGS_SEARCH_ORDER = "search[order]";
+    private static final String QUERY_TAGS_SEARCH_NAME_MATCHES = "search[name_matches]";
 
     private GetRequest basicImageByQueryRequest(String tag) {
         return this.baseGetRequest(DanbooruUrlFactory.getPostsUrl()).queryString(QUERY_ENCODING, "%E2%9C%93")
@@ -41,8 +39,7 @@ public class DanbooruHandler extends BasicApi {
             throw new ImageNotFoundException();
         }
         JSONObject randomPost = response.getJSONObject(0);
-        String imageUrl = getImageUrlOfPost(randomPost);
-        return imageUrl;
+        return getImageUrlOfPost(randomPost);
     }
 
     public String getRandomImageByQuery(String tag1, String tag2) throws ImageNotFoundException {
@@ -52,8 +49,7 @@ public class DanbooruHandler extends BasicApi {
             throw new ImageNotFoundException();
         }
         JSONObject randomPost = response.getJSONObject(0);
-        String imageUrl = getImageUrlOfPost(randomPost);
-        return imageUrl;
+        return getImageUrlOfPost(randomPost);
     }
 
     public List<String> getImageUrlsByQuery(String tag) throws ImageNotFoundException {
@@ -93,8 +89,7 @@ public class DanbooruHandler extends BasicApi {
         queryStrings.put(QUERY_TAGS_SEARCH_HIDE_EMPTY, "true");
         queryStrings.put(QUERY_TAGS_SEARCH_ORDER, "count");
         queryStrings.put(QUERY_TAGS_SEARCH_NAME_MATCHES, "*" + query + "*");
-        JSONArray response = this.baseGetRequest(DanbooruUrlFactory.getTagsUrl()).queryString(queryStrings).asJson()
-                .getBody().getArray();
-        return response;
+        return this.baseGetRequest(DanbooruUrlFactory.getTagsUrl()).queryString(queryStrings).asJson().getBody()
+                .getArray();
     }
 }

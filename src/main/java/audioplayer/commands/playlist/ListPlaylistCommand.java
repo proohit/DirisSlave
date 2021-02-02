@@ -12,7 +12,11 @@ import shared.commands.Command;;
 
 public class ListPlaylistCommand extends Command {
     public ListPlaylistCommand() {
-        this.addPermission("everyone");
+        addPermission("everyone");
+        addCommendPrefix("list", "ls");
+        setDescription("lists all playlists or the songs of a playlist");
+        setTopic("music");
+        setHelpString("[playlist name, optional]");
     }
 
     @Override
@@ -29,7 +33,7 @@ public class ListPlaylistCommand extends Command {
         } else if (argStrings.length == 1) {
             String playlistToList = argStrings[0];
             Playlist playlist = SongPlaylistTable.getPlaylistByName(playlistToList);
-            if (playlist.getSongs().size() == 0) {
+            if (playlist.getSongs().isEmpty()) {
                 sendBeautifulMessage(event, "no such playlist or no songs found for " + playlistToList);
                 return;
             }
@@ -39,26 +43,6 @@ public class ListPlaylistCommand extends Command {
             }
             sendBeautifulMessage(event, result.toString());
         }
-    }
-
-    @Override
-    protected String defineCommand() {
-        return "list";
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "lists all playlists or the songs of a playlist";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "music";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "[playlist name, optional]";
     }
 
 }

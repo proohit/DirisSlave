@@ -8,6 +8,9 @@ import shared.commands.Command;
 public class CoffeeCommand extends Command {
     public CoffeeCommand() {
         addPermission("everyone");
+        addCommendPrefix("coffee");
+        setDescription("Enjoy your coffee with a gif");
+        setTopic("images");
     }
 
     @Override
@@ -17,23 +20,4 @@ public class CoffeeCommand extends Command {
         Commands.sendMessage(event, imageUrl);
     }
 
-    @Override
-    protected String defineCommand() {
-        return prefix + "coffee";
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "Enjoy your coffee with a gif";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "images";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "";
-    }
 }

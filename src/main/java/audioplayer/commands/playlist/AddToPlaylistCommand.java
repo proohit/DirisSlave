@@ -17,7 +17,11 @@ import shared.commands.Command;
 
 public class AddToPlaylistCommand extends Command {
     public AddToPlaylistCommand() {
-        this.addPermission("everyone");
+        addPermission("everyone");
+        addCommendPrefix("addto");
+        setDescription("Searches for a song with the keywords and adds it to the given playlist");
+        setTopic("music");
+        setHelpString("<playlist name> <keywords>");
     }
 
     @Override
@@ -69,26 +73,6 @@ public class AddToPlaylistCommand extends Command {
                 }
             });
         }
-    }
-
-    @Override
-    protected String defineCommand() {
-        return "addto";
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "Searches for a song with the keywords and adds it to the given playlist";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "music";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "<playlist name> <keywords>";
     }
 
 }

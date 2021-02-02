@@ -16,21 +16,10 @@ import shared.util.ListUtilies;
 public class PlayRandomCommand extends Command {
     public PlayRandomCommand() {
         addPermission("everyone");
-    }
-
-    @Override
-    protected String defineCommand() {
-        return "random";
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "plays random songs based on genre";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "music";
+        addCommendPrefix("random", "genre");
+        setDescription("plays random songs based on genre");
+        setTopic("music");
+        setHelpString("<genre>");
     }
 
     @Override
@@ -82,10 +71,4 @@ public class PlayRandomCommand extends Command {
             return mostSimilarGenre;
         }
     }
-
-    @Override
-    protected String defineHelpString() {
-        return "<genre>";
-    }
-
 }

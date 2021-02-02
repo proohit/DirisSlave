@@ -2,6 +2,7 @@ package util.commands;
 
 import java.util.List;
 
+import main.Commands;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -10,6 +11,10 @@ import shared.commands.Command;
 public class ClearCommand extends Command {
     public ClearCommand() {
         addPermission("Bananenchefs");
+        addCommendPrefix("del", "clear");
+        setDescription("mass-delete messages from a channel");
+        setTopic("util");
+        setHelpString("<number of messages to delete>");
     }
 
     @Override
@@ -20,29 +25,9 @@ public class ClearCommand extends Command {
         }
         int deleteMessageCount = Integer.parseInt(argStrings[0]);
         MessageHistory history = new MessageHistory(event.getChannel());
-        List<Message> msgs;
-        msgs = history.retrievePast(deleteMessageCount + 1).complete();
+        List<Message> msgs = history.retrievePast(deleteMessageCount + 1).complete();
         event.getChannel().purgeMessages(msgs);
-        main.Commands.sendMessage(event, "Deleted " + deleteMessageCount + " messages.");
+        Commands.sendMessage(event, "Deleted " + deleteMessageCount + " messages.");
     }
 
-    @Override
-    protected String defineCommand() {
-        return prefix + "del";
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "mass-delete messages from a channel";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "util";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "<number of messages to delete>";
-    }
 }

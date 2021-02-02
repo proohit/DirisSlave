@@ -42,8 +42,23 @@ public class ReadPropertyFile {
         return prop.getProperty("OWMAppid");
     }
 
-	public String getPixabayKey() {
+    public String getPixabayKey() {
         return prop.getProperty("PixabayKey");
-	}
+    }
 
+    public String getDbHost() {
+        return prop.getProperty("dbHost");
+    }
+
+    public String getDbDatabase() {
+        return prop.getProperty("dbDatabase");
+    }
+
+    public String getDbPassword() {
+        return prop.getProperty("dbPassword");
+    }
+
+    public String getDbUser() {
+        return prop.getProperty("dbUser");
+    }
 }

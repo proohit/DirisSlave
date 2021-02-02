@@ -14,30 +14,14 @@ public class PlaylistCommand extends Command {
         this.addSubCommand(new RemoveFromPlaylistCommand());
 
         this.addPermission("everyone");
+        addCommendPrefix("playlist");
+        setDescription("lists options regarding playlists");
+        setTopic("music");
     }
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
-
+        return;
     }
 
-    @Override
-    protected String defineCommand() {
-        return prefix + "playlist";
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "lists options regarding playlists";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "music";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "";
-    }
 }

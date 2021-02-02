@@ -9,6 +9,10 @@ import shared.commands.Command;
 public class CalculatorCommand extends Command {
     public CalculatorCommand() {
         addPermission("everyone");
+        addCommendPrefix("calc", "calculate");
+        setDescription("Solve calculations by typing the term.");
+        setTopic("calculator");
+        setHelpString("<number1> <+|-|*|/|(|)> <number2>");
     }
 
     @Override
@@ -32,23 +36,4 @@ public class CalculatorCommand extends Command {
         }
     }
 
-    @Override
-    protected String defineCommand() {
-        return prefix + "calc";
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "Solve calculations by typing the term.";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "calculator";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "<number1> <+|-|*|/|(|)> <number2>";
-    }
 }

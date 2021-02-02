@@ -9,6 +9,10 @@ import shared.commands.Command;
 public class SkiptoCommand extends Command {
     public SkiptoCommand() {
         addPermission("everyone");
+        addCommendPrefix("skipto");
+        setDescription("skip songs to specific index in queue");
+        setTopic("music");
+        setHelpString("<number of song to skip to in the queue, type #q for queue>");
     }
 
     @Override
@@ -26,23 +30,4 @@ public class SkiptoCommand extends Command {
         }
     }
 
-    @Override
-    protected String defineCommand() {
-        return prefix + "skipto";
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "skip songs to specific index in queue";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "music";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "<number of song to skip to in the queue, type #q for queue>";
-    }
 }
