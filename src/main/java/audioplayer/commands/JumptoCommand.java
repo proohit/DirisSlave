@@ -7,6 +7,10 @@ import shared.commands.Command;
 public class JumptoCommand extends Command {
     public JumptoCommand() {
         addPermission("everyone");
+        addCommendPrefix("jumpto");
+        setDescription("sets the position of the current song");
+        setTopic("music");
+        setHelpString("<position in seconds to skip to in the current playing song>");
     }
 
     @Override
@@ -16,23 +20,4 @@ public class JumptoCommand extends Command {
         }
     }
 
-    @Override
-    protected String defineCommand() {
-        return prefix + "jumpto";
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "sets the position of the current song";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "music";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "<position in seconds to skip to in the current playing song>";
-    }
 }

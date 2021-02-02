@@ -7,6 +7,10 @@ import shared.commands.Command;
 public class RemoveCommand extends Command {
     public RemoveCommand() {
         addPermission("everyone");
+        addCommendPrefix("remove", "rm");
+        setDescription("remove song from queue");
+        setTopic("music");
+        setHelpString("<number of song in queue>. use queue command to see queue");
     }
 
     @Override
@@ -24,23 +28,4 @@ public class RemoveCommand extends Command {
         }
     }
 
-    @Override
-    protected String defineCommand() {
-        return prefix + "remove";
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "remove song from queue";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "music";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "<number of song in queue> type " + prefix + "q to see queue";
-    }
 }

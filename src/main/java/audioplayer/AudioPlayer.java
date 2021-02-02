@@ -39,11 +39,13 @@ public class AudioPlayer {
 
     public synchronized GuildMusicManager getGuildAudioPlayer(Guild guild) {
         long guildId = Long.parseLong(guild.getId());
-        GuildMusicManager musicManager = musicManagers.get(guildId);
+        GuildMusicManager musicManager;
 
-        if (musicManager == null) {
+        if (!musicManagers.containsKey(guildId)) {
             musicManager = new GuildMusicManager(playerManager);
             musicManagers.put(guildId, musicManager);
+        } else {
+            musicManager = musicManagers.get(guildId);
         }
 
         guild.getAudioManager().setSendingHandler(musicManager.getSendHandler());
@@ -111,9 +113,13 @@ public class AudioPlayer {
         musicManager.scheduler.queue(track);
     }
 
-    public void stop(TextChannel channel) {
-        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+    public void stop(MessageReceivedEvent event) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
         musicManager.scheduler.stop();
+        AudioManager manager = event.getGuild().getAudioManager();
+        if (manager.isConnected()) {
+            manager.closeAudioConnection();
+        }
     }
 
     public long seek(TextChannel channel, int seconds) {

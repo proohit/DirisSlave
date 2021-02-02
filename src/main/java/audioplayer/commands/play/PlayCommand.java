@@ -6,9 +6,13 @@ import shared.commands.Command;
 
 public class PlayCommand extends Command {
     public PlayCommand() {
-        this.addSubCommand(new PlayRecommendedCommand());
-        this.addSubCommand(new PlayRandomCommand());
-        this.addPermission("everyone");
+        addSubCommand(new PlayRecommendedCommand());
+        addSubCommand(new PlayRandomCommand());
+        addPermission("everyone");
+        addCommendPrefix("pl", "play");
+        setTopic("music");
+        setDescription("Play music by adding a search-term or by adding a link");
+        setHelpString("<youtube search term> | <youtube url>");
     }
 
     @Override
@@ -33,23 +37,4 @@ public class PlayCommand extends Command {
         }
     }
 
-    @Override
-    protected String defineCommand() {
-        return this.prefix + "pl";
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "Play music by adding a search-term or by adding a link";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "music";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "<youtube search term> | <youtube url>";
-    }
 }

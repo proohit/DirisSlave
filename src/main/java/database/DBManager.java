@@ -4,15 +4,21 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import main.ReadPropertyFile;
+
 public class DBManager {
     private static Connection conn = null;
     private static boolean debug = true;
 
     public static Connection connect() {
+        ReadPropertyFile rpf = ReadPropertyFile.getInstance();
+
         if (conn == null) {
             try {
-                String url = "jdbc:mysql://127.0.0.1:3306/direnc_discord?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-                conn = DriverManager.getConnection(url, "direnc", "Elasus!834679");
+                String url = String.format(
+                        "jdbc:mysql://%s/%s?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
+                        rpf.getDbHost(), rpf.getDbDatabase());
+                conn = DriverManager.getConnection(url, rpf.getDbUser(), rpf.getDbPassword());
                 if (debug)
                     System.out.println("Connection to DB established.");
                 return conn;

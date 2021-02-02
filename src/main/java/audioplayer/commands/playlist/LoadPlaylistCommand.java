@@ -12,7 +12,11 @@ public class LoadPlaylistCommand extends Command {
     private final List<String> SHUFFLE_PARAMETERS = Arrays.asList("shuffle", "random", "rnd");
 
     public LoadPlaylistCommand() {
-        this.addPermission("everyone");
+        addPermission("everyone");
+        addCommendPrefix("load", "pl", "play");
+        setDescription("loads the playlist in the queue. can also be loaded shuffled");
+        setTopic("music");
+        setHelpString("<playlist name> [shuffle|random|rnd]");
     }
 
     @Override
@@ -28,25 +32,4 @@ public class LoadPlaylistCommand extends Command {
                     event.getMember().getVoiceState().getChannel());
         }
     }
-
-    @Override
-    protected String defineCommand() {
-        return "load";
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "loads the playlist in the queue";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "music";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "<playlist name> [shuffle|random|rnd]";
-    }
-
 }

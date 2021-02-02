@@ -11,6 +11,9 @@ import shared.commands.Command;
 public class QueueCommand extends Command {
     public QueueCommand() {
         addPermission("everyone");
+        addCommendPrefix("q", "queue");
+        setDescription("shows the queue");
+        setTopic("music");
     }
 
     @Override
@@ -24,23 +27,4 @@ public class QueueCommand extends Command {
         Commands.sendBeautifulMessage(event, queue.toString());
     }
 
-    @Override
-    protected String defineCommand() {
-        return prefix + "q";
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "shows the queue";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "music";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "";
-    }
 }

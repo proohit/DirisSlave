@@ -7,6 +7,9 @@ import shared.commands.Command;
 public class ShuffleCommand extends Command {
     public ShuffleCommand() {
         addPermission("everyone");
+        addCommendPrefix("shuffle");
+        setDescription("bring some spice into the queue by shuffling it :man_dancing:");
+        setTopic("music");
     }
 
     @Override
@@ -18,23 +21,4 @@ public class ShuffleCommand extends Command {
         }
     }
 
-    @Override
-    protected String defineCommand() {
-        return prefix + "shuffle";
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "bring some spice into the queue by shuffling it :man_dancing:";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "music";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "";
-    }
 }

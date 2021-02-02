@@ -9,6 +9,9 @@ public class YtWatcherCommand extends Command {
         addSubCommand(new YtWatcherAddCommand());
         addSubCommand(new YtWatcherRemoveCommand());
         addSubCommand(new YtWatcherStatusCommand());
+        addCommendPrefix("yt");
+        setDescription("get notified by your slave, if your followed youtuber has uploaded a new video");
+        setTopic("ytwatcher");
     }
 
     @Override
@@ -19,23 +22,4 @@ public class YtWatcherCommand extends Command {
         }
     }
 
-    @Override
-    protected String defineCommand() {
-        return prefix + "yt";
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "get notified by your slave, if your followed youtuber has uploaded a new video";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "ytwatcher";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "";
-    }
 }

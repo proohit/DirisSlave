@@ -7,6 +7,9 @@ import shared.commands.Command;
 public class PauseCommand extends Command {
     public PauseCommand() {
         addPermission("everyone");
+        addCommendPrefix("pause");
+        setDescription("pauses the current playback");
+        setTopic("music");
     }
 
     @Override
@@ -14,23 +17,4 @@ public class PauseCommand extends Command {
         Commands.player.togglePause(event.getTextChannel(), true);
     }
 
-    @Override
-    protected String defineCommand() {
-        return prefix + "pause";
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "pauses the current playback";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "music";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "";
-    }
 }

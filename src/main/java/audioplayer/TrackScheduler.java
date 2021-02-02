@@ -1,6 +1,5 @@
 package audioplayer;
 
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
@@ -19,7 +18,8 @@ import database.SongTable;
 import main.Startup;
 
 /**
- * This class schedules tracks for the audio player. It contains the queue of tracks.
+ * This class schedules tracks for the audio player. It contains the queue of
+ * tracks.
  */
 public class TrackScheduler extends AudioEventAdapter {
     private final AudioPlayer player;
@@ -40,8 +40,10 @@ public class TrackScheduler extends AudioEventAdapter {
      * @param track The track to play or add to queue.
      */
     public void queue(AudioTrack track) {
-        // Calling startTrack with the noInterrupt set to true will start the track only if nothing is currently playing. If
-        // something is playing, it returns false and does nothing. In that case the player was already playing so this
+        // Calling startTrack with the noInterrupt set to true will start the track only
+        // if nothing is currently playing. If
+        // something is playing, it returns false and does nothing. In that case the
+        // player was already playing so this
         // track goes to the queue instead.
 
         if (player.getPlayingTrack() == null) {
@@ -51,17 +53,20 @@ public class TrackScheduler extends AudioEventAdapter {
         if (!player.startTrack(track, true)) {
             queue.offer(track);
         } else {
-            Startup.jda.getTextChannelById("621749238745006080").getManager().setTopic("*Now playing* " + track.getInfo().title).queue();
+            Startup.jda.getTextChannelById("621749238745006080").getManager()
+                    .setTopic("*Now playing* " + track.getInfo().title).queue();
         }
     }
 
     /**
-     * writes an entry in the DB for the played song (if not already inserted before) and attempts a history entry
+     * writes an entry in the DB for the played song (if not already inserted
+     * before) and attempts a history entry
+     * 
      * @param track
      */
     private void writeSongEntry(AudioTrack track) {
         Song song;
-        if (SongTable.getSongsByUrl(track.getInfo().uri).size() == 0) {
+        if (SongTable.getSongsByUrl(track.getInfo().uri).isEmpty()) {
             SongTable.insertSong(new Song(track.getInfo().title, track.getInfo().uri));
         }
         song = SongTable.getSongsByUrl(track.getInfo().uri).get(0);
@@ -72,32 +77,37 @@ public class TrackScheduler extends AudioEventAdapter {
      * Start the next track, stopping the current one if it is playing.
      */
     public void nextTrack() {
-        // Start the next track, regardless of if something is already playing or not. In case queue was empty, we are
-        // giving null to startTrack, which is a valid argument and will simply stop the player.
+        // Start the next track, regardless of if something is already playing or not.
+        // In case queue was empty, we are
+        // giving null to startTrack, which is a valid argument and will simply stop the
+        // player.
         if (isRepeat) {
             queue(player.getPlayingTrack());
         }
         AudioTrack nextTrack = queue.poll();
         if (nextTrack == null) {
             player.stopTrack();
-            //TODO: When implementing songs listened together, this must be toggle-able!
+            // TODO: When implementing songs listened together, this must be toggle-able!
             audioplayer.AudioPlayer.getLastManager().closeAudioConnection();
         } else {
-            Startup.jda.getTextChannelById("621749238745006080").getManager().setTopic("*Now playing* " + nextTrack.getInfo().title).queue();
+            Startup.jda.getTextChannelById("621749238745006080").getManager()
+                    .setTopic("*Now playing* " + nextTrack.getInfo().title).queue();
             player.startTrack(nextTrack.makeClone(), false);
             writeSongEntry(nextTrack);
         }
     }
 
     public long seek(int seconds) {
-        if (player.getPlayingTrack() == null) return 0;
+        if (player.getPlayingTrack() == null)
+            return 0;
         player.getPlayingTrack().setPosition(player.getPlayingTrack().getPosition() + seconds * 1000);
         return player.getPlayingTrack().getPosition();
     }
 
     public void jumpto(int seconds) {
-        if (player.getPlayingTrack() == null) return;
-        player.getPlayingTrack().setPosition(seconds * 1000);
+        if (player.getPlayingTrack() == null)
+            return;
+        player.getPlayingTrack().setPosition(seconds * 1000l);
     }
 
     public boolean setRepeat(boolean isRepeat) {
@@ -110,14 +120,17 @@ public class TrackScheduler extends AudioEventAdapter {
     }
 
     public void stop() {
-        while (!queue.isEmpty()) queue.poll();
+        while (!queue.isEmpty())
+            queue.poll();
         player.destroy();
     }
 
     public boolean shuffle() {
-        if (queue.isEmpty()) return false;
+        if (queue.isEmpty())
+            return false;
         ArrayList<AudioTrack> savedQueue = new ArrayList<>();
-        while (!queue.isEmpty()) savedQueue.add(queue.poll());
+        while (!queue.isEmpty())
+            savedQueue.add(queue.poll());
         while (!savedQueue.isEmpty()) {
             Random rand = new Random();
             int index = rand.nextInt(savedQueue.size());
@@ -140,15 +153,18 @@ public class TrackScheduler extends AudioEventAdapter {
 
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
-        // Only start the next track if the end reason is suitable for it (FINISHED or LOAD_FAILED)
+        // Only start the next track if the end reason is suitable for it (FINISHED or
+        // LOAD_FAILED)
         if (endReason.mayStartNext) {
-            if (isRepeat) queue(track.makeClone());
+            if (isRepeat)
+                queue(track.makeClone());
             nextTrack();
         }
     }
 
     public void skipTo(int pos) {
-        if (pos > queue.size() || pos <= 0) return;
+        if (pos > queue.size() || pos <= 0)
+            return;
         int i = 0;
         Iterator<AudioTrack> it = queue.iterator();
 
@@ -165,7 +181,8 @@ public class TrackScheduler extends AudioEventAdapter {
     }
 
     public void remove(int pos) {
-        if (pos > queue.size() || pos <= 0) return;
+        if (pos > queue.size() || pos <= 0)
+            return;
         int i = 1;
         Iterator<AudioTrack> it = queue.iterator();
         while (it.hasNext()) {
