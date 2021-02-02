@@ -9,7 +9,7 @@ import kong.unirest.json.JSONObject;
 
 public class TrackHandler extends SpotifyApi {
     private SearchHandler searchHandler = new SearchHandler();
-    private final String TRACK_ID_PROPERTY = "id";
+    private static final String TRACK_ID_PROPERTY = "id";
     private static final String TRACK_NAME_PROPERTY = "name";
     private static final String ARTISTS_PROPERTY = "artists";
     private static final String ARTIST_NAME_PROPERTY = "name";
@@ -32,25 +32,11 @@ public class TrackHandler extends SpotifyApi {
 
     public String getTrackIdBySearchQuery(String... searchQuery) {
         JSONObject foundTrack = searchHandler.getTrackByQuery(searchQuery);
-        String trackId = extractTrackId(foundTrack);
-        return trackId;
+        return extractTrackId(foundTrack);
     }
 
     private String extractTrackId(JSONObject track) {
-        String id = track.getString(TRACK_ID_PROPERTY);
-        return id;
-    }
-
-    private String[] extractTrackIds(JSONArray tracks) {
-        List<String> ids = new ArrayList<>();
-
-        tracks.forEach(trackObject -> {
-            JSONObject track = (JSONObject) trackObject;
-            String id = track.getString(TRACK_ID_PROPERTY);
-            ids.add(id);
-        });
-
-        return ids.toArray(new String[0]);
+        return track.getString(TRACK_ID_PROPERTY);
     }
 
     public String[] extractTrackIdsFromUri(String... uris) {

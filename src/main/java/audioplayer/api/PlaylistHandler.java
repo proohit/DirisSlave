@@ -16,13 +16,4 @@ public class PlaylistHandler extends SpotifyApi {
         JsonNode response = this.baseGetRequest(SpotifyUrlFactory.getPlaylistUrl(playlistId)).asJson().getBody();
         return response.getObject();
     }
-
-    // TODO trim implementieren
-    public JSONArray trimTracks(JSONArray tracks) {
-        JSONArray trimmedArray = new JSONArray();
-        for (int tracksArrayPosition = 0; tracksArrayPosition < tracks.length(); tracksArrayPosition++) {
-            JSONObject object = tracks.getJSONObject(tracksArrayPosition);
-        }
-        return trimmedArray;
-    }
 }
