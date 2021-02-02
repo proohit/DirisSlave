@@ -11,6 +11,10 @@ import shared.commands.Command;
 public class RecommendationCommand extends Command {
     public RecommendationCommand() {
         addPermission("everyone");
+        addCommendPrefix("recs", "recommendation");
+        setDescription("Get recommendations based on a song query");
+        setTopic("music");
+        setHelpString("<spotify song URI>");
     }
 
     private String[] extractSearchQueryFromArguments(String[] args) {
@@ -36,23 +40,4 @@ public class RecommendationCommand extends Command {
         }
     }
 
-    @Override
-    protected String[] defineCommand() {
-        return new String[] { "recs", "recommendation" };
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "Get recommendations based on a song query";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "music";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "<spotify song URI>";
-    }
 }

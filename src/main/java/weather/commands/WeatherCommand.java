@@ -11,6 +11,10 @@ import weather.api.OpenWeatherMapHandler;
 public class WeatherCommand extends Command {
     public WeatherCommand() {
         addPermission("everyone");
+        addCommendPrefix("weather");
+        setDescription("shows the weather for the next 15 hours");
+        setTopic("weather");
+        setHelpString("<city name>\n");
     }
 
     @Override
@@ -38,23 +42,4 @@ public class WeatherCommand extends Command {
         return query;
     }
 
-    @Override
-    protected String[] defineCommand() {
-        return new String[] { "weather" };
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "shows the weather for the next 15 hours";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "weather";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "<city name>\n";
-    }
 }

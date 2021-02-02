@@ -12,6 +12,9 @@ import shared.commands.Command;
 public class HistoryCommand extends Command {
     public HistoryCommand() {
         addPermission("everyone");
+        addCommendPrefix("history");
+        setDescription("shows you already played songs");
+        setTopic("music");
     }
 
     @Override
@@ -22,23 +25,4 @@ public class HistoryCommand extends Command {
         sendBeautifulMessage(event, result.toString());
     }
 
-    @Override
-    protected String[] defineCommand() {
-        return new String[] { "history" };
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "shows you already played songs";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "music";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "";
-    }
 }

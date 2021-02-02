@@ -11,7 +11,11 @@ import shared.commands.Command;
 
 public class SaveHistoryCommand extends Command {
     public SaveHistoryCommand() {
-        this.addPermission("everyone");
+        addPermission("everyone");
+        addCommendPrefix("savehistory");
+        setDescription("Creates a new playlist with the given name and adds the last 10 songs from history to it");
+        setTopic("music");
+        setHelpString("<playlist name>");
     }
 
     @Override
@@ -31,26 +35,6 @@ public class SaveHistoryCommand extends Command {
 
             }
         }
-    }
-
-    @Override
-    protected String[] defineCommand() {
-        return new String[] { "savehistory" };
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "Creates a new playlist with the given name and adds the last 10 songs from history to it";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "music";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "<playlist name>";
     }
 
 }

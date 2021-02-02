@@ -8,7 +8,11 @@ import shared.commands.Command;
 public class CreatePlaylistCommand extends Command {
 
     public CreatePlaylistCommand() {
-        this.addPermission("everyone");
+        addPermission("everyone");
+        addCommendPrefix("create", "new");
+        setDescription("creates a new empty playlist with the given name");
+        setTopic("music");
+        setHelpString("<playlist name>");
     }
 
     @Override
@@ -23,23 +27,4 @@ public class CreatePlaylistCommand extends Command {
         }
     }
 
-    @Override
-    protected String[] defineCommand() {
-        return new String[] { "create", "new" };
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "creates a new empty playlist with the given name";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "music";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "<playlist name>";
-    }
 }

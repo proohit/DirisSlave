@@ -5,11 +5,7 @@ import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
 
 public class PlaylistHandler extends SpotifyApi {
-    private final String ITEMS_PROPERTY = "items";
-
-    public PlaylistHandler() {
-
-    }
+    private static final String ITEMS_PROPERTY = "items";
 
     public JSONArray getTracksOfPlaylist(String playlistId) {
         JsonNode response = this.baseGetRequest(SpotifyUrlFactory.getPlaylistTracksUrl(playlistId)).asJson().getBody();

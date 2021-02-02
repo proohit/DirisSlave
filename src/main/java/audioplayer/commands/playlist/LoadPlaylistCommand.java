@@ -7,7 +7,11 @@ import shared.commands.Command;
 
 public class LoadPlaylistCommand extends Command {
     public LoadPlaylistCommand() {
-        this.addPermission("everyone");
+        addPermission("everyone");
+        addCommendPrefix("load", "pl", "play");
+        setDescription("loads the playlist in the queue");
+        setTopic("music");
+        setHelpString("<playlist name>");
     }
 
     @Override
@@ -22,26 +26,6 @@ public class LoadPlaylistCommand extends Command {
                 main.Commands.sendBeautifulMessage(event, playlistNameToBeLoaded + " not found or no songs available");
             }
         }
-    }
-
-    @Override
-    protected String[] defineCommand() {
-        return new String[] { "load", "play", "pl" };
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "loads the playlist in the queue";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "music";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "<playlist name>";
     }
 
 }

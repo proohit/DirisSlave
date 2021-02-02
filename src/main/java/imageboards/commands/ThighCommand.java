@@ -8,6 +8,9 @@ import shared.commands.Command;
 public class ThighCommand extends Command {
     public ThighCommand() {
         addPermission("Bananenchefs");
+        addCommendPrefix("thigh");
+        setDescription("Stockings, socks and pantys. Everything you desire");
+        setTopic("images");
     }
 
     @Override
@@ -17,23 +20,4 @@ public class ThighCommand extends Command {
         Commands.sendMessage(event, imageUrl);
     }
 
-    @Override
-    protected String[] defineCommand() {
-        return new String[] { "thigh" };
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "Stockings, socks and pantys. Everything you desire";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "images";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "";
-    }
 }

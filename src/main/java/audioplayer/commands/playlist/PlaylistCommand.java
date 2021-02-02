@@ -14,6 +14,9 @@ public class PlaylistCommand extends Command {
         this.addSubCommand(new RemoveFromPlaylistCommand());
 
         this.addPermission("everyone");
+        addCommendPrefix("playlist");
+        setDescription("lists options regarding playlists");
+        setTopic("music");
     }
 
     @Override
@@ -21,23 +24,4 @@ public class PlaylistCommand extends Command {
         return;
     }
 
-    @Override
-    protected String[] defineCommand() {
-        return new String[] { "playlist" };
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "lists options regarding playlists";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "music";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "";
-    }
 }

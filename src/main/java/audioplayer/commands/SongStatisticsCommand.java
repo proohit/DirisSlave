@@ -11,6 +11,9 @@ import shared.commands.Command;
 public class SongStatisticsCommand extends Command {
     public SongStatisticsCommand() {
         addPermission("everyone");
+        addCommendPrefix("statistics");
+        setDescription("displays the top 10 most played songs");
+        setTopic("music");
     }
 
     @Override
@@ -33,23 +36,4 @@ public class SongStatisticsCommand extends Command {
         main.Commands.sendBeautifulMessage(event, result.toString());
     }
 
-    @Override
-    protected String[] defineCommand() {
-        return new String[] { "statistics" };
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "displays the top 10 most played songs";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "music";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "";
-    }
 }

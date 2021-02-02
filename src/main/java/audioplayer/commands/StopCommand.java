@@ -7,6 +7,9 @@ import shared.commands.Command;
 public class StopCommand extends Command {
     public StopCommand() {
         addPermission("everyone");
+        addCommendPrefix("stop");
+        setDescription("stop the current playlist and remove all songs from queue");
+        setTopic("music");
     }
 
     @Override
@@ -14,23 +17,4 @@ public class StopCommand extends Command {
         Commands.player.stop(event);
     }
 
-    @Override
-    protected String[] defineCommand() {
-        return new String[] { "stop" };
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "stop the current playlist and remove all songs from queue";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "music";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "";
-    }
 }

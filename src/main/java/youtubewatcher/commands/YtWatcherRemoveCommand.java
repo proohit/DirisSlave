@@ -8,21 +8,6 @@ import youtubewatcher.YoutubeWatcher;
 public class YtWatcherRemoveCommand extends Command {
 
     @Override
-    protected String[] defineCommand() {
-        return new String[] { "remove" };
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "removes a channel to not notify for new videos";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "ytwatcher";
-    }
-
-    @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
         if (argStrings.length >= 1) {
             Commands.sendMessage(event, getHelp());
@@ -42,13 +27,11 @@ public class YtWatcherRemoveCommand extends Command {
         }
     }
 
-    @Override
-    protected String defineHelpString() {
-        return "<name of channel, type .yt status to see current channels>";
-    }
-
     public YtWatcherRemoveCommand() {
         addPermission("everyone");
+        addCommendPrefix("remove", "rm");
+        setDescription("removes a channel to not notify for new videos");
+        setTopic("ytwatcher");
+        setHelpString("<name of channel, type .yt status to see current channels>");
     }
-
 }

@@ -11,6 +11,10 @@ import shared.commands.Command;
 public class ClearCommand extends Command {
     public ClearCommand() {
         addPermission("Bananenchefs");
+        addCommendPrefix("del", "clear");
+        setDescription("mass-delete messages from a channel");
+        setTopic("util");
+        setHelpString("<number of messages to delete>");
     }
 
     @Override
@@ -26,23 +30,4 @@ public class ClearCommand extends Command {
         Commands.sendMessage(event, "Deleted " + deleteMessageCount + " messages.");
     }
 
-    @Override
-    protected String[] defineCommand() {
-        return new String[] { "del", "clear" };
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "mass-delete messages from a channel";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "util";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "<number of messages to delete>";
-    }
 }

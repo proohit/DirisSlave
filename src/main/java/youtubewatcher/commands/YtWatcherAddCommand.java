@@ -8,19 +8,12 @@ import youtubewatcher.YoutubeXML;
 
 public class YtWatcherAddCommand extends Command {
 
-    @Override
-    protected String[] defineCommand() {
-        return new String[] { "add" };
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "adds a youtube channel to watch for new videos";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "ytwatcher";
+    public YtWatcherAddCommand() {
+        addPermission("everyone");
+        addCommendPrefix("add");
+        setDescription("adds a youtube channel to watch for new videos");
+        setTopic("ytwatcher");
+        setHelpString("<url to youtube channel>");
     }
 
     @Override
@@ -42,11 +35,6 @@ public class YtWatcherAddCommand extends Command {
                 }
             }
         }
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "<url to youtube channel>";
     }
 
 }

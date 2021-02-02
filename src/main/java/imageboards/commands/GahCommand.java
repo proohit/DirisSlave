@@ -8,6 +8,9 @@ import shared.commands.Command;
 public class GahCommand extends Command {
     public GahCommand() {
         addPermission("everyone");
+        addCommendPrefix("gah");
+        setDescription("JUST. DO. IT.");
+        setTopic("images");
     }
 
     @Override
@@ -17,23 +20,4 @@ public class GahCommand extends Command {
         Commands.sendMessage(event, imageUrl);
     }
 
-    @Override
-    protected String[] defineCommand() {
-        return new String[] { "gah" };
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "JUST. DO. IT.";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "images";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "";
-    }
 }

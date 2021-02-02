@@ -7,6 +7,10 @@ import shared.commands.Command;
 public class RepeatCommand extends Command {
     public RepeatCommand() {
         addPermission("everyone");
+        addCommendPrefix("repeat");
+        setDescription("enables queue repetition. Now playing song will repeat as the last song");
+        setTopic("music");
+        setHelpString("<true|false>");
     }
 
     @Override
@@ -15,33 +19,13 @@ public class RepeatCommand extends Command {
             String inputBoolean = argStrings[0];
             if (inputBoolean.equals("true") || inputBoolean.equals("false")) {
                 boolean isRepeat = Boolean.parseBoolean(inputBoolean);
-                main.Commands.sendBeautifulMessage(event, "Repetition of songs has been set to: "
+                Commands.sendBeautifulMessage(event, "Repetition of songs has been set to: "
                         + Commands.player.setRepeat(event.getTextChannel(), isRepeat));
             } else {
-                main.Commands.sendMessage(event, getHelp());
+                Commands.sendMessage(event, getHelp());
             }
         } else {
-            main.Commands.sendMessage(event, this.getHelpString());
+            Commands.sendMessage(event, getHelp());
         }
-    }
-
-    @Override
-    protected String[] defineCommand() {
-        return new String[] { "repeat" };
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "enables queue repetition. Now playing song will repeat as the last song";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "music";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "<true|false>";
     }
 }

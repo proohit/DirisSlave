@@ -13,6 +13,10 @@ public class DanbooruCommand extends Command {
 
     public DanbooruCommand() {
         addPermission("Bananenchefs");
+        addCommendPrefix("danbooru");
+        setDescription("Sexy pictures of hot waifus are waiting for you. Just add your tag");
+        setTopic("images");
+        setHelpString("<tag1> <tag2 (optional)>");
     }
 
     @Override
@@ -55,23 +59,4 @@ public class DanbooruCommand extends Command {
         Commands.sendMessage(event, similarTagsString.toString());
     }
 
-    @Override
-    protected String[] defineCommand() {
-        return new String[] { "danbooru" };
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "Sexy pictures of hot waifus are waiting for you. Just add your tag";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "images";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "<tag1> <tag2 (optional)>";
-    }
 }

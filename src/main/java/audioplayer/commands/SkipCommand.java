@@ -7,6 +7,9 @@ import shared.commands.Command;
 public class SkipCommand extends Command {
     public SkipCommand() {
         addPermission("everyone");
+        addCommendPrefix("skip", "next");
+        setDescription("skip current playing song");
+        setTopic("music");
     }
 
     @Override
@@ -14,23 +17,4 @@ public class SkipCommand extends Command {
         Commands.player.skipTrack(event.getTextChannel());
     }
 
-    @Override
-    protected String[] defineCommand() {
-        return new String[] { "skip", "next" };
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "skip current playing song";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "music";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "";
-    }
 }

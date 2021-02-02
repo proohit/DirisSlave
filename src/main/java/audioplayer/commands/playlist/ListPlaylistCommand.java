@@ -12,7 +12,11 @@ import shared.commands.Command;;
 
 public class ListPlaylistCommand extends Command {
     public ListPlaylistCommand() {
-        this.addPermission("everyone");
+        addPermission("everyone");
+        addCommendPrefix("list", "ls");
+        setDescription("lists all playlists or the songs of a playlist");
+        setTopic("music");
+        setHelpString("[playlist name, optional]");
     }
 
     @Override
@@ -39,26 +43,6 @@ public class ListPlaylistCommand extends Command {
             }
             sendBeautifulMessage(event, result.toString());
         }
-    }
-
-    @Override
-    protected String[] defineCommand() {
-        return new String[] { "list", "ls" };
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "lists all playlists or the songs of a playlist";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "music";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "[playlist name, optional]";
     }
 
 }

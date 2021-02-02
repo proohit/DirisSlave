@@ -13,7 +13,11 @@ import shared.util.ListUtilies;
 
 public class PlayRecommendedCommand extends Command {
     public PlayRecommendedCommand() {
-        this.addPermission("everyone");
+        addPermission("everyone");
+        addCommendPrefix("rec", "recommended");
+        setDescription("Play music based on recommendations for provided search term");
+        setTopic("music");
+        setHelpString("<search term to search for on spotify>");
     }
 
     @Override
@@ -42,23 +46,4 @@ public class PlayRecommendedCommand extends Command {
         return Arrays.copyOfRange(args, 0, args.length);
     }
 
-    @Override
-    protected String[] defineCommand() {
-        return new String[] { "rec", "recommended" };
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "Play music based on recommendations for provided search term";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "music";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "<search term to search for on spotify>";
-    }
 }

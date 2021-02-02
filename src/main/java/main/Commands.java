@@ -34,11 +34,10 @@ import shared.commands.Command;
 import util.commands.ClearCommand;
 import util.commands.HelpCommand;
 import weather.commands.WeatherCommand;
-import youtubewatcher.commands.YtWatcherCommand;
 
 public class Commands {
 
-    protected static List<Command> registeredCommands = new ArrayList<>();
+    public static final List<Command> registeredCommands = new ArrayList<>();
     public static final AudioPlayer player = new AudioPlayer();
     public static final String PREFIX = ".";
 
@@ -67,7 +66,6 @@ public class Commands {
         registeredCommands.add(new CoffeeCommand());
         registeredCommands.add(new WeatherCommand());
         registeredCommands.add(new LizardCommand());
-        registeredCommands.add(new YtWatcherCommand());
         registeredCommands.add(HelpCommand.getInstance());
     }
 

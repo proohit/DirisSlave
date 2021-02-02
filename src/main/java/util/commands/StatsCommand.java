@@ -7,6 +7,9 @@ import shared.commands.Command;
 public class StatsCommand extends Command {
     public StatsCommand() {
         addPermission("everyone");
+        addCommendPrefix("stats");
+        setDescription("see the running-time");
+        setTopic("util");
     }
 
     @Override
@@ -15,23 +18,4 @@ public class StatsCommand extends Command {
                 MetaHandler.greet() + MetaHandler.runtime() + MetaHandler.helpMessage());
     }
 
-    @Override
-    protected String[] defineCommand() {
-        return new String[] { "stats" };
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "see the running-time";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "util";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "";
-    }
 }

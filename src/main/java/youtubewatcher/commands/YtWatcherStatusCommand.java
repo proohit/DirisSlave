@@ -8,31 +8,14 @@ import youtubewatcher.YoutubeWatcher;
 public class YtWatcherStatusCommand extends Command {
     public YtWatcherStatusCommand() {
         addPermission("everyone");
-    }
-
-    @Override
-    protected String[] defineCommand() {
-        return new String[] { "status" };
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "lists all currently watched channels";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "ytwatcher";
+        addCommendPrefix("status");
+        setDescription("lists all currently watched channels");
+        setTopic("ytwatcher");
     }
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
         Commands.sendMessage(event, YoutubeWatcher.status());
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "";
     }
 
 }

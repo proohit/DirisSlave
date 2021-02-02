@@ -7,6 +7,10 @@ import shared.commands.Command;
 public class SeekCommand extends Command {
     public SeekCommand() {
         addPermission("everyone");
+        addCommendPrefix("seek");
+        setDescription("seeks forward in the current playing song");
+        setTopic("music");
+        setHelpString("<seconds to skip in the current song>");
     }
 
     @Override
@@ -31,23 +35,4 @@ public class SeekCommand extends Command {
         }
     }
 
-    @Override
-    protected String[] defineCommand() {
-        return new String[] { "seek" };
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "seeks forward in the current playing song";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "music";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "<seconds to skip in the current song>";
-    }
 }

@@ -7,6 +7,9 @@ import shared.commands.Command;
 public class ResumeCommand extends Command {
     public ResumeCommand() {
         addPermission("everyone");
+        addCommendPrefix("resume", "continue");
+        setDescription("resumes the current paused playback");
+        setTopic("music");
     }
 
     @Override
@@ -15,23 +18,4 @@ public class ResumeCommand extends Command {
         Commands.sendMessage(event, "resuming the playback...");
     }
 
-    @Override
-    protected String[] defineCommand() {
-        return new String[] { "resume", "continue" };
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "resumes the current paused playback";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "music";
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "";
-    }
 }
