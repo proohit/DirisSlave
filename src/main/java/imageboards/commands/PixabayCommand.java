@@ -7,19 +7,12 @@ import shared.commands.Command;
 
 public class PixabayCommand extends Command {
 
-    @Override
-    protected String[] defineCommand() {
-        return new String[] { "pixabay" };
-    }
-
-    @Override
-    protected String defineDescription() {
-        return "search for any pictures you want";
-    }
-
-    @Override
-    protected String defineTopic() {
-        return "images";
+    public PixabayCommand() {
+        addPermission("everyone");
+        addCommendPrefix("pixabay");
+        setDescription("search for any pictures you want");
+        setTopic("images");
+        setHelpString("<search term to search for>");
     }
 
     @Override
@@ -34,15 +27,6 @@ public class PixabayCommand extends Command {
 
             Commands.sendMessage(event, imageUrl);
         }
-    }
-
-    @Override
-    protected String defineHelpString() {
-        return "<search term to search for>";
-    }
-
-    public PixabayCommand() {
-        addPermission("everyone");
     }
 
 }
