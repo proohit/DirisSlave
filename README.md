@@ -45,6 +45,10 @@ createConfig.sh
 ```shell script
 createConfig.sh
     --jdatoken <JDA Token>
+    --dbHost <database host with port>
+    --dbPassword <database password>
+    --dbDatabase <database name>
+    --dbUser <database username>
     [--spotifyClientId <clientId>]
     [--spotifyClientSecret <clientSecret>]
     [--owmappid <OpenWeatherMapAppId>]
