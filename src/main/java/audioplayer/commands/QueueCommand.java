@@ -25,8 +25,8 @@ public class QueueCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return prefix + "q";
+    protected String[] defineCommand() {
+        return new String[] { "q", "queue" };
     }
 
     @Override

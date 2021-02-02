@@ -17,8 +17,8 @@ public class LizardCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return prefix + "lizard";
+    protected String[] defineCommand() {
+        return new String[] { "lizard" };
     }
 
     @Override

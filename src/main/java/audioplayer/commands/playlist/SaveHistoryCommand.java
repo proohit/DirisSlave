@@ -34,8 +34,8 @@ public class SaveHistoryCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return "savehistory";
+    protected String[] defineCommand() {
+        return new String[] { "savehistory" };
     }
 
     @Override

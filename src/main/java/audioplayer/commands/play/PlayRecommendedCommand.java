@@ -43,8 +43,8 @@ public class PlayRecommendedCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return "recommended";
+    protected String[] defineCommand() {
+        return new String[] { "rec", "recommended" };
     }
 
     @Override

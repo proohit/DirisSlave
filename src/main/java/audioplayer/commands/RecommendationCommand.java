@@ -37,8 +37,8 @@ public class RecommendationCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return prefix + "recommendation";
+    protected String[] defineCommand() {
+        return new String[] { "recs", "recommendation" };
     }
 
     @Override

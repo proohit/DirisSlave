@@ -16,8 +16,8 @@ public class StatsCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return prefix + "stats";
+    protected String[] defineCommand() {
+        return new String[] { "stats" };
     }
 
     @Override

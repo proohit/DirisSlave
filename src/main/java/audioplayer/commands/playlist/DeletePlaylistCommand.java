@@ -21,8 +21,8 @@ public class DeletePlaylistCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return "delete";
+    protected String[] defineCommand() {
+        return new String[] { "delete", "del" };
     }
 
     @Override

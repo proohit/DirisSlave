@@ -30,8 +30,8 @@ public class RemoveFromPlaylistCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return "remove";
+    protected String[] defineCommand() {
+        return new String[] { "removefrom", "rmfrom" };
     }
 
     @Override

@@ -18,8 +18,8 @@ public class GahCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return prefix + "gah";
+    protected String[] defineCommand() {
+        return new String[] { "gah" };
     }
 
     @Override

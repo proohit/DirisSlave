@@ -9,8 +9,8 @@ import youtubewatcher.YoutubeXML;
 public class YtWatcherAddCommand extends Command {
 
     @Override
-    protected String defineCommand() {
-        return "add";
+    protected String[] defineCommand() {
+        return new String[] { "add" };
     }
 
     @Override

@@ -33,8 +33,8 @@ public class CalculatorCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return prefix + "calc";
+    protected String[] defineCommand() {
+        return new String[] { "calc", "calculate" };
     }
 
     @Override

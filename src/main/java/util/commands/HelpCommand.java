@@ -35,30 +35,23 @@ public class HelpCommand extends Command {
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        List<Command> allowedCommands = getAllAllowedCommands(event.getMember());
         if (argStrings.length >= 1) {
-            List<Command> allowedCommands = getAllAllowedCommands(event.getMember());
-            try {
-                Command requestedCommand = allowedCommands.stream().filter(
-                        registeredCommand -> registeredCommand.getCommand().replace(prefix, "").equals(argStrings[0]))
-                        .findFirst().get();
-                for (int subCommandIterator = 1; !requestedCommand.getSubCommands().isEmpty()
-                        && subCommandIterator < argStrings.length; subCommandIterator++) {
-                    Command tmpCommand = requestedCommand;
-                    requestedCommand = requestedCommand.findSubCommand(argStrings[subCommandIterator]);
-                    if (requestedCommand == null) {
-                        requestedCommand = tmpCommand;
-                    }
-                }
-                Commands.sendMessage(event, requestedCommand.getHelp());
-            } catch (Exception e) {
+            Command requestedCommand = allowedCommands.stream().filter(registeredCommand -> registeredCommand
+                    .getCommand().contains(registeredCommand.getPrefix() + argStrings[0])).findFirst().orElse(null);
+            if (requestedCommand == null) {
                 return;
             }
-
-        } else
-
-        {
-            List<Command> allowedCommands = getAllAllowedCommands(event.getMember());
-
+            for (int subCommandIterator = 1; !requestedCommand.getSubCommands().isEmpty()
+                    && subCommandIterator < argStrings.length; subCommandIterator++) {
+                Command tmpCommand = requestedCommand;
+                requestedCommand = requestedCommand.findSubCommand(argStrings[subCommandIterator]);
+                if (requestedCommand == null) {
+                    requestedCommand = tmpCommand;
+                }
+            }
+            Commands.sendMessage(event, requestedCommand.getHelp());
+        } else {
             currentPage = 0;
             lastPage = (allowedCommands.size() / HELP_PER_PAGE) - 1;
             restCommands = allowedCommands.size() % HELP_PER_PAGE;
@@ -117,7 +110,7 @@ public class HelpCommand extends Command {
      * @return
      */
     public String getHelpForPage(int page, List<Command> commands) {
-        if (commands.size() <= 0) {
+        if (commands.isEmpty()) {
             return "You are not permitted to perform any commands... Please contact the administrator";
         }
 
@@ -128,7 +121,7 @@ public class HelpCommand extends Command {
             pageHelpString.append("***" + topic + "*** functions" + "\n");
             topics.get(topic).stream().forEach(command -> {
                 pageHelpString.append("\t");
-                pageHelpString.append(command.getCommand());
+                pageHelpString.append(command.getCommandHelpString());
                 pageHelpString.append(" - ");
                 pageHelpString.append(command.getDescription());
                 pageHelpString.append("\n");
@@ -179,8 +172,8 @@ public class HelpCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return prefix + "help";
+    protected String[] defineCommand() {
+        return new String[] { "help", "?" };
     }
 
     @Override

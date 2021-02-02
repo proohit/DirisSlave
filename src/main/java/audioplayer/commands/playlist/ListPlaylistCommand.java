@@ -29,7 +29,7 @@ public class ListPlaylistCommand extends Command {
         } else if (argStrings.length == 1) {
             String playlistToList = argStrings[0];
             Playlist playlist = SongPlaylistTable.getPlaylistByName(playlistToList);
-            if (playlist.getSongs().size() == 0) {
+            if (playlist.getSongs().isEmpty()) {
                 sendBeautifulMessage(event, "no such playlist or no songs found for " + playlistToList);
                 return;
             }
@@ -42,8 +42,8 @@ public class ListPlaylistCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return "list";
+    protected String[] defineCommand() {
+        return new String[] { "list", "ls" };
     }
 
     @Override

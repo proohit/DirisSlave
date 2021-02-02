@@ -72,8 +72,8 @@ public class AddToPlaylistCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return "addto";
+    protected String[] defineCommand() {
+        return new String[] { "addto" };
     }
 
     @Override

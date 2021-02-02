@@ -11,8 +11,8 @@ public class YtWatcherStatusCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return "status";
+    protected String[] defineCommand() {
+        return new String[] { "status" };
     }
 
     @Override

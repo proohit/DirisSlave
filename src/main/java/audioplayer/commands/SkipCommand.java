@@ -15,8 +15,8 @@ public class SkipCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return prefix + "skip";
+    protected String[] defineCommand() {
+        return new String[] { "skip", "next" };
     }
 
     @Override

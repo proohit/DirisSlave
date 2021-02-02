@@ -19,8 +19,8 @@ public class PlayRandomCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return "random";
+    protected String[] defineCommand() {
+        return new String[] { "random", "genre" };
     }
 
     @Override

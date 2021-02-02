@@ -27,8 +27,8 @@ public class SkiptoCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return prefix + "skipto";
+    protected String[] defineCommand() {
+        return new String[] { "skipto" };
     }
 
     @Override

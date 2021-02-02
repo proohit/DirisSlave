@@ -25,8 +25,8 @@ public class LoadPlaylistCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return "load";
+    protected String[] defineCommand() {
+        return new String[] { "load", "play", "pl" };
     }
 
     @Override

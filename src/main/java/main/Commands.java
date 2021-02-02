@@ -1,7 +1,7 @@
 package main;
 
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
+import java.util.List;
 import java.util.function.Consumer;
 
 import audioplayer.AudioPlayer;
@@ -38,11 +38,11 @@ import youtubewatcher.commands.YtWatcherCommand;
 
 public class Commands {
 
-    public static ArrayList<Command> registeredCommands = new ArrayList<>();
-    public static AudioPlayer player;
+    protected static List<Command> registeredCommands = new ArrayList<>();
+    public static final AudioPlayer player = new AudioPlayer();
+    public static final String PREFIX = ".";
 
     public Commands() {
-        player = new AudioPlayer();
         registeredCommands.add(new PlaylistCommand());
         registeredCommands.add(new CalculatorCommand());
         registeredCommands.add(new HistoryCommand());
@@ -73,17 +73,14 @@ public class Commands {
 
     public void handle(MessageReceivedEvent event) {
         String[] argStrings = getArgs(event);
-        // find the command that equals the input string
-        try {
-            Command insertedCommand = registeredCommands.stream().filter(command -> {
-                return command.getCommand().equals(argStrings[0]);
-            }).findFirst().get();
-            // when there is no command that suits the input
-            if (insertedCommand == null)
-                return;
-            insertedCommand.handle(event, argStrings);
-        } catch (NoSuchElementException e) {
+        if (!argStrings[0].startsWith(PREFIX)) {
+            return;
         }
+        Command insertedCommand = registeredCommands.stream()
+                .filter(command -> command.getCommand().contains(argStrings[0])).findFirst().orElse(null);
+        if (insertedCommand == null)
+            return;
+        insertedCommand.handle(event, argStrings);
     }
 
     public static void registerCommand(Command commandToRegister) {

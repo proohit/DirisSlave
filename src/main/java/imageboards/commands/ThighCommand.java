@@ -18,8 +18,8 @@ public class ThighCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return prefix + "thigh";
+    protected String[] defineCommand() {
+        return new String[] { "thigh" };
     }
 
     @Override

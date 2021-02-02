@@ -12,11 +12,11 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 public abstract class Command {
 
     protected String prefix = ".";
-    String command;
+    List<String> commandPrefixes = new ArrayList<>();
     String description;
-    ArrayList<String> permission = new ArrayList<>();
+    List<String> permission = new ArrayList<>();
     String helpString = "";
-    ArrayList<Command> subCommands = new ArrayList<>();
+    List<Command> subCommands = new ArrayList<>();
 
     String topic;
 
@@ -35,15 +35,16 @@ public abstract class Command {
         return this.permission;
     }
 
-    public void setCommand(String cmd) {
-        command = cmd;
+    public void setCommand(String... cmd) {
+        commandPrefixes = Arrays.asList(cmd).stream().map(commandPrefix -> this.prefix + commandPrefix)
+                .collect(Collectors.toList());
     };
 
-    public String getCommand() {
-        return command;
+    public List<String> getCommand() {
+        return commandPrefixes;
     };
 
-    protected abstract String defineCommand();
+    protected abstract String[] defineCommand();
 
     public String getDescription() {
         return description;
@@ -67,7 +68,7 @@ public abstract class Command {
 
     public void handle(MessageReceivedEvent event, String[] argStrings) {
         String[] cutArguments = cutArguments(argStrings, 1, argStrings.length);
-        if (isAllowed(event.getMember())) {
+        if (Boolean.TRUE == isAllowed(event.getMember())) {
             if (cutArguments.length < 1) {
                 handleImpl(event, cutArguments);
             } else {
@@ -84,7 +85,7 @@ public abstract class Command {
     public Command findSubCommand(String argument) {
         Command foundSubCommand = null;
         for (Command subCommand : this.subCommands) {
-            if (subCommand.getCommand().equals(argument)) {
+            if (subCommand.getCommand().contains(this.prefix + argument)) {
                 foundSubCommand = subCommand;
             }
         }
@@ -94,36 +95,40 @@ public abstract class Command {
     protected abstract void handleImpl(MessageReceivedEvent event, String[] argStrings);
 
     public String getHelp() {
-        final StringBuilder helpString = new StringBuilder();
+        final StringBuilder finalHelpString = new StringBuilder();
 
-        helpString.append(this.helpString).append("\n\n");
+        finalHelpString.append(this.helpString).append("\n\n");
         if (!this.subCommands.isEmpty()) {
-            helpString.append("available subcommands:").append("\n");
+            finalHelpString.append("available subcommands:").append("\n");
+            this.subCommands.forEach(subCommand -> finalHelpString.append(subCommand.getCommandHelpString())
+                    .append(" - ").append(subCommand.getDescription()).append("\n"));
         }
-        this.subCommands.forEach(subCommand -> {
-            helpString.append(subCommand.getCommand()).append(" - ").append(subCommand.getDescription()).append("\n");
-        });
 
-        return helpString.toString();
+        return finalHelpString.toString();
+
     }
 
     public String getHelpString() {
         return helpString;
     }
 
-    public void setHelpString(String helpString) {
-        this.helpString += "***" + getCommand() + "***";
+    public String getCommandHelpString() {
+        return String.join(" | ", getCommand());
+    }
+
+    private void setHelpString(String helpString) {
+        this.helpString += "***" + getCommandHelpString() + "***";
         this.helpString += " - " + getDescription() + "\n";
         this.helpString += helpString;
     }
 
     protected abstract String defineHelpString();
 
-    public ArrayList<Command> getSubCommands() {
+    public List<Command> getSubCommands() {
         return subCommands;
     }
 
-    public void setSubCommands(ArrayList<Command> subCommands) {
+    public void setSubCommands(List<Command> subCommands) {
         this.subCommands = subCommands;
     };
 
@@ -137,16 +142,19 @@ public abstract class Command {
         return false;
     }
 
-    public List<Command> getAllowedCommands(Member member) {
-        return this.subCommands.stream().filter(command -> command.isAllowed(member))
-                .collect(Collectors.toCollection(ArrayList::new));
-    }
-
-    protected String[] cutArguments(String[] args, int startIndex, int endIndex) {
+    private String[] cutArguments(String[] args, int startIndex, int endIndex) {
         return Arrays.copyOfRange(args, startIndex, endIndex);
     }
 
     protected void addSubCommand(Command subCommand) {
         this.subCommands.add(subCommand);
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
     }
 }

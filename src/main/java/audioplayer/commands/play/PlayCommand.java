@@ -34,8 +34,8 @@ public class PlayCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return this.prefix + "pl";
+    protected String[] defineCommand() {
+        return new String[] { "pl", "play" };
     }
 
     @Override

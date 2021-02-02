@@ -39,8 +39,8 @@ public class WeatherCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return prefix + "weather";
+    protected String[] defineCommand() {
+        return new String[] { "weather" };
     }
 
     @Override

@@ -34,8 +34,8 @@ public class SongStatisticsCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return prefix + "statistics";
+    protected String[] defineCommand() {
+        return new String[] { "statistics" };
     }
 
     @Override

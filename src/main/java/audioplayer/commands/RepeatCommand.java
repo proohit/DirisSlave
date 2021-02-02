@@ -26,8 +26,8 @@ public class RepeatCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return prefix + "repeat";
+    protected String[] defineCommand() {
+        return new String[] { "repeat" };
     }
 
     @Override

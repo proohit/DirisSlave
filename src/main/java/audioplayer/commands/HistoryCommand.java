@@ -2,7 +2,6 @@ package audioplayer.commands;
 
 import static main.Commands.sendBeautifulMessage;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import database.Song;
@@ -18,14 +17,14 @@ public class HistoryCommand extends Command {
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
         StringBuilder result = new StringBuilder("History: \n");
-        Map<Integer, Song> history = (HashMap<Integer, Song>) SongHistoryTable.getLastSongs();
+        Map<Integer, Song> history = SongHistoryTable.getLastSongs();
         history.forEach((id, song) -> result.append(id).append(" ").append(song.toString()).append("\n"));
         sendBeautifulMessage(event, result.toString());
     }
 
     @Override
-    protected String defineCommand() {
-        return prefix + "history";
+    protected String[] defineCommand() {
+        return new String[] { "history" };
     }
 
     @Override

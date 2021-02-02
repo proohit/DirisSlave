@@ -24,8 +24,8 @@ public class CreatePlaylistCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return "create";
+    protected String[] defineCommand() {
+        return new String[] { "create", "new" };
     }
 
     @Override

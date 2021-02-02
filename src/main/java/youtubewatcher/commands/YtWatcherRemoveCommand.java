@@ -8,8 +8,8 @@ import youtubewatcher.YoutubeWatcher;
 public class YtWatcherRemoveCommand extends Command {
 
     @Override
-    protected String defineCommand() {
-        return "remove";
+    protected String[] defineCommand() {
+        return new String[] { "remove" };
     }
 
     @Override

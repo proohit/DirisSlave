@@ -19,8 +19,8 @@ public class ShuffleCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return prefix + "shuffle";
+    protected String[] defineCommand() {
+        return new String[] { "shuffle" };
     }
 
     @Override

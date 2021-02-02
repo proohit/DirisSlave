@@ -2,7 +2,6 @@ package audioplayer.commands;
 
 import main.Commands;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.managers.AudioManager;
 import shared.commands.Command;
 
 public class StopCommand extends Command {
@@ -12,15 +11,12 @@ public class StopCommand extends Command {
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
-        AudioManager manager = event.getGuild().getAudioManager();
-        if (manager.isConnected() || manager.isAttemptingToConnect())
-            manager.closeAudioConnection();
-        Commands.player.stop(event.getTextChannel());
+        Commands.player.stop(event);
     }
 
     @Override
-    protected String defineCommand() {
-        return prefix + "stop";
+    protected String[] defineCommand() {
+        return new String[] { "stop" };
     }
 
     @Override

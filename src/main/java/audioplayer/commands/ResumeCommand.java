@@ -16,8 +16,8 @@ public class ResumeCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return prefix + "resume";
+    protected String[] defineCommand() {
+        return new String[] { "resume", "continue" };
     }
 
     @Override

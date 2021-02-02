@@ -25,8 +25,8 @@ public class RemoveCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return prefix + "remove";
+    protected String[] defineCommand() {
+        return new String[] { "remove", "rm" };
     }
 
     @Override

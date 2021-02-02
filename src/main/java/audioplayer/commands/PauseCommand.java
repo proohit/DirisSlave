@@ -15,8 +15,8 @@ public class PauseCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return prefix + "pause";
+    protected String[] defineCommand() {
+        return new String[] { "pause" };
     }
 
     @Override

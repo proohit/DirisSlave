@@ -20,8 +20,8 @@ public class YtWatcherCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return prefix + "yt";
+    protected String[] defineCommand() {
+        return new String[] { "yt" };
     }
 
     @Override

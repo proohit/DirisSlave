@@ -18,12 +18,12 @@ public class PlaylistCommand extends Command {
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
-
+        return;
     }
 
     @Override
-    protected String defineCommand() {
-        return prefix + "playlist";
+    protected String[] defineCommand() {
+        return new String[] { "playlist" };
     }
 
     @Override

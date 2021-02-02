@@ -18,8 +18,8 @@ public class CoffeeCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return prefix + "coffee";
+    protected String[] defineCommand() {
+        return new String[] { "coffee" };
     }
 
     @Override

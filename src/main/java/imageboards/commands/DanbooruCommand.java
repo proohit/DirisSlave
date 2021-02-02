@@ -56,8 +56,8 @@ public class DanbooruCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return prefix + "danbooru";
+    protected String[] defineCommand() {
+        return new String[] { "danbooru" };
     }
 
     @Override

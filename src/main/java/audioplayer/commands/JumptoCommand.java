@@ -17,8 +17,8 @@ public class JumptoCommand extends Command {
     }
 
     @Override
-    protected String defineCommand() {
-        return prefix + "jumpto";
+    protected String[] defineCommand() {
+        return new String[] { "jumpto" };
     }
 
     @Override
