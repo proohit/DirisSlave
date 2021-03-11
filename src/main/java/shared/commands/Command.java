@@ -5,8 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public abstract class Command {
@@ -19,19 +17,7 @@ public abstract class Command {
     private String topic = "uncategorized";
 
     public void handle(MessageReceivedEvent event, String[] argStrings) {
-        String[] cutArguments = cutArguments(argStrings, 1, argStrings.length);
-        if (Boolean.TRUE == isAllowed(event.getMember())) {
-            if (cutArguments.length < 1) {
-                handleImpl(event, cutArguments);
-            } else {
-                Command foundSubCommand = findSubCommand(cutArguments[0]);
-                if (foundSubCommand == null) {
-                    handleImpl(event, cutArguments);
-                } else {
-                    foundSubCommand.handle(event, cutArguments);
-                }
-            }
-        }
+        handleImpl(event, argStrings);
     }
 
     public Command findSubCommand(String argument) {
@@ -113,19 +99,9 @@ public abstract class Command {
         this.topic = topic;
     }
 
-    public Boolean isAllowed(Member member) {
-        if (this.permission.contains("everyone"))
-            return true;
-        for (Role role : member.getRoles()) {
-            if (this.permission.contains(role.getName()))
-                return true;
-        }
-        return false;
-    }
-
-    private String[] cutArguments(String[] args, int startIndex, int endIndex) {
-        return Arrays.copyOfRange(args, startIndex, endIndex);
-    }
-
     protected abstract void handleImpl(MessageReceivedEvent event, String[] argStrings);
+
+    public List<String> getPermissions() {
+        return permission;
+    }
 }

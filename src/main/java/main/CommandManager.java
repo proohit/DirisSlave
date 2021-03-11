@@ -28,7 +28,6 @@ import imageboards.commands.DanbooruCommand;
 import imageboards.commands.GahCommand;
 import imageboards.commands.LizardCommand;
 import imageboards.commands.ThighCommand;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -40,6 +39,7 @@ import weather.commands.WeatherCommand;
 public class CommandManager {
 
     public static final List<Command> registeredCommands = new ArrayList<>();
+    public static final PermissionManager permissionManager = new PermissionManager(registeredCommands);
     public static final AudioPlayer player = new AudioPlayer();
     public static final String PREFIX = "-";
 
@@ -86,19 +86,23 @@ public class CommandManager {
 
         String[] splitArguments = splitArgumentsForCommand(argStrings, insertedCommand);
 
-        if (isPermitted(event.getMember(), insertedCommand)) {
-            insertedCommand.handle(event, argStrings);
+        if (permissionManager.isPermitted(event.getMember(), insertedCommand)) {
+            insertedCommand.handle(event, splitArguments);
         }
     }
 
     private String[] splitArgumentsForCommand(String[] argStrings, Command insertedCommand) {
         int indexOfInsertedCommand = 0;
         for (; indexOfInsertedCommand < argStrings.length; indexOfInsertedCommand++) {
-            if (insertedCommand.getCommand().contains(argStrings[indexOfInsertedCommand])) {
+            if (insertedCommand.getCommand().contains(argStrings[indexOfInsertedCommand].replace(PREFIX, ""))) {
                 break;
             }
         }
-        return Arrays.copyOfRange(argStrings, indexOfInsertedCommand + 1, argStrings.length);
+        if (argStrings.length < indexOfInsertedCommand + 1) {
+            return new String[] {};
+        } else {
+            return Arrays.copyOfRange(argStrings, indexOfInsertedCommand + 1, argStrings.length);
+        }
     }
 
     private Command getRequestedCommand(String[] arguments) {
@@ -123,10 +127,6 @@ public class CommandManager {
             }
         }
         return subCommand;
-    }
-
-    private boolean isPermitted(Member member, Command insertedCommand) {
-        return false;
     }
 
     public static void registerCommand(Command commandToRegister) {
