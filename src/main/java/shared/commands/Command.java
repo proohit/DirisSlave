@@ -37,7 +37,7 @@ public abstract class Command {
     public Command findSubCommand(String argument) {
         Command foundSubCommand = null;
         for (Command subCommand : this.subCommands) {
-            if (commandPrefixes.contains(argument)) {
+            if (subCommand.getCommand().contains(argument)) {
                 foundSubCommand = subCommand;
             }
         }

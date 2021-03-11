@@ -12,9 +12,10 @@ import weather.WeatherWatcher;
 
 public class MyEventListener extends ListenerAdapter {
     Commands commander;
+    CommandManager commandManager;
 
     public MyEventListener(JDA jda) {
-        commander = new Commands();
+        commandManager = new CommandManager();
         WeatherWatcher.start(jda);
         DBManager.connect();
 
@@ -24,7 +25,7 @@ public class MyEventListener extends ListenerAdapter {
     public void onMessageReceived(MessageReceivedEvent event) {
         if (event.getAuthor().isBot())
             return;
-        commander.handle(event);
+        commandManager.handle(event);
     }
 
     @Override
