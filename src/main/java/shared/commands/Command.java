@@ -11,7 +11,6 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public abstract class Command {
 
-    protected String prefix = ".";
     private List<String> commandPrefixes = new ArrayList<>();
     private List<String> permission = new ArrayList<>();
     private List<Command> subCommands = new ArrayList<>();
@@ -38,7 +37,7 @@ public abstract class Command {
     public Command findSubCommand(String argument) {
         Command foundSubCommand = null;
         for (Command subCommand : this.subCommands) {
-            if (commandPrefixes.contains(this.prefix + argument)) {
+            if (commandPrefixes.contains(argument)) {
                 foundSubCommand = subCommand;
             }
         }
@@ -82,7 +81,7 @@ public abstract class Command {
 
     protected void addCommendPrefix(String... commandPrefix) {
         List<String> newCommandPrefixes = Arrays.asList(commandPrefix).stream()
-                .map(newCommandPrefix -> prefix + newCommandPrefix).collect(Collectors.toList());
+                .map(newCommandPrefix -> newCommandPrefix).collect(Collectors.toList());
         this.commandPrefixes.addAll(newCommandPrefixes);
     }
 
@@ -91,8 +90,7 @@ public abstract class Command {
     }
 
     public void setCommand(String... cmd) {
-        commandPrefixes = Arrays.asList(cmd).stream().map(commandPrefix -> this.prefix + commandPrefix)
-                .collect(Collectors.toList());
+        commandPrefixes = Arrays.asList(cmd).stream().map(commandPrefix -> commandPrefix).collect(Collectors.toList());
     };
 
     public List<String> getCommand() {
@@ -123,14 +121,6 @@ public abstract class Command {
                 return true;
         }
         return false;
-    }
-
-    public String getPrefix() {
-        return prefix;
-    }
-
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
     }
 
     private String[] cutArguments(String[] args, int startIndex, int endIndex) {

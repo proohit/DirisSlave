@@ -39,7 +39,7 @@ public class Commands {
 
     public static final List<Command> registeredCommands = new ArrayList<>();
     public static final AudioPlayer player = new AudioPlayer();
-    public static final String PREFIX = ".";
+    public static final String PREFIX = "-";
 
     public Commands() {
         registeredCommands.add(new PlaylistCommand());
@@ -74,8 +74,9 @@ public class Commands {
         if (!argStrings[0].startsWith(PREFIX)) {
             return;
         }
+        final String pureCommand = argStrings[0].replace(PREFIX, "");
         Command insertedCommand = registeredCommands.stream()
-                .filter(command -> command.getCommand().contains(argStrings[0])).findFirst().orElse(null);
+                .filter(command -> command.getCommand().contains(pureCommand)).findFirst().orElse(null);
         if (insertedCommand == null)
             return;
         insertedCommand.handle(event, argStrings);

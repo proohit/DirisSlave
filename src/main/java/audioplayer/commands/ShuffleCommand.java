@@ -17,7 +17,7 @@ public class ShuffleCommand extends Command {
         if (Commands.player.shuffle(event.getTextChannel())) {
             Commands.sendMessage(event, "shuffled the music :man_dancing:");
         } else {
-            Commands.sendBeautifulMessage(event, "queue is empty :( start rocking with " + prefix + "pl !");
+            Commands.sendBeautifulMessage(event, "queue is empty :( start rocking with pl!");
         }
     }
 

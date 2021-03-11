@@ -41,8 +41,9 @@ public class HelpCommand extends Command {
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
         List<Command> allowedCommands = getAllAllowedCommands(event.getMember());
         if (argStrings.length >= 1) {
-            Command requestedCommand = allowedCommands.stream().filter(registeredCommand -> registeredCommand
-                    .getCommand().contains(registeredCommand.getPrefix() + argStrings[0])).findFirst().orElse(null);
+            Command requestedCommand = allowedCommands.stream()
+                    .filter(registeredCommand -> registeredCommand.getCommand().contains(argStrings[0])).findFirst()
+                    .orElse(null);
             if (requestedCommand == null) {
                 return;
             }
