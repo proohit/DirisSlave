@@ -3,9 +3,11 @@ plugins {
     id 'application'
     id 'war'
 }
+
 application {
-    mainClassName = 'main.Startup'
+    mainClass = 'main.Startup'
 }
+
 group 'org.example'
 version '1.0-SNAPSHOT'
 
@@ -14,17 +16,13 @@ repositories {
     mavenCentral()
     jcenter()
 }
-jar {
-    manifest {
-        attributes 'Main-Class': 'main.Startup'
-    }
-}
+
 dependencies {
-    compile 'com.sedmelluq:lavaplayer:1.3.60'
-    compile 'net.dv8tion:JDA:4.2.0_215'
+    implementation 'com.sedmelluq:lavaplayer:1.3.71'
+    implementation'net.dv8tion:JDA:4.2.0_215'
     implementation 'com.google.code.gson:gson:2.8.6'
-    compile group: 'jfree', name: 'jfreechart', version: '1.0.13'
-    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.22'
-    providedCompile group: 'com.konghq', name: 'unirest-java', version: '3.11.05'
+    implementation 'org.jfree:jfreechart:1.0.14'
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.22'
+    compileOnly group: 'com.konghq', name: 'unirest-java', version: '3.11.05'
     implementation 'com.github.mpkorstanje:simmetrics-core:4.1.1'
 }
