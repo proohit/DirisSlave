@@ -27,6 +27,7 @@ import imageboards.commands.CoffeeCommand;
 import imageboards.commands.DanbooruCommand;
 import imageboards.commands.GahCommand;
 import imageboards.commands.LizardCommand;
+import imageboards.commands.PixabayCommand;
 import imageboards.commands.ThighCommand;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -68,6 +69,7 @@ public class CommandManager {
         registeredCommands.add(new CoffeeCommand());
         registeredCommands.add(new WeatherCommand());
         registeredCommands.add(new LizardCommand());
+        registeredCommands.add(new PixabayCommand());
         registeredCommands.add(HelpCommand.getInstance());
     }
 
