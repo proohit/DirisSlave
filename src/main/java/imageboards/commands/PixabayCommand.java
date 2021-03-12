@@ -13,20 +13,19 @@ public class PixabayCommand extends Command {
         setDescription("search for any pictures you want");
         setTopic("images");
         setHelpString("<search term to search for>");
+        setMinArguments(1);
     }
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings.length >= 1) {
-            String searchQuery = "";
-            for (String subString : argStrings) {
-                searchQuery += subString + " ";
-            }
-            PixabayHandler pixabayHandler = new PixabayHandler();
-            String imageUrl = pixabayHandler.getRandomImageUrlByQuery(searchQuery);
-
-            Commands.sendMessage(event, imageUrl);
+        String searchQuery = "";
+        for (String subString : argStrings) {
+            searchQuery += subString + " ";
         }
+        PixabayHandler pixabayHandler = new PixabayHandler();
+        String imageUrl = pixabayHandler.getRandomImageUrlByQuery(searchQuery);
+
+        Commands.sendMessage(event, imageUrl);
     }
 
 }

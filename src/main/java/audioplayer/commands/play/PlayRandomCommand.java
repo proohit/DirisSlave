@@ -20,26 +20,22 @@ public class PlayRandomCommand extends Command {
         setDescription("plays random songs based on genre");
         setTopic("music");
         setHelpString("<genre>");
+        setMinArguments(1);
     }
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings.length <= 0) {
-            Commands.sendMessage(event, getHelp());
-        } else {
-            String rawRequestedGenre = argStrings[0];
-            RecommendationHandler recommendationHandler = new RecommendationHandler();
-            List<String> availableGenres = recommendationHandler.getAvailableGenreSeeds();
-            List<JSONObject> recommendedTracks = null;
-            String requestedGenre = identifyRequestedGenre(rawRequestedGenre, availableGenres);
-            System.out.println(requestedGenre);
-            Commands.sendMessage(event, "Playing recommended tracks for genre: " + requestedGenre);
-            recommendedTracks = ListUtilies.castList(JSONObject.class,
-                    recommendationHandler.getRecommendationsByGenre(requestedGenre).toList());
-            if (recommendedTracks != null) {
-                recommendedTracks = recommendedTracks.subList(0, 2);
-                playRecommendedTracks(event, recommendedTracks);
-            }
+        String rawRequestedGenre = argStrings[0];
+        RecommendationHandler recommendationHandler = new RecommendationHandler();
+        List<String> availableGenres = recommendationHandler.getAvailableGenreSeeds();
+        List<JSONObject> recommendedTracks = null;
+        String requestedGenre = identifyRequestedGenre(rawRequestedGenre, availableGenres);
+        Commands.sendMessage(event, "Playing recommended tracks for genre: " + requestedGenre);
+        recommendedTracks = ListUtilies.castList(JSONObject.class,
+                recommendationHandler.getRecommendationsByGenre(requestedGenre).toList());
+        if (recommendedTracks != null) {
+            recommendedTracks = recommendedTracks.subList(0, 2);
+            playRecommendedTracks(event, recommendedTracks);
         }
     }
 

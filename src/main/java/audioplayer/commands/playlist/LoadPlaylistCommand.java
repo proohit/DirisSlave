@@ -17,6 +17,7 @@ public class LoadPlaylistCommand extends Command {
         setDescription("loads the playlist in the queue. can also be loaded shuffled");
         setTopic("music");
         setHelpString("<playlist name> [shuffle|random|rnd]");
+        setMinArguments(1);
     }
 
     @Override

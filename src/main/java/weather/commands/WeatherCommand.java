@@ -15,22 +15,21 @@ public class WeatherCommand extends Command {
         setDescription("shows the weather for the next 15 hours");
         setTopic("weather");
         setHelpString("<city name>\n");
+        setMinArguments(1);
     }
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings.length >= 1) {
-            String query = buildQuery(argStrings);
+        String query = buildQuery(argStrings);
 
-            OpenWeatherMapHandler openWeatherMapHandler = new OpenWeatherMapHandler();
+        OpenWeatherMapHandler openWeatherMapHandler = new OpenWeatherMapHandler();
 
-            JSONArray list = openWeatherMapHandler.getWeatherDataOfCity(query);
+        JSONArray list = openWeatherMapHandler.getWeatherDataOfCity(query);
 
-            WeatherChart chart = new WeatherChart(list, query);
-            File chartFile = chart.buildChart();
-            event.getAuthor().openPrivateChannel()
-                    .queue(privateChannel -> privateChannel.sendFile(chartFile, chartFile.getName()).queue());
-        }
+        WeatherChart chart = new WeatherChart(list, query);
+        File chartFile = chart.buildChart();
+        event.getAuthor().openPrivateChannel()
+                .queue(privateChannel -> privateChannel.sendFile(chartFile, chartFile.getName()).queue());
 
     }
 

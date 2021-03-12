@@ -23,14 +23,14 @@ public class ListPlaylistCommand extends Command {
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
         if (argStrings.length == 0) {
             ArrayList<Playlist> playlists = (ArrayList<Playlist>) PlaylistTable.getPlaylists();
-            if (playlists.size() == 0) {
+            if (playlists.isEmpty()) {
                 sendBeautifulMessage(event, "no playlists found");
                 return;
             }
             StringBuilder result = new StringBuilder("saved playlists: \n");
             playlists.stream().forEach(playlist -> result.append(playlist.getName()).append("\n"));
             sendBeautifulMessage(event, result.toString());
-        } else if (argStrings.length == 1) {
+        } else if (argStrings.length >= 1) {
             String playlistToList = argStrings[0];
             Playlist playlist = SongPlaylistTable.getPlaylistByName(playlistToList);
             if (playlist.getSongs().isEmpty()) {

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import main.CommandManager;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public abstract class Command {
@@ -15,9 +16,14 @@ public abstract class Command {
     private String description = "";
     private String helpString = "";
     private String topic = "uncategorized";
+    private int minArguments = 0;
 
     public void handle(MessageReceivedEvent event, String[] argStrings) {
-        handleImpl(event, argStrings);
+        if (argStrings.length < minArguments) {
+            CommandManager.sendMessage(event, getHelp());
+        } else {
+            handleImpl(event, argStrings);
+        }
     }
 
     public Command findSubCommand(String argument) {
@@ -103,5 +109,13 @@ public abstract class Command {
 
     public List<String> getPermissions() {
         return permission;
+    }
+
+    public int getMinArguments() {
+        return minArguments;
+    }
+
+    public void setMinArguments(int minArguments) {
+        this.minArguments = minArguments;
     }
 }

@@ -12,16 +12,15 @@ public class DeletePlaylistCommand extends Command {
         setDescription("Deletes the playlist with the given name");
         setTopic("music");
         setHelpString("<playlist name>>");
+        setMinArguments(1);
     }
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings.length == 1) {
-            String result;
-            result = PlaylistTable.deletePlaylist(argStrings[0]) == 1 ? "deleted playlist " + argStrings[0]
-                    : "playlist " + argStrings[0] + " not found";
-            Commands.sendBeautifulMessage(event, result);
-        }
+        String result;
+        result = PlaylistTable.deletePlaylist(argStrings[0]) == 1 ? "deleted playlist " + argStrings[0]
+                : "playlist " + argStrings[0] + " not found";
+        Commands.sendBeautifulMessage(event, result);
     }
 
 }

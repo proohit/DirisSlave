@@ -18,22 +18,19 @@ public class PlayRecommendedCommand extends Command {
         setDescription("Play music based on recommendations for provided search term");
         setTopic("music");
         setHelpString("<search term to search for on spotify>");
+        setMinArguments(1);
     }
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings.length <= 0) {
-            Commands.sendBeautifulMessage(event, getHelp());
-        }
         RecommendationHandler recommendationHandler = new RecommendationHandler();
         String[] searchQuery = extractSearchQueryFromArguments(argStrings);
         JSONArray recommendedTracksJson = recommendationHandler.getRecommendationsByTrackSearchQuery(searchQuery);
         List<JSONObject> recommendedTracks = ListUtilies.castList(JSONObject.class, recommendedTracksJson.toList());
-        if (recommendedTracks.size() == 0) {
+        if (recommendedTracks.isEmpty()) {
             Commands.sendBeautifulMessage(event, "No recommendations found...");
             return;
         }
-        recommendedTracks.forEach(track -> System.out.println(track.get("name")));
         recommendedTracks = recommendedTracks.subList(0, 2);
         recommendedTracks.forEach(recommendedTrackObject -> {
             String firstArtist = recommendedTrackObject.getJSONArray("artists").getJSONObject(0).getString("name");

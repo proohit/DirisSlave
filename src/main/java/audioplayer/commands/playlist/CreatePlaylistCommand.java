@@ -13,17 +13,16 @@ public class CreatePlaylistCommand extends Command {
         setDescription("creates a new empty playlist with the given name");
         setTopic("music");
         setHelpString("<playlist name>");
+        setMinArguments(1);
     }
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings.length >= 1) {
-            Playlist createdPlaylist = PlaylistTable.createPlaylist(argStrings[0]);
-            if (createdPlaylist != null) {
-                main.Commands.sendBeautifulMessage(event, "playlist " + argStrings[2] + " created.");
-            } else {
-                main.Commands.sendBeautifulMessage(event, "this playlist has already been created before");
-            }
+        Playlist createdPlaylist = PlaylistTable.createPlaylist(argStrings[0]);
+        if (createdPlaylist != null) {
+            main.Commands.sendBeautifulMessage(event, "playlist " + argStrings[2] + " created.");
+        } else {
+            main.Commands.sendBeautifulMessage(event, "this playlist has already been created before");
         }
     }
 
