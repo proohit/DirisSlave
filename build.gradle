@@ -11,7 +11,12 @@ application {
 group 'org.example'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(14)
+    }
+}
+
 repositories {
     mavenCentral()
     jcenter()
