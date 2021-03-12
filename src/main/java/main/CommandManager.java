@@ -37,6 +37,7 @@ import shared.commands.Command;
 import util.commands.ChangePrefixCommand;
 import util.commands.ClearCommand;
 import util.commands.HelpCommand;
+import util.commands.SetMusicChannelCommand;
 import weather.commands.WeatherCommand;
 
 public class CommandManager {
@@ -44,7 +45,7 @@ public class CommandManager {
     public static final List<Command> registeredCommands = new ArrayList<>();
     public static final PermissionManager permissionManager = new PermissionManager(registeredCommands);
     public static final AudioPlayer player = new AudioPlayer();
-    private static String prefix = ".";
+    private static String prefix = "-";
 
     public CommandManager() {
         registeredCommands.add(new PlaylistCommand());
@@ -74,6 +75,7 @@ public class CommandManager {
         registeredCommands.add(new PixabayCommand());
         registeredCommands.add(new DiceRollCommand());
         registeredCommands.add(new ChangePrefixCommand());
+        registeredCommands.add(new SetMusicChannelCommand());
         registeredCommands.add(HelpCommand.getInstance());
     }
 
@@ -87,6 +89,12 @@ public class CommandManager {
         Command insertedCommand = getRequestedCommand(argStrings);
 
         if (insertedCommand == null) {
+            return;
+        }
+
+        if (insertedCommand.getTopic().equals("music") && !permissionManager.isMusicChannelAppropriate(event)) {
+            sendBeautifulMessage(event, String.format("Please input your request in the music channel \"%s\"",
+                    permissionManager.getRegisteredMusicChannelByGuildId(event.getGuild().getIdLong())));
             return;
         }
 
