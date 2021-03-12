@@ -24,6 +24,8 @@ jobs:
         run: bash ./scripts/createConfig.sh --dbHost "${{ secrets.DBHOST }}" --dbPassword '${{ secrets.DBPASSWORD }}' --dbDatabase "${{ secrets.DBDATABASE }}" --dbUser "${{ secrets.DBUSER }}" --jdatoken "${{ secrets.JDATOKEN }}" --spotifyClientId "${{secrets.spotifyClientId}}" --spotifyClientSecret "${{secrets.spotifyClientSecret}}" --owmappid "${{secrets.owmappid}}" --pixabaykey "${{secrets.pixabaykey}}" -o ./build/install/DirisSlave/bin
       - name: Install SSH
         run: sudo apt-get update && sudo apt install -y openssh-client
+      - name: Install SSHPASS
+        run: sudo apt-get update && sudo apt-get install -y sshpass
       - name: SCP To Remote
         run: sshpass -p ${{secrets.password}} scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -r -v ./build/install/DirisSlave ${{secrets.username}}@${{secrets.host}}:${{secrets.destination}}
       - name: SSH Commands
