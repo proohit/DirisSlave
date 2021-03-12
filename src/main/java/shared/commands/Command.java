@@ -38,7 +38,9 @@ public abstract class Command {
 
     public String getHelp() {
         final StringBuilder finalHelpString = new StringBuilder();
-        finalHelpString.append(this.helpString).append("\n\n");
+        finalHelpString.append("***").append(getCommandHelpString()).append("***");
+        finalHelpString.append(" - ").append(getDescription()).append("\n");
+        finalHelpString.append(helpString.isBlank() ? "*No help available*" : helpString).append("\n\n");
         if (!this.subCommands.isEmpty()) {
             finalHelpString.append("available subcommands:").append("\n");
             this.subCommands.forEach(subCommand -> finalHelpString.append(subCommand.getCommandHelpString())
@@ -54,9 +56,7 @@ public abstract class Command {
     }
 
     protected void setHelpString(String helpString) {
-        this.helpString += "***" + getCommandHelpString() + "***";
-        this.helpString += " - " + getDescription() + "\n";
-        this.helpString += helpString;
+        this.helpString = helpString;
     }
 
     public List<Command> getSubCommands() {
