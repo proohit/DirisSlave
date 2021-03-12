@@ -7,12 +7,13 @@ import kong.unirest.json.JSONObject;
 
 public class PixabayHandler extends PixabayApi {
 
-    private final String QUERY_QUERY = "q";
-    private final String QUERY_PAGE = "page";
-    private final int DEFAULT_PER_PAGE = 20;
-    private final String RESPONSE_HITS = "hits";
-    private final String RESPONSE_HITCOUNTAPI = "totalHits";
-    private final String HIT_LARGEIMAGEURL = "largeImageURL";
+    private static final String QUERY_QUERY = "q";
+    private static final String QUERY_PAGE = "page";
+    private static final int DEFAULT_PER_PAGE = 20;
+    private static final String RESPONSE_HITS = "hits";
+    private static final String RESPONSE_HITCOUNTAPI = "totalHits";
+    private static final String HIT_LARGEIMAGEURL = "largeImageURL";
+    private Random rnd = new Random();
 
     public JSONObject getResponseByQuery(String query) {
         return this.baseGetRequest(PixabayApiFactory.getBaseUrl()).queryString(QUERY_QUERY, query).asJson().getBody()
@@ -26,14 +27,12 @@ public class PixabayHandler extends PixabayApi {
 
     public JSONArray getHitsByQuery(String query) {
         JSONObject response = getResponseByQuery(query);
-        JSONArray hits = response.getJSONArray(RESPONSE_HITS);
-        return hits;
+        return response.getJSONArray(RESPONSE_HITS);
     }
 
     public JSONArray getHitsByQueryByPage(String query, int page) {
         JSONObject response = getResponseByQueryByPage(query, page);
-        JSONArray hits = response.getJSONArray(RESPONSE_HITS);
-        return hits;
+        return response.getJSONArray(RESPONSE_HITS);
     }
 
     public String getImageUrlByHit(JSONObject hit) {
@@ -42,13 +41,11 @@ public class PixabayHandler extends PixabayApi {
 
     public String getRandomImageUrlByQuery(String query) {
         JSONObject randomHit = getRandomHitByQuery(query);
-        String largeImageUrl = randomHit.getString(HIT_LARGEIMAGEURL);
-        return largeImageUrl;
+        return randomHit.getString(HIT_LARGEIMAGEURL);
     }
 
     public JSONObject getRandomHit(JSONArray hits) {
-        Random random = new Random();
-        int randomIndex = random.nextInt(DEFAULT_PER_PAGE);
+        int randomIndex = rnd.nextInt(DEFAULT_PER_PAGE);
         return hits.getJSONObject(randomIndex);
     }
 
@@ -56,10 +53,8 @@ public class PixabayHandler extends PixabayApi {
         JSONObject standardHits = getResponseByQuery(query);
         int totalHitsByQuery = standardHits.getInt(RESPONSE_HITCOUNTAPI);
         int totalPages = totalHitsByQuery / DEFAULT_PER_PAGE;
-        Random random = new Random();
-        int randomPage = random.nextInt(totalPages);
+        int randomPage = rnd.nextInt(totalPages);
         JSONArray randomHits = getHitsByQueryByPage(query, randomPage);
-        JSONObject randomHit = getRandomHit(randomHits);
-        return randomHit;
+        return getRandomHit(randomHits);
     }
 }

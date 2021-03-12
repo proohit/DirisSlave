@@ -10,11 +10,11 @@ import main.ReadPropertyFile;
 
 public class TokenHandler {
     private static TokenHandler instance;
-    private final String TOKEN_PROPERTY = "access_token";
-    private final String GRANT_TYPE = "grant_type";
-    private final String GRANT_TYPE_VALUE = "client_credentials";
-    private final String CONTENT_TYPE = "application/x-www-form-urlencoded";
-    private final String EXPIRES_IN_PROPERTY = "expires_in";
+    private static final String TOKEN_PROPERTY = "access_token";
+    private static final String GRANT_TYPE = "grant_type";
+    private static final String GRANT_TYPE_VALUE = "client_credentials";
+    private static final String CONTENT_TYPE = "application/x-www-form-urlencoded";
+    private static final String EXPIRES_IN_PROPERTY = "expires_in";
     private String token;
     private Date retrievalDate;
     private int expiresIn;
@@ -40,10 +40,8 @@ public class TokenHandler {
 
     public boolean isTokenStillValid() {
         boolean isValid = false;
-        if (retrievalDate != null) {
-            if (calculateTimeSinceRetrieval() / 1000 < expiresIn) {
-                isValid = true;
-            }
+        if (retrievalDate != null && calculateTimeSinceRetrieval() / 1000 < expiresIn) {
+            isValid = true;
         }
         return isValid;
     }
