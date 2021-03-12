@@ -34,6 +34,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
+import util.commands.ChangePrefixCommand;
 import util.commands.ClearCommand;
 import util.commands.HelpCommand;
 import weather.commands.WeatherCommand;
@@ -43,7 +44,7 @@ public class CommandManager {
     public static final List<Command> registeredCommands = new ArrayList<>();
     public static final PermissionManager permissionManager = new PermissionManager(registeredCommands);
     public static final AudioPlayer player = new AudioPlayer();
-    public static final String PREFIX = "-";
+    private static String prefix = ".";
 
     public CommandManager() {
         registeredCommands.add(new PlaylistCommand());
@@ -72,13 +73,14 @@ public class CommandManager {
         registeredCommands.add(new LizardCommand());
         registeredCommands.add(new PixabayCommand());
         registeredCommands.add(new DiceRollCommand());
+        registeredCommands.add(new ChangePrefixCommand());
         registeredCommands.add(HelpCommand.getInstance());
     }
 
     public void handle(MessageReceivedEvent event) {
         String[] argStrings = getArgs(event);
 
-        if (!argStrings[0].startsWith(PREFIX)) {
+        if (!argStrings[0].startsWith(prefix)) {
             return;
         }
 
@@ -98,7 +100,7 @@ public class CommandManager {
     private String[] splitArgumentsForCommand(String[] argStrings, Command insertedCommand) {
         int indexOfInsertedCommand = 0;
         for (; indexOfInsertedCommand < argStrings.length; indexOfInsertedCommand++) {
-            if (insertedCommand.getCommand().contains(argStrings[indexOfInsertedCommand].replace(PREFIX, ""))) {
+            if (insertedCommand.getCommand().contains(argStrings[indexOfInsertedCommand].replace(prefix, ""))) {
                 break;
             }
         }
@@ -110,7 +112,7 @@ public class CommandManager {
     }
 
     private Command getRequestedCommand(String[] arguments) {
-        final String pureCommand = arguments[0].replace(PREFIX, "");
+        final String pureCommand = arguments[0].replace(prefix, "");
         Command insertedHighLevelCommand = registeredCommands.stream()
                 .filter(command -> command.getCommand().contains(pureCommand)).findFirst().orElse(null);
 
@@ -159,5 +161,13 @@ public class CommandManager {
 
     private static String[] getArgs(MessageReceivedEvent event) {
         return event.getMessage().getContentRaw().split(" ");
+    }
+
+    public static void setPrefix(String newPrefix) {
+        prefix = newPrefix;
+    }
+
+    public static String getPrefix() {
+        return prefix;
     }
 }
