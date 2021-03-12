@@ -1,6 +1,6 @@
 package audioplayer.commands;
 
-import main.Commands;
+import main.CommandManager;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 
@@ -11,21 +11,18 @@ public class RepeatCommand extends Command {
         setDescription("enables queue repetition. Now playing song will repeat as the last song");
         setTopic("music");
         setHelpString("<true|false>");
+        setMinArguments(1);
     }
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings.length >= 1) {
-            String inputBoolean = argStrings[0];
-            if (inputBoolean.equals("true") || inputBoolean.equals("false")) {
-                boolean isRepeat = Boolean.parseBoolean(inputBoolean);
-                Commands.sendBeautifulMessage(event, "Repetition of songs has been set to: "
-                        + Commands.player.setRepeat(event.getTextChannel(), isRepeat));
-            } else {
-                Commands.sendMessage(event, getHelp());
-            }
+        String inputBoolean = argStrings[0];
+        if (inputBoolean.equals("true") || inputBoolean.equals("false")) {
+            boolean isRepeat = Boolean.parseBoolean(inputBoolean);
+            CommandManager.sendBeautifulMessage(event, "Repetition of songs has been set to: "
+                    + CommandManager.player.setRepeat(event.getTextChannel(), isRepeat));
         } else {
-            Commands.sendMessage(event, getHelp());
+            CommandManager.sendMessage(event, getHelp());
         }
     }
 }

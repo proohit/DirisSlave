@@ -2,28 +2,23 @@
 <projectDescription>
 	<name>DirisSlave</name>
 	<comment>Project DirisSlave created by Buildship.</comment>
-	<projects>
-	</projects>
+	<projects></projects>
 	<buildSpec>
 		<buildCommand>
 			<name>org.eclipse.jdt.core.javabuilder</name>
-			<arguments>
-			</arguments>
+			<arguments></arguments>
 		</buildCommand>
 		<buildCommand>
 			<name>org.eclipse.wst.common.project.facet.core.builder</name>
-			<arguments>
-			</arguments>
+			<arguments></arguments>
 		</buildCommand>
 		<buildCommand>
 			<name>org.eclipse.wst.validation.validationbuilder</name>
-			<arguments>
-			</arguments>
+			<arguments></arguments>
 		</buildCommand>
 		<buildCommand>
 			<name>org.eclipse.buildship.core.gradleprojectbuilder</name>
-			<arguments>
-			</arguments>
+			<arguments></arguments>
 		</buildCommand>
 	</buildSpec>
 	<natures>
@@ -32,7 +27,7 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1606212115514</id>
+			<id>1615419418456</id>
 			<name></name>
 			<type>30</type>
 			<matcher>

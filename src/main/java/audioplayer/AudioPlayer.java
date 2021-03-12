@@ -78,7 +78,7 @@ public class AudioPlayer {
         return musicManager.scheduler.setRepeat(repeat);
     }
 
-    public void playPlaylist(final TextChannel channel, final String playlistName, final Boolean shuffle) {
+    public void playPlaylist(final TextChannel channel, final String playlistName, final boolean shuffle) {
         lastManager = channel.getGuild().getAudioManager();
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
         ArrayList<Song> songs = (ArrayList<Song>) SongPlaylistTable.getSongsByPlaylist(playlistName);
@@ -86,14 +86,13 @@ public class AudioPlayer {
             Commands.sendBeautifulMessage(channel, String.format("Playlist %s empty or not found", playlistName));
             return;
         }
-        if (Boolean.TRUE == shuffle) {
+        if (shuffle) {
             Collections.shuffle(songs);
         }
         List<Integer> completedSongIds = new ArrayList<>();
         for (Song song : songs) {
             playerManager.loadItemOrdered(musicManager, song.getUrl(),
                     new PlaylistLoadedHandler(musicManager, completedSongIds, song, playlistName, channel, songs));
-
         }
     }
 

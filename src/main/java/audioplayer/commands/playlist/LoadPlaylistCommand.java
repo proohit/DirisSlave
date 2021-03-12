@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import audioplayer.AudioPlayer;
-import main.Commands;
+import main.CommandManager;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 
@@ -17,6 +17,7 @@ public class LoadPlaylistCommand extends Command {
         setDescription("loads the playlist in the queue. can also be loaded shuffled");
         setTopic("music");
         setHelpString("<playlist name> [shuffle|random|rnd]");
+        setMinArguments(1);
     }
 
     @Override
@@ -27,7 +28,7 @@ public class LoadPlaylistCommand extends Command {
         }
         if (argStrings.length >= 1) {
             String playlistNameToBeLoaded = argStrings[0];
-            Commands.player.playPlaylist(event.getTextChannel(), playlistNameToBeLoaded, isShuffle);
+            CommandManager.player.playPlaylist(event.getTextChannel(), playlistNameToBeLoaded, isShuffle);
             AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(),
                     event.getMember().getVoiceState().getChannel());
         }

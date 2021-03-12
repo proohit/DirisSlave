@@ -4,6 +4,8 @@ public class SpotifyUrlFactory {
     static final String API_URL = "https://api.spotify.com/v1/";
     static final String ACCOUNTS_URL = "https://accounts.spotify.com/api/";
 
+    private SpotifyUrlFactory() {
+    }
     // Playlist
 
     public static String getPlaylistUrl() {

@@ -12,14 +12,11 @@ public class YtWatcherCommand extends Command {
         addCommendPrefix("yt");
         setDescription("get notified by your slave, if your followed youtuber has uploaded a new video");
         setTopic("ytwatcher");
+        setMinArguments(1);
     }
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings.length <= 0) {
-            main.Commands.sendMessage(event, getHelp());
-            return;
-        }
     }
 
 }

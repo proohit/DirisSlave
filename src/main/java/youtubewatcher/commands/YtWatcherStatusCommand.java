@@ -1,6 +1,6 @@
 package youtubewatcher.commands;
 
-import main.Commands;
+import main.CommandManager;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 import youtubewatcher.YoutubeWatcher;
@@ -15,7 +15,7 @@ public class YtWatcherStatusCommand extends Command {
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
-        Commands.sendMessage(event, YoutubeWatcher.status());
+        CommandManager.sendMessage(event, YoutubeWatcher.status());
     }
 
 }

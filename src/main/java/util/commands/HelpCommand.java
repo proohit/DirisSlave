@@ -6,8 +6,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import main.Commands;
-import net.dv8tion.jda.api.entities.Member;
+import main.CommandManager;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -39,10 +38,11 @@ public class HelpCommand extends Command {
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
-        List<Command> allowedCommands = getAllAllowedCommands(event.getMember());
+        List<Command> allowedCommands = CommandManager.permissionManager.getPermittedCommands(event.getMember());
         if (argStrings.length >= 1) {
-            Command requestedCommand = allowedCommands.stream().filter(registeredCommand -> registeredCommand
-                    .getCommand().contains(registeredCommand.getPrefix() + argStrings[0])).findFirst().orElse(null);
+            Command requestedCommand = allowedCommands.stream()
+                    .filter(registeredCommand -> registeredCommand.getCommand().contains(argStrings[0])).findFirst()
+                    .orElse(null);
             if (requestedCommand == null) {
                 return;
             }
@@ -54,7 +54,7 @@ public class HelpCommand extends Command {
                     requestedCommand = tmpCommand;
                 }
             }
-            Commands.sendMessage(event, requestedCommand.getHelp());
+            CommandManager.sendMessage(event, requestedCommand.getHelp());
         } else {
             currentPage = 0;
             lastPage = (allowedCommands.size() / HELP_PER_PAGE) - 1;
@@ -62,7 +62,7 @@ public class HelpCommand extends Command {
             if (restCommands > 0)
                 lastPage++;
             String helpString = buildHelpString(event.getAuthor(), allowedCommands);
-            Commands.sendMessage(event, helpString, new MessageSentHandler());
+            CommandManager.sendMessage(event, helpString, new MessageSentHandler());
         }
     }
 
@@ -100,11 +100,6 @@ public class HelpCommand extends Command {
         }
 
         return pageCommands;
-    }
-
-    private List<Command> getAllAllowedCommands(Member member) {
-        return Commands.registeredCommands.stream().filter(command -> command.isAllowed(member))
-                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     /**
@@ -150,7 +145,7 @@ public class HelpCommand extends Command {
             } else if (emoji.equals(ARROW_RIGHT)) {
                 currentPage = currentPage + 1 > lastPage ? 0 : currentPage + 1;
             }
-            List<Command> allAllowedCommands = getAllAllowedCommands(event.getMember());
+            List<Command> allAllowedCommands = CommandManager.permissionManager.getPermittedCommands(event.getMember());
             lastSentHelpMessage.editMessage(buildHelpString(event.getUser(), allAllowedCommands)).queue();
         }
     }

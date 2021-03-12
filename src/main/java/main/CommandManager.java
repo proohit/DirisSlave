@@ -1,6 +1,7 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -22,10 +23,12 @@ import audioplayer.commands.StopCommand;
 import audioplayer.commands.play.PlayCommand;
 import audioplayer.commands.playlist.PlaylistCommand;
 import calculator.commands.CalculatorCommand;
+import dice.commands.DiceRollCommand;
 import imageboards.commands.CoffeeCommand;
 import imageboards.commands.DanbooruCommand;
 import imageboards.commands.GahCommand;
 import imageboards.commands.LizardCommand;
+import imageboards.commands.PixabayCommand;
 import imageboards.commands.ThighCommand;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -35,13 +38,14 @@ import util.commands.ClearCommand;
 import util.commands.HelpCommand;
 import weather.commands.WeatherCommand;
 
-public class Commands {
+public class CommandManager {
 
     public static final List<Command> registeredCommands = new ArrayList<>();
+    public static final PermissionManager permissionManager = new PermissionManager(registeredCommands);
     public static final AudioPlayer player = new AudioPlayer();
     public static final String PREFIX = "-";
 
-    public Commands() {
+    public CommandManager() {
         registeredCommands.add(new PlaylistCommand());
         registeredCommands.add(new CalculatorCommand());
         registeredCommands.add(new HistoryCommand());
@@ -66,20 +70,67 @@ public class Commands {
         registeredCommands.add(new CoffeeCommand());
         registeredCommands.add(new WeatherCommand());
         registeredCommands.add(new LizardCommand());
+        registeredCommands.add(new PixabayCommand());
+        registeredCommands.add(new DiceRollCommand());
         registeredCommands.add(HelpCommand.getInstance());
     }
 
     public void handle(MessageReceivedEvent event) {
         String[] argStrings = getArgs(event);
+
         if (!argStrings[0].startsWith(PREFIX)) {
             return;
         }
-        final String pureCommand = argStrings[0].replace(PREFIX, "");
-        Command insertedCommand = registeredCommands.stream()
-                .filter(command -> command.getCommand().contains(pureCommand)).findFirst().orElse(null);
-        if (insertedCommand == null)
+
+        Command insertedCommand = getRequestedCommand(argStrings);
+
+        if (insertedCommand == null) {
             return;
-        insertedCommand.handle(event, argStrings);
+        }
+
+        String[] splitArguments = splitArgumentsForCommand(argStrings, insertedCommand);
+
+        if (permissionManager.isPermitted(event.getMember(), insertedCommand)) {
+            insertedCommand.handle(event, splitArguments);
+        }
+    }
+
+    private String[] splitArgumentsForCommand(String[] argStrings, Command insertedCommand) {
+        int indexOfInsertedCommand = 0;
+        for (; indexOfInsertedCommand < argStrings.length; indexOfInsertedCommand++) {
+            if (insertedCommand.getCommand().contains(argStrings[indexOfInsertedCommand].replace(PREFIX, ""))) {
+                break;
+            }
+        }
+        if (argStrings.length < indexOfInsertedCommand + 1) {
+            return new String[] {};
+        } else {
+            return Arrays.copyOfRange(argStrings, indexOfInsertedCommand + 1, argStrings.length);
+        }
+    }
+
+    private Command getRequestedCommand(String[] arguments) {
+        final String pureCommand = arguments[0].replace(PREFIX, "");
+        Command insertedHighLevelCommand = registeredCommands.stream()
+                .filter(command -> command.getCommand().contains(pureCommand)).findFirst().orElse(null);
+
+        if (insertedHighLevelCommand == null) {
+            return null;
+        }
+
+        if (arguments.length <= 1) {
+            return insertedHighLevelCommand;
+        }
+
+        String[] followingArguments = Arrays.copyOfRange(arguments, 1, arguments.length);
+        Command subCommand = insertedHighLevelCommand;
+        for (String argument : followingArguments) {
+            Command newSubCommand = subCommand.findSubCommand(argument);
+            if (newSubCommand != null) {
+                subCommand = newSubCommand;
+            }
+        }
+        return subCommand;
     }
 
     public static void registerCommand(Command commandToRegister) {

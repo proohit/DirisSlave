@@ -15,6 +15,7 @@ public class RecommendationCommand extends Command {
         setDescription("Get recommendations based on a song query");
         setTopic("music");
         setHelpString("<spotify song URI>");
+        setMinArguments(1);
     }
 
     private String[] extractSearchQueryFromArguments(String[] args) {
@@ -23,21 +24,16 @@ public class RecommendationCommand extends Command {
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
-        if (argStrings.length <= 0) {
-            main.Commands.sendMessage(event, getHelp());
-            return;
-        } else {
-            RecommendationHandler recommendationHandler = new RecommendationHandler();
-            String[] searchQuery = extractSearchQueryFromArguments(argStrings);
-            JSONArray tracks = recommendationHandler.getRecommendationsByTrackSearchQuery(searchQuery);
-            final StringBuilder recommendationsString = new StringBuilder();
-            tracks.forEach(trackObject -> {
-                JSONObject track = (JSONObject) trackObject;
-                recommendationsString.append("\n").append("Song name: ").append(track.getString("name"))
-                        .append(", uri: ").append(track.getString("uri")).append("\n");
-            });
-            main.Commands.sendMessage(event, recommendationsString.toString());
-        }
+        RecommendationHandler recommendationHandler = new RecommendationHandler();
+        String[] searchQuery = extractSearchQueryFromArguments(argStrings);
+        JSONArray tracks = recommendationHandler.getRecommendationsByTrackSearchQuery(searchQuery);
+        final StringBuilder recommendationsString = new StringBuilder();
+        tracks.forEach(trackObject -> {
+            JSONObject track = (JSONObject) trackObject;
+            recommendationsString.append("\n").append("Song name: ").append(track.getString("name")).append(", uri: ")
+                    .append(track.getString("uri")).append("\n");
+        });
+        main.CommandManager.sendMessage(event, recommendationsString.toString());
     }
 
 }
