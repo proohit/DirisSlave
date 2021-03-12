@@ -1,8 +1,14 @@
 package main;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.tinylog.Logger;
+
 import database.DBManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
@@ -18,14 +24,22 @@ public class MyEventListener extends ListenerAdapter {
         commandManager = new CommandManager();
         WeatherWatcher.start(jda);
         DBManager.connect();
-
     }
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        if (event.getAuthor().isBot())
-            return;
-        commandManager.handle(event);
+        try {
+            if (event.getAuthor().isBot())
+                return;
+            commandManager.handle(event);
+        } catch (Exception e) {
+            Logger.error(e);
+            List<TextChannel> channels = event.getGuild().getTextChannelsByName("debugchannel", true);
+            if (!channels.isEmpty()) {
+                CommandManager.sendMessage(channels.get(0), String.format("%s%s", e.getMessage(),
+                        Arrays.toString(Arrays.copyOfRange(e.getStackTrace(), 0, 5))));
+            }
+        }
     }
 
     @Override
