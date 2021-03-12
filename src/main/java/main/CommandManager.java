@@ -23,6 +23,7 @@ import audioplayer.commands.StopCommand;
 import audioplayer.commands.play.PlayCommand;
 import audioplayer.commands.playlist.PlaylistCommand;
 import calculator.commands.CalculatorCommand;
+import dice.commands.DiceRollCommand;
 import imageboards.commands.CoffeeCommand;
 import imageboards.commands.DanbooruCommand;
 import imageboards.commands.GahCommand;
@@ -70,6 +71,7 @@ public class CommandManager {
         registeredCommands.add(new WeatherCommand());
         registeredCommands.add(new LizardCommand());
         registeredCommands.add(new PixabayCommand());
+        registeredCommands.add(new DiceRollCommand());
         registeredCommands.add(HelpCommand.getInstance());
     }
 
