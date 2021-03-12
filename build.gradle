@@ -23,6 +23,6 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'org.jfree:jfreechart:1.0.14'
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.22'
-    compileOnly group: 'com.konghq', name: 'unirest-java', version: '3.11.05'
+    implementation 'com.konghq:unirest-java:3.11.05'
     implementation 'com.github.mpkorstanje:simmetrics-core:4.1.1'
 }
