@@ -2,7 +2,7 @@ package util.commands;
 
 import java.util.List;
 
-import main.Commands;
+import main.CommandManager;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -24,7 +24,7 @@ public class ClearCommand extends Command {
         MessageHistory history = new MessageHistory(event.getChannel());
         List<Message> msgs = history.retrievePast(deleteMessageCount + 1).complete();
         event.getChannel().purgeMessages(msgs);
-        Commands.sendMessage(event, "Deleted " + deleteMessageCount + " messages.");
+        CommandManager.sendMessage(event, "Deleted " + deleteMessageCount + " messages.");
     }
 
 }

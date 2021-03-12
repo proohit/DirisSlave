@@ -1,6 +1,6 @@
 package audioplayer.commands.playlist;
 
-import static main.Commands.sendBeautifulMessage;
+import static main.CommandManager.sendBeautifulMessage;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
@@ -11,7 +11,7 @@ import database.PlaylistTable;
 import database.Song;
 import database.SongPlaylistTable;
 import database.SongTable;
-import main.Commands;
+import main.CommandManager;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 
@@ -32,7 +32,7 @@ public class AddToPlaylistCommand extends Command {
         for (int i = 1; i < argStrings.length; i++) {
             search += argStrings[i] + " ";
         }
-        Commands.player.fetchAudioTrack(event.getTextChannel(), search, new AudioLoadResultHandler() {
+        CommandManager.player.fetchAudioTrack(event.getTextChannel(), search, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
                 if (!SongTable.hasSong(track.getInfo().uri))

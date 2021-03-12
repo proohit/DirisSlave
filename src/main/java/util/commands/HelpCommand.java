@@ -7,7 +7,6 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import main.CommandManager;
-import main.Commands;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -55,7 +54,7 @@ public class HelpCommand extends Command {
                     requestedCommand = tmpCommand;
                 }
             }
-            Commands.sendMessage(event, requestedCommand.getHelp());
+            CommandManager.sendMessage(event, requestedCommand.getHelp());
         } else {
             currentPage = 0;
             lastPage = (allowedCommands.size() / HELP_PER_PAGE) - 1;
@@ -63,7 +62,7 @@ public class HelpCommand extends Command {
             if (restCommands > 0)
                 lastPage++;
             String helpString = buildHelpString(event.getAuthor(), allowedCommands);
-            Commands.sendMessage(event, helpString, new MessageSentHandler());
+            CommandManager.sendMessage(event, helpString, new MessageSentHandler());
         }
     }
 

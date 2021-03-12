@@ -1,6 +1,6 @@
 package audioplayer.commands;
 
-import main.Commands;
+import main.CommandManager;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 
@@ -19,7 +19,7 @@ public class SeekCommand extends Command {
         int inputSeconds = Integer.parseInt(argStrings[0]);
         if (inputSeconds < 0)
             return;
-        long position = Commands.player.seek(event.getTextChannel(), inputSeconds);
+        long position = CommandManager.player.seek(event.getTextChannel(), inputSeconds);
         if (position > 0) {
             int seconds = (int) position / 1000;
             int minutes = seconds / 60;
@@ -30,7 +30,7 @@ public class SeekCommand extends Command {
                 secondsString = "0" + secondsString;
             if (minutesString.length() < 2)
                 minutesString = "0" + minutesString;
-            Commands.sendBeautifulMessage(event, "skipped to minute " + minutesString + ":" + secondsString);
+            CommandManager.sendBeautifulMessage(event, "skipped to minute " + minutesString + ":" + secondsString);
         }
     }
 

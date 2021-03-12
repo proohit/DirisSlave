@@ -1,6 +1,6 @@
 package youtubewatcher.commands;
 
-import main.Commands;
+import main.CommandManager;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 import youtubewatcher.YoutubeWatcher;
@@ -26,9 +26,9 @@ public class YtWatcherRemoveCommand extends Command {
                     channelname += " ";
             }
             YoutubeWatcher.remove(channelname);
-            Commands.sendMessage(event, "Not watching " + channelname + " anymore.");
+            CommandManager.sendMessage(event, "Not watching " + channelname + " anymore.");
         } catch (Exception e) {
-            Commands.sendMessage(event, getHelp());
+            CommandManager.sendMessage(event, getHelp());
         }
     }
 

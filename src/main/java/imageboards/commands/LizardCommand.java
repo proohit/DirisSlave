@@ -16,7 +16,7 @@ public class LizardCommand extends Command {
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
         PixabayHandler pixabayHandler = new PixabayHandler();
         String geckoImageUrl = pixabayHandler.getRandomImageUrlByQuery("gecko");
-        main.Commands.sendMessage(event, geckoImageUrl);
+        main.CommandManager.sendMessage(event, geckoImageUrl);
     }
 
 }

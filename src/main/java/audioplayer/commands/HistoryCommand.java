@@ -1,6 +1,6 @@
 package audioplayer.commands;
 
-import static main.Commands.sendBeautifulMessage;
+import static main.CommandManager.sendBeautifulMessage;
 
 import java.util.Map;
 

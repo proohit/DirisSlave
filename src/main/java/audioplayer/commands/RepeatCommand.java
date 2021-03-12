@@ -1,6 +1,6 @@
 package audioplayer.commands;
 
-import main.Commands;
+import main.CommandManager;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 
@@ -19,10 +19,10 @@ public class RepeatCommand extends Command {
         String inputBoolean = argStrings[0];
         if (inputBoolean.equals("true") || inputBoolean.equals("false")) {
             boolean isRepeat = Boolean.parseBoolean(inputBoolean);
-            Commands.sendBeautifulMessage(event, "Repetition of songs has been set to: "
-                    + Commands.player.setRepeat(event.getTextChannel(), isRepeat));
+            CommandManager.sendBeautifulMessage(event, "Repetition of songs has been set to: "
+                    + CommandManager.player.setRepeat(event.getTextChannel(), isRepeat));
         } else {
-            Commands.sendMessage(event, getHelp());
+            CommandManager.sendMessage(event, getHelp());
         }
     }
 }

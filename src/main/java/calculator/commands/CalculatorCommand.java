@@ -3,7 +3,6 @@ package calculator.commands;
 import calculator.Calculator;
 import calculator.DivisionByZero;
 import main.CommandManager;
-import main.Commands;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 
@@ -25,9 +24,9 @@ public class CalculatorCommand extends Command {
         }
         Calculator calculator = new Calculator();
         try {
-            Commands.sendMessage(event.getTextChannel(), Double.toString(calculator.calculate(term)));
+            CommandManager.sendMessage(event.getTextChannel(), Double.toString(calculator.calculate(term)));
         } catch (DivisionByZero e) {
-            Commands.sendMessage(event.getTextChannel(), "http://math-fail.com/images-old/divide-by-zero3.jpg");
+            CommandManager.sendMessage(event.getTextChannel(), "http://math-fail.com/images-old/divide-by-zero3.jpg");
         } catch (Exception e) {
             e.printStackTrace();
             CommandManager.sendMessage(event.getTextChannel(), "#calc usage:\n number (+ - * /) number");

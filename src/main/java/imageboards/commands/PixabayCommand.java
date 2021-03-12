@@ -1,7 +1,7 @@
 package imageboards.commands;
 
 import imageboards.api.PixabayHandler;
-import main.Commands;
+import main.CommandManager;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 
@@ -18,14 +18,11 @@ public class PixabayCommand extends Command {
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
-        String searchQuery = "";
-        for (String subString : argStrings) {
-            searchQuery += subString + " ";
-        }
+        String searchQuery = String.join(" ", argStrings);
         PixabayHandler pixabayHandler = new PixabayHandler();
         String imageUrl = pixabayHandler.getRandomImageUrlByQuery(searchQuery);
 
-        Commands.sendMessage(event, imageUrl);
+        CommandManager.sendMessage(event, imageUrl);
     }
 
 }

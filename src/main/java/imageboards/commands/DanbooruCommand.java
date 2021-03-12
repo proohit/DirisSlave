@@ -4,7 +4,7 @@ import imageboards.api.DanbooruHandler;
 import imageboards.exceptions.ImageNotFoundException;
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
-import main.Commands;
+import main.CommandManager;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 
@@ -23,13 +23,13 @@ public class DanbooruCommand extends Command {
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
         if (argStrings.length > 2) {
-            Commands.sendMessage(event, "`you cannot search for more than 2 tags!`");
+            CommandManager.sendMessage(event, "`you cannot search for more than 2 tags!`");
             return;
         }
         if (argStrings.length == 1) {
             try {
                 String imageUrl = danbooruHandler.getRandomImageByQuery(argStrings[0]);
-                Commands.sendMessage(event, imageUrl);
+                CommandManager.sendMessage(event, imageUrl);
             } catch (ImageNotFoundException e) {
                 sendSimilarTags(event, argStrings[0]);
             }
@@ -37,9 +37,9 @@ public class DanbooruCommand extends Command {
         if (argStrings.length == 2) {
             try {
                 String imageUrl = danbooruHandler.getRandomImageByQuery(argStrings[0], argStrings[1]);
-                Commands.sendMessage(event, imageUrl);
+                CommandManager.sendMessage(event, imageUrl);
             } catch (Exception e) {
-                Commands.sendMessage(event, "Nothing found for those tags");
+                CommandManager.sendMessage(event, "Nothing found for those tags");
             }
         }
     }
@@ -53,7 +53,7 @@ public class DanbooruCommand extends Command {
             similarTagsString.append(similarTag.getString("name")).append(", count: ")
                     .append(similarTag.getInt("post_count")).append("\n");
         });
-        Commands.sendMessage(event, similarTagsString.toString());
+        CommandManager.sendMessage(event, similarTagsString.toString());
     }
 
 }

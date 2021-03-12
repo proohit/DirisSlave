@@ -1,6 +1,6 @@
 package audioplayer.commands.playlist;
 
-import static main.Commands.sendBeautifulMessage;
+import static main.CommandManager.sendBeautifulMessage;
 
 import database.Playlist;
 import database.PlaylistTable;
@@ -24,7 +24,6 @@ public class SaveHistoryCommand extends Command {
         String playlistName = argStrings[0];
         if (PlaylistTable.getPlaylist(playlistName) != null) {
             sendBeautifulMessage(event, "playlistname already exists");
-            return;
         } else {
             PlaylistTable.createPlaylist(playlistName);
             final Playlist playlist = PlaylistTable.getPlaylist(playlistName);
@@ -32,7 +31,6 @@ public class SaveHistoryCommand extends Command {
                 SongPlaylistTable.insertSongIntoPlaylist(song, playlist);
             });
             sendBeautifulMessage(event, "saved playlist " + playlistName);
-
         }
     }
 

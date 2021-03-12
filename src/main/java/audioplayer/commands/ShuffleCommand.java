@@ -1,6 +1,6 @@
 package audioplayer.commands;
 
-import main.Commands;
+import main.CommandManager;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 
@@ -14,10 +14,10 @@ public class ShuffleCommand extends Command {
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
-        if (Commands.player.shuffle(event.getTextChannel())) {
-            Commands.sendMessage(event, "shuffled the music :man_dancing:");
+        if (CommandManager.player.shuffle(event.getTextChannel())) {
+            CommandManager.sendMessage(event, "shuffled the music :man_dancing:");
         } else {
-            Commands.sendBeautifulMessage(event, "queue is empty :( start rocking with pl!");
+            CommandManager.sendBeautifulMessage(event, "queue is empty :( start rocking with pl!");
         }
     }
 

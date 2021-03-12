@@ -20,9 +20,9 @@ public class CreatePlaylistCommand extends Command {
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
         Playlist createdPlaylist = PlaylistTable.createPlaylist(argStrings[0]);
         if (createdPlaylist != null) {
-            main.Commands.sendBeautifulMessage(event, "playlist " + argStrings[2] + " created.");
+            main.CommandManager.sendBeautifulMessage(event, "playlist " + argStrings[2] + " created.");
         } else {
-            main.Commands.sendBeautifulMessage(event, "this playlist has already been created before");
+            main.CommandManager.sendBeautifulMessage(event, "this playlist has already been created before");
         }
     }
 

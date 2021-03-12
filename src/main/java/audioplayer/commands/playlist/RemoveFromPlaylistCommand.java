@@ -1,6 +1,6 @@
 package audioplayer.commands.playlist;
 
-import static main.Commands.sendBeautifulMessage;
+import static main.CommandManager.sendBeautifulMessage;
 
 import database.Song;
 import database.SongPlaylistTable;

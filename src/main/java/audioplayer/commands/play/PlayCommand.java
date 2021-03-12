@@ -1,6 +1,6 @@
 package audioplayer.commands.play;
 
-import main.Commands;
+import main.CommandManager;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 
@@ -28,7 +28,7 @@ public class PlayCommand extends Command {
             trackUrl = argStrings[0];
         }
 
-        Commands.player.loadAndPlay(event, trackUrl);
+        CommandManager.player.loadAndPlay(event, trackUrl);
     }
 
 }

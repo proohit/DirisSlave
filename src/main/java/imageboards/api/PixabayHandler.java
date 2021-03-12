@@ -11,7 +11,7 @@ public class PixabayHandler extends PixabayApi {
     private final String QUERY_PAGE = "page";
     private final int DEFAULT_PER_PAGE = 20;
     private final String RESPONSE_HITS = "hits";
-    private final String RESPONSE_HITCOUNT = "total";
+    private final String RESPONSE_HITCOUNTAPI = "totalHits";
     private final String HIT_LARGEIMAGEURL = "largeImageURL";
 
     public JSONObject getResponseByQuery(String query) {
@@ -54,7 +54,7 @@ public class PixabayHandler extends PixabayApi {
 
     public JSONObject getRandomHitByQuery(String query) {
         JSONObject standardHits = getResponseByQuery(query);
-        int totalHitsByQuery = standardHits.getInt(RESPONSE_HITCOUNT);
+        int totalHitsByQuery = standardHits.getInt(RESPONSE_HITCOUNTAPI);
         int totalPages = totalHitsByQuery / DEFAULT_PER_PAGE;
         Random random = new Random();
         int randomPage = random.nextInt(totalPages);

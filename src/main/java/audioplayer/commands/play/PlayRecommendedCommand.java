@@ -6,7 +6,7 @@ import java.util.List;
 import audioplayer.api.RecommendationHandler;
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
-import main.Commands;
+import main.CommandManager;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 import shared.util.ListUtilies;
@@ -28,14 +28,14 @@ public class PlayRecommendedCommand extends Command {
         JSONArray recommendedTracksJson = recommendationHandler.getRecommendationsByTrackSearchQuery(searchQuery);
         List<JSONObject> recommendedTracks = ListUtilies.castList(JSONObject.class, recommendedTracksJson.toList());
         if (recommendedTracks.isEmpty()) {
-            Commands.sendBeautifulMessage(event, "No recommendations found...");
+            CommandManager.sendBeautifulMessage(event, "No recommendations found...");
             return;
         }
         recommendedTracks = recommendedTracks.subList(0, 2);
         recommendedTracks.forEach(recommendedTrackObject -> {
             String firstArtist = recommendedTrackObject.getJSONArray("artists").getJSONObject(0).getString("name");
             String trackName = recommendedTrackObject.getString("name");
-            Commands.player.loadAndPlay(event, "ytsearch: " + firstArtist + " " + trackName);
+            CommandManager.player.loadAndPlay(event, "ytsearch: " + firstArtist + " " + trackName);
         });
     }
 

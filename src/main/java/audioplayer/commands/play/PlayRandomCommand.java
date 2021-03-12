@@ -8,7 +8,7 @@ import org.simmetrics.metrics.StringDistances;
 import audioplayer.api.RecommendationHandler;
 import audioplayer.api.TrackHandler;
 import kong.unirest.json.JSONObject;
-import main.Commands;
+import main.CommandManager;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 import shared.util.ListUtilies;
@@ -30,7 +30,7 @@ public class PlayRandomCommand extends Command {
         List<String> availableGenres = recommendationHandler.getAvailableGenreSeeds();
         List<JSONObject> recommendedTracks = null;
         String requestedGenre = identifyRequestedGenre(rawRequestedGenre, availableGenres);
-        Commands.sendMessage(event, "Playing recommended tracks for genre: " + requestedGenre);
+        CommandManager.sendMessage(event, "Playing recommended tracks for genre: " + requestedGenre);
         recommendedTracks = ListUtilies.castList(JSONObject.class,
                 recommendationHandler.getRecommendationsByGenre(requestedGenre).toList());
         if (recommendedTracks != null) {
@@ -44,7 +44,7 @@ public class PlayRandomCommand extends Command {
             String firstArtistName = TrackHandler
                     .getNameOfArtist(TrackHandler.getArtistsOfTrack(recommendedTrack).getJSONObject(0));
             String trackName = TrackHandler.getNameOfTrack(recommendedTrack);
-            Commands.player.loadAndPlay(event, "ytsearch: " + firstArtistName + " " + trackName);
+            CommandManager.player.loadAndPlay(event, "ytsearch: " + firstArtistName + " " + trackName);
         });
     }
 
