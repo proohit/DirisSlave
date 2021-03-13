@@ -20,14 +20,9 @@ public class PermissionManager {
 
     PermissionManager(List<Command> commands) {
         this.commands = commands;
-        try {
-            Startup.jda.awaitReady();
-            List<Guild> botGuilds = Startup.jda.getGuilds();
-            botGuilds.forEach(guild -> musicChannels.put(guild.getIdLong(), "everywhere"));
-            Logger.info("Bot logged in at servers: {}", botGuilds);
-        } catch (InterruptedException e) {
-            Logger.error(e);
-        }
+        List<Guild> botGuilds = Startup.jda.getGuilds();
+        botGuilds.forEach(guild -> musicChannels.put(guild.getIdLong(), "everywhere"));
+        Logger.info("Bot logged in at servers: {}", botGuilds);
     }
 
     public boolean isPermitted(Member member, Command insertedCommand) {
