@@ -1,7 +1,6 @@
 package database;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
@@ -9,6 +8,9 @@ import java.util.Map;
 
 import org.jooq.CreateTableColumnStep;
 import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.Record3;
+import org.jooq.Result;
 import org.jooq.impl.DSL;
 import org.tinylog.Logger;
 
@@ -20,7 +22,7 @@ public class SongHistoryTable {
     private SongHistoryTable() {
     }
 
-    static final String TABLE_NAME = "history_songs";
+    static final String TABLE_NAME = "Song_history";
     private static final String FIELD_TIMESTAMP = "timestamp";
     private static final String FIELD_SONGID = "songId";
     private static final String FIELD_HISTORYID = "historyId";
@@ -42,94 +44,47 @@ public class SongHistoryTable {
 
     public static Map<Song, Integer> getSongStatistics() {
         Map<Song, Integer> statistics = new HashMap<>();
-        Connection con = null;
-        ResultSet rs = null;
-        Statement stmt = null;
-        try {
-            DBManager.setDebug(false);
-            con = DBManager.connect();
-            stmt = con.createStatement();
-            rs = stmt.executeQuery(
-                    "SELECT count(songId),songId, songs.title FROM `HistorySongs`,`songs` where HistorySongs.songId = songs.id group by songId order by count(songId) desc limit 10");
-            while (rs.next()) {
-                statistics.put(SongTable.getSongById(rs.getInt("songId")), rs.getInt("count(songId)"));
+        try (Connection con = DBManager.getConnection()) {
+            DSLContext create = DSL.using(con, DBManager.DEFAULT_DIALECT);
+            Result<Record3<Integer, Object, Object>> result = create
+                    .select(count(field(FIELD_SONGID)), field(FIELD_SONGID), field(SongTable.FIELD_TITLE))
+                    .from(table(TABLE_NAME), table(SongTable.TABLE_NAME))
+                    .where(field(FIELD_SONGID).eq(field(SongTable.FIELD_ID))).groupBy(field(FIELD_SONGID))
+                    .orderBy(count(field(FIELD_SONGID)).desc()).limit(10).fetch();
+            for (var record : result) {
+                statistics.put(SongTable.getSongById(record.get(FIELD_SONGID, Integer.class)),
+                        record.get(count(field(FIELD_SONGID, Integer.class))));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                con.close();
-                rs.close();
-                stmt.close();
-                DBManager.setDebug(true);
-            } catch (SQLException e) {
-            }
+            Logger.error(e);
         }
         return statistics;
     }
 
-    public static Map<Integer, Song> getLastSongs() {
-        Map<Integer, Song> songs = new HashMap<>();
-
-        try {
-            Connection con = DBManager.connect();
-
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM Song_history order by timestamp desc LIMIT 10");
-            while (rs.next()) {
-                Song song = SongTable.getSongById(rs.getInt("songId"));
-                song.setTimestamp(rs.getTimestamp("timestamp").toString());
-                songs.put(rs.getInt("historyId"), song);
+    public static Map<String, Song> getLastSongs() {
+        Map<String, Song> songs = new HashMap<>();
+        try (Connection con = DBManager.getConnection()) {
+            DSLContext create = DSL.using(con, DBManager.DEFAULT_DIALECT);
+            Result<Record> result = create.select().from(table(TABLE_NAME)).orderBy(field(FIELD_TIMESTAMP).desc())
+                    .limit(10).fetch();
+            for (var record : result) {
+                Song song = SongTable.getSongById(record.get(FIELD_SONGID, Integer.class));
+                song.setTimestamp(record.get(FIELD_TIMESTAMP, String.class));
+                songs.put(record.get(FIELD_TIMESTAMP, String.class), song);
             }
         } catch (SQLException e) {
-            if (!DBManager.connected())
-                DBManager.connect();
-            e.printStackTrace();
+            Logger.error(e);
         }
         return songs;
     }
 
     public static void insertHistoryItem(Song song) {
-        try {
-            Connection con = DBManager.connect();
-
-            Statement stmt = con.createStatement();
-            stmt.executeUpdate("INSERT INTO Song_history(songId) VALUES (" + song.getId() + ")");
-
+        try (Connection con = DBManager.getConnection()) {
+            DSLContext create = DSL.using(con, DBManager.DEFAULT_DIALECT);
+            create.insertInto(table(TABLE_NAME), field(FIELD_SONGID)).values(song.getId()).execute();
         } catch (SQLException e) {
-            if (!DBManager.connected())
-                DBManager.connect();
-            e.printStackTrace();
+            Logger.error(e);
         }
     }
 
-    public static boolean hasEntry(Song song) {
-        boolean hasEntry = false;
-        try {
-            Connection con = DBManager.connect();
-
-            Statement stmt = con.createStatement();
-            if (stmt.executeQuery("SELECT * FROM Song_history where songId=" + song.getId()).next())
-                hasEntry = true;
-
-        } catch (SQLException e) {
-            if (!DBManager.connected())
-                DBManager.connect();
-            e.printStackTrace();
-        }
-        return hasEntry;
-    }
-
-    public static void updateTimestamp(Song song) {
-        try {
-            Connection con = DBManager.connect();
-
-            Statement stmt = con.createStatement();
-            stmt.executeUpdate("UPDATE Song_history set timestamp = CURRENT_TIMESTAMP WHERE songId=" + song.getId());
-        } catch (SQLException e) {
-            if (!DBManager.connected())
-                DBManager.connect();
-            e.printStackTrace();
-        }
-    }
 }

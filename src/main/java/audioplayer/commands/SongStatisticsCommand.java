@@ -22,17 +22,11 @@ public class SongStatisticsCommand extends Command {
         Map<Song, Integer> statistics = SongHistoryTable.getSongStatistics();
         StringBuilder result = new StringBuilder("Song statistics: \n");
 
-        statistics.entrySet().stream().sorted(new Comparator<Map.Entry<Song, Integer>>() {
-            @Override
-            public int compare(Map.Entry<Song, Integer> o1, Map.Entry<Song, Integer> o2) {
-                if (o1.getValue() > o2.getValue())
-                    return -1;
-                else
-                    return 1;
-            }
-        }).forEach(sortedItem -> {
-            result.append(sortedItem.getValue()).append(" times, ").append(sortedItem.getKey().getTitle()).append("\n");
-        });
+        statistics.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .forEach(sortedItem -> {
+                    result.append(sortedItem.getValue()).append(" times, ").append(sortedItem.getKey().getTitle())
+                            .append("\n");
+                });
         main.CommandManager.sendBeautifulMessage(event, result.toString());
     }
 

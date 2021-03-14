@@ -22,7 +22,7 @@ public class SongTable {
     }
 
     private static final String FIELD_URL = "url";
-    private static final String FIELD_TITLE = "title";
+    static final String FIELD_TITLE = "title";
     public static final String FIELD_ID = "id";
     static final String TABLE_NAME = "songs";
 
