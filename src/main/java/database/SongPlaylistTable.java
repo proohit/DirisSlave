@@ -1,19 +1,23 @@
 package database;
 
+import static org.jooq.impl.DSL.field;
+import static org.jooq.impl.DSL.foreignKey;
+import static org.jooq.impl.DSL.primaryKey;
+import static org.jooq.impl.DSL.table;
+import static org.jooq.impl.SQLDataType.INTEGER;
+import static org.jooq.impl.SQLDataType.VARCHAR;
+
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jooq.CreateTableColumnStep;
 import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.Result;
 import org.jooq.impl.DSL;
 import org.tinylog.Logger;
-
-import static org.jooq.impl.DSL.*;
-import static org.jooq.impl.SQLDataType.*;
 
 public class SongPlaylistTable {
 
@@ -43,73 +47,56 @@ public class SongPlaylistTable {
     }
 
     public static List<Song> getSongsByPlaylist(String playlist) {
-        ArrayList<Song> result = new ArrayList<>();
-        try {
-            Connection con = DBManager.connect();
-
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM playlist_songs WHERE playlistname ='" + playlist + "';");
-            while (rs.next()) {
-                result.add(SongTable.getSongById(rs.getInt("songid")));
+        List<Song> songs = new ArrayList<>();
+        try (Connection con = DBManager.getConnection()) {
+            DSLContext create = DSL.using(con, DBManager.DEFAULT_DIALECT);
+            Result<Record> result = create.select().from(table(TABLE_NAME))
+                    .where(field(FIELD_PLAYLISTNAME).eq(playlist)).fetch();
+            for (Record record : result) {
+                songs.add(SongTable.getSongById(record.get(FIELD_SONGID, Integer.class)));
             }
         } catch (SQLException e) {
-            if(!DBManager.connected()) DBManager.connect();
-            e.printStackTrace();
+            Logger.error(e);
         }
-        return result;
+        return songs;
     }
+
     public static Playlist getPlaylistByName(String name) {
         Playlist playlist = new Playlist(name);
-        try {
-            Connection con = DBManager.connect();
-
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM playlist_songs WHERE playlistname ='" + name + "';");
-            while(rs.next()) {
-                playlist.addSong(SongTable.getSongById(rs.getInt("songid")));
+        try (Connection con = DBManager.getConnection()) {
+            DSLContext create = DSL.using(con, DBManager.DEFAULT_DIALECT);
+            Result<Record> result = create.select().from(table(TABLE_NAME)).where(field(FIELD_PLAYLISTNAME).eq(name))
+                    .fetch();
+            for (Record record : result) {
+                playlist.addSong(SongTable.getSongById(record.get(FIELD_SONGID, Integer.class)));
             }
         } catch (SQLException e) {
-            if(!DBManager.connected()) DBManager.connect();
-            e.printStackTrace();
+            Logger.error(e);
         }
         return playlist;
     }
-    public static int insertSongIntoPlaylist(Song song, Playlist playlist) {
-        try {
-            Connection con = DBManager.connect();
 
-            Statement stmt = con.createStatement();
-            return stmt.executeUpdate("INSERT INTO playlist_songs(songid, playlistname) VALUES(" + song.getId() + ",'" + playlist.getName() + "');");
+    public static int insertSongIntoPlaylist(Song song, Playlist playlist) {
+        try (Connection con = DBManager.getConnection()) {
+            DSLContext create = DSL.using(con, DBManager.DEFAULT_DIALECT);
+            return create.insertInto(table(TABLE_NAME), field(FIELD_SONGID), field(FIELD_PLAYLISTNAME))
+                    .values(song.getId(), playlist.getName()).execute();
         } catch (SQLException e) {
-            if(!DBManager.connected()) DBManager.connect();
-            e.printStackTrace();
+            Logger.error(e);
         }
         return 0;
     }
 
     public static int removeSongFromPlaylist(String playlist, Song song) {
-        try {
-            Connection con = DBManager.connect();
 
-            Statement stmt = con.createStatement();
-            return stmt.executeUpdate("DELETE FROM playlist_songs WHERE songid=" + song.getId());
+        try (Connection con = DBManager.getConnection()) {
+            DSLContext create = DSL.using(con, DBManager.DEFAULT_DIALECT);
+            return create.deleteFrom(table(TABLE_NAME))
+                    .where(field(FIELD_SONGID).eq(song.getId()).and(field(FIELD_PLAYLISTNAME).eq(playlist))).execute();
         } catch (SQLException e) {
-            if(!DBManager.connected()) DBManager.connect();
-            e.printStackTrace();        }
+            Logger.error(e);
+        }
         return 0;
     }
 
-    public static Song getSongOfPlaylistByIndex(int index) {
-        Song song = null;
-        try {
-            Connection con = DBManager.connect();
-
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM playlist_songs WHERE songplaylistid=" + index);
-            if(rs.next()) song = SongTable.getSongById(rs.getInt("songid"));
-        } catch(SQLException e) {
-            if(!DBManager.connected()) DBManager.connect();
-            e.printStackTrace();        }
-        return song;
-    }
 }
