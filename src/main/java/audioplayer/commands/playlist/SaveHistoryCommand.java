@@ -22,11 +22,12 @@ public class SaveHistoryCommand extends Command {
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
         String playlistName = argStrings[0];
-        if (PlaylistTable.getPlaylist(playlistName) != null) {
+        long guildId = event.getGuild().getIdLong();
+        if (PlaylistTable.getPlaylist(playlistName, guildId) != null) {
             sendBeautifulMessage(event, "playlistname already exists");
         } else {
-            PlaylistTable.createPlaylist(playlistName);
-            final Playlist playlist = PlaylistTable.getPlaylist(playlistName);
+            PlaylistTable.createPlaylist(playlistName, guildId);
+            final Playlist playlist = PlaylistTable.getPlaylist(playlistName, guildId);
             SongHistoryTable.getLastSongs().forEach((id, song) -> {
                 SongPlaylistTable.insertSongIntoPlaylist(song, playlist);
             });

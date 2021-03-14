@@ -81,7 +81,8 @@ public class AudioPlayer {
     public void playPlaylist(final TextChannel channel, final String playlistName, final boolean shuffle) {
         lastManager = channel.getGuild().getAudioManager();
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
-        ArrayList<Song> songs = (ArrayList<Song>) SongPlaylistTable.getSongsByPlaylist(playlistName);
+        ArrayList<Song> songs = (ArrayList<Song>) SongPlaylistTable.getSongsByPlaylist(playlistName,
+                channel.getGuild().getIdLong());
         if (songs.isEmpty()) {
             Commands.sendBeautifulMessage(channel, String.format("Playlist %s empty or not found", playlistName));
             return;

@@ -22,9 +22,11 @@ public class RemoveFromPlaylistCommand extends Command {
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
         String playlistToRemoveFrom = argStrings[0];
         int indexOfSongToRemove = Integer.parseInt(argStrings[1]) - 1;
-        Song song = SongPlaylistTable.getPlaylistByName(playlistToRemoveFrom).getSongs().get(indexOfSongToRemove);
+        long guildId = event.getGuild().getIdLong();
+        Song song = SongPlaylistTable.getPlaylistByName(playlistToRemoveFrom, guildId).getSongs()
+                .get(indexOfSongToRemove);
         if (song != null) {
-            if (SongPlaylistTable.removeSongFromPlaylist(playlistToRemoveFrom, song) != 0) {
+            if (SongPlaylistTable.removeSongFromPlaylist(playlistToRemoveFrom, guildId, song) != 0) {
                 sendBeautifulMessage(event, "deleted " + song.getTitle() + " from " + playlistToRemoveFrom);
             }
         } else {

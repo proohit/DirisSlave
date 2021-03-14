@@ -21,8 +21,9 @@ public class ListPlaylistCommand extends Command {
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        long guildId = event.getGuild().getIdLong();
         if (argStrings.length == 0) {
-            ArrayList<Playlist> playlists = (ArrayList<Playlist>) PlaylistTable.getPlaylists();
+            ArrayList<Playlist> playlists = (ArrayList<Playlist>) PlaylistTable.getPlaylists(guildId);
             if (playlists.isEmpty()) {
                 sendBeautifulMessage(event, "no playlists found");
                 return;
@@ -32,7 +33,7 @@ public class ListPlaylistCommand extends Command {
             sendBeautifulMessage(event, result.toString());
         } else if (argStrings.length >= 1) {
             String playlistToList = argStrings[0];
-            Playlist playlist = SongPlaylistTable.getPlaylistByName(playlistToList);
+            Playlist playlist = SongPlaylistTable.getPlaylistByName(playlistToList, guildId);
             if (playlist.getSongs().isEmpty()) {
                 sendBeautifulMessage(event, "no such playlist or no songs found for " + playlistToList);
                 return;

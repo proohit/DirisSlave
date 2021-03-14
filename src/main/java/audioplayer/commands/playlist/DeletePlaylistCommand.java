@@ -18,7 +18,8 @@ public class DeletePlaylistCommand extends Command {
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
         String result;
-        result = PlaylistTable.deletePlaylist(argStrings[0]) == 1 ? "deleted playlist " + argStrings[0]
+        result = PlaylistTable.deletePlaylist(argStrings[0], event.getGuild().getIdLong()) == 1
+                ? "deleted playlist " + argStrings[0]
                 : "playlist " + argStrings[0] + " not found";
         CommandManager.sendBeautifulMessage(event, result);
     }

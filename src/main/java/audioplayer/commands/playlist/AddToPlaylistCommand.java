@@ -27,6 +27,7 @@ public class AddToPlaylistCommand extends Command {
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        long guildId = event.getGuild().getIdLong();
         String playlistNameToAddTo = argStrings[0];
         String search = "ytsearch: ";
         for (int i = 1; i < argStrings.length; i++) {
@@ -39,7 +40,7 @@ public class AddToPlaylistCommand extends Command {
                     SongTable.insertSong(new Song(track.getInfo().title, track.getInfo().uri));
                 Song song = SongTable.getSongsByUrl(track.getInfo().uri).get(0);
                 if (SongPlaylistTable.insertSongIntoPlaylist(song,
-                        SongPlaylistTable.getPlaylistByName(playlistNameToAddTo)) != 0) {
+                        SongPlaylistTable.getPlaylistByName(playlistNameToAddTo, guildId)) != 0) {
                     sendBeautifulMessage(event,
                             "added \"" + track.getInfo().title + "\" to playlist " + playlistNameToAddTo);
                 } else {
@@ -54,7 +55,7 @@ public class AddToPlaylistCommand extends Command {
                             playlist.getTracks().get(0).getInfo().uri));
                 Song song = SongTable.getSongsByUrl(playlist.getTracks().get(0).getInfo().uri).get(0);
                 if (SongPlaylistTable.insertSongIntoPlaylist(song,
-                        PlaylistTable.getPlaylist(playlistNameToAddTo)) != 0) {
+                        PlaylistTable.getPlaylist(playlistNameToAddTo, guildId)) != 0) {
                     sendBeautifulMessage(event, "added \"" + song.getTitle() + "\" to playlist " + playlistNameToAddTo);
                 } else {
                     sendBeautifulMessage(event, "there is no playlist " + playlistNameToAddTo);

@@ -19,11 +19,12 @@ public class CreatePlaylistCommand extends Command {
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
+        long guildId = event.getGuild().getIdLong();
         String playlistName = argStrings[0];
-        if (PlaylistTable.getPlaylist(playlistName) != null) {
+        if (PlaylistTable.getPlaylist(playlistName, guildId) != null) {
             CommandManager.sendBeautifulMessage(event, "this playlist has already been created before");
         }
-        Playlist createdPlaylist = PlaylistTable.createPlaylist(playlistName);
+        Playlist createdPlaylist = PlaylistTable.createPlaylist(playlistName, guildId);
         if (createdPlaylist != null) {
             CommandManager.sendBeautifulMessage(event, "playlist " + createdPlaylist.getName() + " created.");
         }
