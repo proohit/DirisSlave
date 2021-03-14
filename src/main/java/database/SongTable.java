@@ -38,82 +38,69 @@ public class SongTable {
         }
     }
 
-    public static List<Song> getAllSongs() {
-        ArrayList<Song> result = new ArrayList<>();
-        try {
-            Connection con = DBManager.connect();
-
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM songs;");
-            while (rs.next()) {
-                result.add(new Song(rs.getInt("id"), rs.getString("title"), rs.getString("url")));
+    public static Song getSongById(int id) {
+        Song song = null;
+        try (Connection con = DBManager.getConnection()) {
+            DSLContext create = DSL.using(con, DBManager.DEFAULT_DIALECT);
+            Record result = create.select().from(table(TABLE_NAME)).where(field(FIELD_ID).eq(id)).fetchOne();
+            if (result != null) {
+                song = new Song(result.get(FIELD_ID, Integer.class), result.get(FIELD_TITLE, String.class),
+                        result.get(FIELD_URL, String.class));
             }
-            return result;
         } catch (SQLException e) {
-            if (!DBManager.connected()) DBManager.connect();
-            e.printStackTrace();
+            Logger.error(e);
         }
-        return null;
+        return song;
     }
 
     public static void insertSong(Song song) {
-        try {
-            Connection con = DBManager.connect();
-
-            Statement stmt = con.createStatement();
-            stmt.executeUpdate("INSERT INTO songs(title,url) VALUES('" + song.getTitle().replace("'", "''") + "','" + song.getUrl() + "')", Statement.RETURN_GENERATED_KEYS);
-            ResultSet key = stmt.getGeneratedKeys();
-            if (key.next()) song.setId(key.getInt(1));
+        try (Connection con = DBManager.getConnection()) {
+            DSLContext create = DSL.using(con, DBManager.DEFAULT_DIALECT);
+            create.insertInto(table(TABLE_NAME), field(FIELD_TITLE), field(FIELD_URL))
+                    .values(song.getTitle().replace("'", "''"), song.getUrl()).execute();
+            song.setId(create.lastID().intValue());
         } catch (SQLException e) {
-            if (!DBManager.connected()) DBManager.connect();
-            e.printStackTrace();
+            Logger.error(e);
         }
     }
 
     public static List<Song> getSongsByTitle(String title) {
-        ArrayList<Song> result = new ArrayList<>();
-        try {
-            Connection con = DBManager.connect();
-
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM songs WHERE title=\'" + title + "\'");
-            while (rs.next()) {
-                result.add(new Song(rs.getInt("id"), rs.getString("title"), rs.getString("url")));
+        List<Song> songs = new ArrayList<>();
+        try (Connection con = DBManager.getConnection()) {
+            DSLContext create = DSL.using(con, DBManager.DEFAULT_DIALECT);
+            Result<Record> result = create.select().from(table(TABLE_NAME)).where(field(FIELD_TITLE).eq(title)).fetch();
+            for (Record record : result) {
+                songs.add(new Song(record.get(FIELD_ID, Integer.class), record.get(FIELD_TITLE, String.class),
+                        record.get(FIELD_URL, String.class)));
             }
         } catch (SQLException e) {
-            if (!DBManager.connected()) DBManager.connect();
-            e.printStackTrace();
+            Logger.error(e);
         }
-        return result;
+        return songs;
     }
 
     public static List<Song> getSongsByUrl(String url) {
-        ArrayList<Song> result = new ArrayList<>();
-        try {
-            Connection con = DBManager.connect();
-
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM songs WHERE url=\'" + url + "\'");
-            while (rs.next()) {
-                result.add(new Song(rs.getInt("id"), rs.getString("title"), rs.getString("url")));
+        ArrayList<Song> songs = new ArrayList<>();
+        try (Connection con = DBManager.getConnection()) {
+            DSLContext create = DSL.using(con, DBManager.DEFAULT_DIALECT);
+            Result<Record> result = create.select().from(table(TABLE_NAME)).where(field(FIELD_URL).eq(url)).fetch();
+            for (Record record : result) {
+                songs.add(new Song(record.get(FIELD_ID, Integer.class), record.get(FIELD_TITLE, String.class),
+                        record.get(FIELD_URL, String.class)));
             }
         } catch (SQLException e) {
-            if (!DBManager.connected()) DBManager.connect();
-            e.printStackTrace();
+            Logger.error(e);
         }
-        return result;
+        return songs;
     }
 
     public static boolean hasSong(String uri) {
-        try {
-            Connection con = DBManager.connect();
-
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM songs WHERE url=\'" + uri + "\'");
-            if (rs.next()) return true;
+        try (Connection con = DBManager.getConnection()) {
+            DSLContext create = DSL.using(con, DBManager.DEFAULT_DIALECT);
+            Record result = create.select().from(table(TABLE_NAME)).where(field(FIELD_URL).eq(uri)).fetchOne();
+            return result != null;
         } catch (SQLException e) {
-            if (!DBManager.connected()) DBManager.connect();
-            e.printStackTrace();
+            Logger.error(e);
         }
         return false;
     }
