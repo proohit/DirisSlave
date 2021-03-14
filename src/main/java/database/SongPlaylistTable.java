@@ -7,7 +7,40 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jooq.CreateTableColumnStep;
+import org.jooq.DSLContext;
+import org.jooq.impl.DSL;
+import org.tinylog.Logger;
+
+import static org.jooq.impl.DSL.*;
+import static org.jooq.impl.SQLDataType.*;
+
 public class SongPlaylistTable {
+
+    private SongPlaylistTable() {
+    }
+
+    public static final String TABLE_NAME = "playlist_songs";
+    private static final String FIELD_SONGPLAYLISTID = "songplaylistid";
+    private static final String FIELD_SONGID = "songid";
+    private static final String FIELD_PLAYLISTNAME = "playlistname";
+
+    public static void createTable() {
+        try (Connection con = DBManager.getConnection()) {
+            DSLContext create = DSL.using(con, DBManager.DEFAULT_DIALECT);
+            try (CreateTableColumnStep table = create.createTable(TABLE_NAME)) {
+                table.column(FIELD_SONGPLAYLISTID, INTEGER.identity(true)).column(FIELD_SONGID, INTEGER)
+                        .column(FIELD_PLAYLISTNAME, VARCHAR(255))
+                        .constraints(primaryKey(FIELD_SONGPLAYLISTID),
+                                foreignKey(FIELD_SONGID).references(SongTable.TABLE_NAME, SongTable.FIELD_ID),
+                                foreignKey(FIELD_PLAYLISTNAME).references(PlaylistTable.TABLE_NAME,
+                                        PlaylistTable.FIELD_NAME))
+                        .execute();
+            }
+        } catch (SQLException e) {
+            Logger.error(e);
+        }
+    }
 
     public static List<Song> getSongsByPlaylist(String playlist) {
         ArrayList<Song> result = new ArrayList<>();

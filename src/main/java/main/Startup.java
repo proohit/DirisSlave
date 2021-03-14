@@ -4,6 +4,7 @@ import javax.security.auth.login.LoginException;
 
 import org.tinylog.Logger;
 
+import database.DBManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 
@@ -14,6 +15,7 @@ public class Startup {
         try {
             ReadPropertyFile rpf = ReadPropertyFile.getInstance();
             jda = JDABuilder.createDefault(rpf.getJDAToken()).build().awaitReady();
+            DBManager.initializeDatabase();
             jda.addEventListener(new MyEventListener(jda));
         } catch (Exception e) {
             Logger.error(e);

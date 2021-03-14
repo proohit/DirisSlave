@@ -1,35 +1,41 @@
 package database;
 
+import static org.jooq.impl.DSL.*;
+import static org.jooq.impl.SQLDataType.INTEGER;
+import static org.jooq.impl.SQLDataType.VARCHAR;
+
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jooq.CreateTableColumnStep;
+import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.Result;
+import org.jooq.impl.DSL;
+import org.tinylog.Logger;
+
 public class SongTable {
 
-    public static Song getSongById(int id) {
-        Connection con = null;
-        ResultSet rs = null;
-        Statement stmt = null;
+    private SongTable() {
+    }
 
-        try {
-            con = DBManager.connect();
+    private static final String FIELD_URL = "url";
+    private static final String FIELD_TITLE = "title";
+    public static final String FIELD_ID = "id";
+    static final String TABLE_NAME = "songs";
 
-            stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM songs WHERE id =" + id + ";");
-            if (rs.next()) {
-                Song foundSong = new Song(rs.getInt("id"), rs.getString("title"), rs.getString("url"));
-                con.close();
-                rs.close();
-                stmt.close();
-                return foundSong;
+    public static void createTable() {
+        try (Connection con = DBManager.getConnection()) {
+            DSLContext create = DSL.using(con, DBManager.DEFAULT_DIALECT);
+            try (CreateTableColumnStep table = create.createTable(TABLE_NAME)) {
+                table.column(FIELD_ID, INTEGER.identity(true)).column(FIELD_URL, VARCHAR).column(FIELD_TITLE, VARCHAR)
+                        .constraints(primaryKey(FIELD_ID)).execute();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            Logger.error(e);
         }
-        return null;
     }
 
     public static List<Song> getAllSongs() {

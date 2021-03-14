@@ -7,7 +7,38 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jooq.CreateTableColumnStep;
+import org.jooq.DSLContext;
+import org.jooq.impl.DSL;
+import org.tinylog.Logger;
+
+import static org.jooq.impl.SQLDataType.*;
+import static org.jooq.impl.DSL.*;
+
 public class SongHistoryTable {
+
+    private SongHistoryTable() {
+    }
+
+    static final String TABLE_NAME = "history_songs";
+    private static final String FIELD_TIMESTAMP = "timestamp";
+    private static final String FIELD_SONGID = "songId";
+    private static final String FIELD_HISTORYID = "historyId";
+
+    public static void createTable() {
+        try (Connection con = DBManager.getConnection()) {
+            DSLContext create = DSL.using(con, DBManager.DEFAULT_DIALECT);
+            try (CreateTableColumnStep table = create.createTable(TABLE_NAME)) {
+                table.column(FIELD_HISTORYID, INTEGER.identity(true)).column(FIELD_SONGID, INTEGER)
+                        .column(FIELD_TIMESTAMP, TIMESTAMP)
+                        .constraints(primaryKey(FIELD_HISTORYID),
+                                foreignKey(FIELD_SONGID).references(SongTable.TABLE_NAME, SongTable.FIELD_ID))
+                        .execute();
+            }
+        } catch (SQLException e) {
+            Logger.error(e);
+        }
+    }
 
     public static Map<Song, Integer> getSongStatistics() {
         Map<Song, Integer> statistics = new HashMap<>();

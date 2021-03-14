@@ -7,18 +7,35 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.jooq.impl.DSL.*;
+import static org.jooq.impl.SQLDataType.*;
+
+import org.jooq.CreateTableColumnStep;
+import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.Result;
+import org.jooq.SQLDialect;
+import org.jooq.impl.DSL;
+import org.tinylog.Logger;
+
 public class PlaylistTable {
 
-    public static List<Playlist> getPlaylists() {
-        ArrayList<Playlist> playlists = new ArrayList<>();
+    private PlaylistTable() {
+    }
 
-        Connection con = DBManager.connect();
+    public static final String FIELD_NAME = "name";
+    public static final String TABLE_NAME = "playlist";
 
-        try {
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM playlist");
-            while (rs.next()) {
-                playlists.add(new Playlist(rs.getString("name")));
+    public static void createTable() {
+        try (Connection con = DBManager.getConnection()) {
+            DSLContext create = DSL.using(con, SQLDialect.MYSQL);
+            try (CreateTableColumnStep table = create.createTable(TABLE_NAME)) {
+                table.column(FIELD_NAME, VARCHAR(255)).constraints(primaryKey(FIELD_NAME)).execute();
+            }
+        } catch (SQLException e) {
+            Logger.error(e);
+        }
+    }
             }
         } catch (SQLException e) {
             if (!DBManager.connected())

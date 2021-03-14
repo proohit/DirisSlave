@@ -1,52 +1,74 @@
 package database;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
+import org.jooq.SQLDialect;
+import org.jooq.Table;
+import org.jooq.impl.DSL;
+import org.tinylog.Logger;
 
 import main.ReadPropertyFile;
 
 public class DBManager {
-    private static Connection conn = null;
-    private static boolean debug = true;
 
-    public static Connection connect() {
+    private DBManager() {
+    }
+
+    public static final SQLDialect DEFAULT_DIALECT = SQLDialect.MYSQL;
+    private static HikariConfig config = new HikariConfig();
+    private static HikariDataSource ds;
+
+    static {
         ReadPropertyFile rpf = ReadPropertyFile.getInstance();
+        config.setJdbcUrl(String.format(
+                "jdbc:mysql://%s/%s?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
+                rpf.getDbHost(), rpf.getDbDatabase()));
+        config.setUsername(rpf.getDbUser());
+        config.setPassword(rpf.getDbPassword());
+        config.addDataSourceProperty("cachePrepStmts", "true");
+        config.addDataSourceProperty("prepStmtCacheSize", "250");
+        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        ds = new HikariDataSource(config);
+    }
 
-        if (conn == null) {
-            try {
-                String url = String.format(
-                        "jdbc:mysql://%s/%s?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
-                        rpf.getDbHost(), rpf.getDbDatabase());
-                conn = DriverManager.getConnection(url, rpf.getDbUser(), rpf.getDbPassword());
-                if (debug)
-                    System.out.println("Connection to DB established.");
-                return conn;
-            } catch (SQLException e) {
-                e.printStackTrace();
-                if (debug)
-                    System.out.println("retrying connection...");
-                return connect();
+    public static Connection getConnection() throws SQLException {
+        return ds.getConnection();
+    }
+
+    public static void initializeDatabase() {
+        try (Connection con = getConnection()) {
+            List<String> targetTables = new ArrayList<>(Arrays.asList(PlaylistTable.TABLE_NAME, SongTable.TABLE_NAME,
+                    SongPlaylistTable.TABLE_NAME, SongHistoryTable.TABLE_NAME));
+            List<Table<?>> tables = DSL.using(con, DEFAULT_DIALECT).meta().getTables();
+            for (Table<?> table : tables) {
+                if (targetTables.contains(table.getName())) {
+                    targetTables.remove(table.getName());
+                }
             }
-        } else {
-            conn = null;
-
-            return connect();
+            if (!targetTables.isEmpty()) {
+                Logger.info("Following Tables are missing: {}", targetTables.toString());
+                if (targetTables.contains(PlaylistTable.TABLE_NAME)) {
+                    PlaylistTable.createTable();
+                }
+                if (targetTables.contains(SongTable.TABLE_NAME)) {
+                    SongTable.createTable();
+                }
+                if (targetTables.contains(SongPlaylistTable.TABLE_NAME)) {
+                    SongPlaylistTable.createTable();
+                }
+                if (targetTables.contains(SongHistoryTable.TABLE_NAME)) {
+                    SongHistoryTable.createTable();
+                }
+            }
+        } catch (SQLException e) {
+            Logger.error(e);
         }
-    }
-
-    public static boolean connected() {
-        return conn != null;
-    }
-
-    public static void setDebug(boolean status) {
-        debug = status;
-    }
-
-    public static Connection getConnection() {
-        if (connected())
-            return conn;
-        else
-            return null;
     }
 }

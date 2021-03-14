@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.tinylog.Logger;
 
-import database.DBManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -23,7 +22,6 @@ public class MyEventListener extends ListenerAdapter {
     public MyEventListener(JDA jda) {
         commandManager = new CommandManager();
         WeatherWatcher.start(jda);
-        DBManager.connect();
     }
 
     @Override
