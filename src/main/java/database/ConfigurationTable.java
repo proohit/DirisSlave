@@ -44,6 +44,9 @@ public class ConfigurationTable {
         try (Connection con = DBManager.getConnection()) {
             DSLContext create = DSL.using(con, DBManager.DEFAULT_DIALECT);
             Record record = create.select().from(table(TABLE_NAME)).where(field(FIELD_GUILDID).eq(guildId)).fetchOne();
+            if (record == null) {
+                return null;
+            }
             return new Configuration(record.get(FIELD_GUILDID, Long.class), record.get(FIELD_PREFIX, String.class),
                     record.get(FIELD_MUSICCHANNEL, String.class));
         } catch (SQLException e) {
