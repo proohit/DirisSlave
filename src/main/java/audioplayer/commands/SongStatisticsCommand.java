@@ -19,7 +19,7 @@ public class SongStatisticsCommand extends Command {
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
 
-        Map<Song, Integer> statistics = SongHistoryTable.getSongStatistics();
+        Map<Song, Integer> statistics = SongHistoryTable.getSongStatistics(event.getGuild().getIdLong());
         StringBuilder result = new StringBuilder("Song statistics: \n");
 
         statistics.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))

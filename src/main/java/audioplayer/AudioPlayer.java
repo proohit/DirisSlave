@@ -42,7 +42,7 @@ public class AudioPlayer {
         GuildMusicManager musicManager;
 
         if (!musicManagers.containsKey(guildId)) {
-            musicManager = new GuildMusicManager(playerManager);
+            musicManager = new GuildMusicManager(playerManager, guild);
             musicManagers.put(guildId, musicManager);
         } else {
             musicManager = musicManagers.get(guildId);

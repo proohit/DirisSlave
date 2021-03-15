@@ -27,7 +27,7 @@ public class SaveHistoryCommand extends Command {
         } else {
             PlaylistTable.createPlaylist(playlistName, guildId);
             final Playlist playlist = PlaylistTable.getPlaylist(playlistName, guildId);
-            SongHistoryTable.getLastSongs().forEach((id, song) -> {
+            SongHistoryTable.getLastSongs(event.getGuild().getIdLong()).forEach((id, song) -> {
                 SongPlaylistTable.insertSongIntoPlaylist(song, playlist);
             });
             MessageUtils.sendBeautifulMessage(event, "saved playlist " + playlistName);

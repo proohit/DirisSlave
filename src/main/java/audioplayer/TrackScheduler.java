@@ -15,13 +15,13 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import database.Song;
 import database.SongHistoryTable;
 import database.SongTable;
-import main.Startup;
 
 /**
  * This class schedules tracks for the audio player. It contains the queue of
  * tracks.
  */
 public class TrackScheduler extends AudioEventAdapter {
+    private final long guildId;
     private final AudioPlayer player;
     private final BlockingQueue<AudioTrack> queue;
     private boolean isRepeat = false;
@@ -29,8 +29,9 @@ public class TrackScheduler extends AudioEventAdapter {
     /**
      * @param player The audio player this scheduler uses
      */
-    public TrackScheduler(AudioPlayer player) {
+    public TrackScheduler(AudioPlayer player, long guildId) {
         this.player = player;
+        this.guildId = guildId;
         this.queue = new LinkedBlockingQueue<>();
     }
 
@@ -52,9 +53,6 @@ public class TrackScheduler extends AudioEventAdapter {
 
         if (!player.startTrack(track, true)) {
             queue.offer(track);
-        } else {
-            Startup.jda.getTextChannelById("621749238745006080").getManager()
-                    .setTopic("*Now playing* " + track.getInfo().title).queue();
         }
     }
 
@@ -70,7 +68,7 @@ public class TrackScheduler extends AudioEventAdapter {
             SongTable.insertSong(new Song(track.getInfo().title, track.getInfo().uri));
         }
         song = SongTable.getSongsByUrl(track.getInfo().uri).get(0);
-        SongHistoryTable.insertHistoryItem(song);
+        SongHistoryTable.insertHistoryItem(song, guildId);
     }
 
     /**
@@ -90,8 +88,6 @@ public class TrackScheduler extends AudioEventAdapter {
             // TODO: When implementing songs listened together, this must be toggle-able!
             audioplayer.AudioPlayer.getLastManager().closeAudioConnection();
         } else {
-            Startup.jda.getTextChannelById("621749238745006080").getManager()
-                    .setTopic("*Now playing* " + nextTrack.getInfo().title).queue();
             player.startTrack(nextTrack.makeClone(), false);
             writeSongEntry(nextTrack);
         }

@@ -3,6 +3,7 @@ package audioplayer.commands;
 import java.util.Comparator;
 import java.util.Map;
 
+import database.Song;
 import database.SongHistoryTable;
 import main.MessageUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -19,8 +20,11 @@ public class HistoryCommand extends Command {
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
         StringBuilder result = new StringBuilder("History: \n");
-        SongHistoryTable.getLastSongs().entrySet().stream().sorted(Map.Entry.comparingByKey(Comparator.reverseOrder()))
-                .forEach(entry -> result.append(entry.getValue().toString()).append("\n"));
+        SongHistoryTable.getLastSongs(event.getGuild().getIdLong()).entrySet().stream()
+                .sorted(Map.Entry.comparingByKey(Comparator.reverseOrder())).forEach(entry -> {
+                    Song song = entry.getValue();
+                    result.append(song.getTitle()).append("\n").append(song.getUrl()).append("\n\n");
+                });
         MessageUtils.sendBeautifulMessage(event, result.toString());
     }
 
