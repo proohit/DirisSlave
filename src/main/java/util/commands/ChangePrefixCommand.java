@@ -1,6 +1,7 @@
 package util.commands;
 
 import main.CommandManager;
+import main.MessageUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 
@@ -18,7 +19,7 @@ public class ChangePrefixCommand extends Command {
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
         long guildId = event.getGuild().getIdLong();
         CommandManager.CONFIGURATION_MANAGER.setPrefixForGuild(guildId, argStrings[0]);
-        CommandManager.sendBeautifulMessage(event,
+        MessageUtils.sendBeautifulMessage(event,
                 String.format("Changed prefix to %s", CommandManager.CONFIGURATION_MANAGER.getPrefixForGuild(guildId)));
     }
 }

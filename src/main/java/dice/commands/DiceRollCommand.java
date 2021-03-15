@@ -4,7 +4,7 @@ import java.util.Random;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
-import main.CommandManager;
+import main.MessageUtils;
 
 public class DiceRollCommand extends Command {
     Random random = new Random();
@@ -22,9 +22,9 @@ public class DiceRollCommand extends Command {
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
         try {
             int maximumNumber = Integer.parseInt(argStrings[0].replace("d", ""));
-            CommandManager.sendBeautifulMessage(event, String.format("%s", random.nextInt(maximumNumber) + 1));
+            MessageUtils.sendBeautifulMessage(event, String.format("%s", random.nextInt(maximumNumber) + 1));
         } catch (NumberFormatException e) {
-            CommandManager.sendMessage(event, getHelp());
+            MessageUtils.sendMessage(event, getHelp());
         }
     }
 }

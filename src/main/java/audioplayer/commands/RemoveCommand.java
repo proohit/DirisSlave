@@ -1,6 +1,7 @@
 package audioplayer.commands;
 
 import main.CommandManager;
+import main.MessageUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 
@@ -20,7 +21,7 @@ public class RemoveCommand extends Command {
         try {
             CommandManager.player.remove(indexToRemove, event.getTextChannel());
         } catch (NumberFormatException e) {
-            CommandManager.sendBeautifulMessage(event, "the position you have entered is invalid");
+            MessageUtils.sendBeautifulMessage(event, "the position you have entered is invalid");
         }
     }
 

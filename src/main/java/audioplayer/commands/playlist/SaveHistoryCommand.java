@@ -1,11 +1,10 @@
 package audioplayer.commands.playlist;
 
-import static main.CommandManager.sendBeautifulMessage;
-
 import database.Playlist;
 import database.PlaylistTable;
 import database.SongHistoryTable;
 import database.SongPlaylistTable;
+import main.MessageUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 
@@ -24,14 +23,14 @@ public class SaveHistoryCommand extends Command {
         String playlistName = argStrings[0];
         long guildId = event.getGuild().getIdLong();
         if (PlaylistTable.getPlaylist(playlistName, guildId) != null) {
-            sendBeautifulMessage(event, "playlistname already exists");
+            MessageUtils.sendBeautifulMessage(event, "playlistname already exists");
         } else {
             PlaylistTable.createPlaylist(playlistName, guildId);
             final Playlist playlist = PlaylistTable.getPlaylist(playlistName, guildId);
             SongHistoryTable.getLastSongs().forEach((id, song) -> {
                 SongPlaylistTable.insertSongIntoPlaylist(song, playlist);
             });
-            sendBeautifulMessage(event, "saved playlist " + playlistName);
+            MessageUtils.sendBeautifulMessage(event, "saved playlist " + playlistName);
         }
     }
 

@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import main.CommandManager;
+import main.MessageUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public abstract class Command {
@@ -20,7 +20,7 @@ public abstract class Command {
 
     public void handle(MessageReceivedEvent event, String[] argStrings) {
         if (argStrings.length < minArguments) {
-            CommandManager.sendMessage(event, getHelp());
+            MessageUtils.sendMessage(event, getHelp());
         } else {
             handleImpl(event, argStrings);
         }

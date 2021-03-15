@@ -3,7 +3,6 @@ package main;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
 
 import audioplayer.AudioPlayer;
 import audioplayer.commands.HistoryCommand;
@@ -30,8 +29,6 @@ import imageboards.commands.GahCommand;
 import imageboards.commands.LizardCommand;
 import imageboards.commands.PixabayCommand;
 import imageboards.commands.ThighCommand;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 import util.commands.ChangePrefixCommand;
@@ -96,8 +93,9 @@ public class CommandManager {
 
         if (insertedCommand.getTopic().equals("music") && !CONFIGURATION_MANAGER
                 .isMusicchannelOfGuild(event.getGuild().getIdLong(), event.getTextChannel().getName())) {
-            sendBeautifulMessage(event, String.format("Please input your request in the music channel \"%s\"",
-                    CONFIGURATION_MANAGER.getMusicchannelForGuild(event.getGuild().getIdLong())));
+            MessageUtils.sendBeautifulMessage(event,
+                    String.format("Please input your request in the music channel \"%s\"",
+                            CONFIGURATION_MANAGER.getMusicchannelForGuild(event.getGuild().getIdLong())));
             return;
         }
 
@@ -150,28 +148,7 @@ public class CommandManager {
         registeredCommands.add(commandToRegister);
     }
 
-    public static void sendMessage(MessageReceivedEvent event, String text) {
-        event.getChannel().sendMessage(text).queue();
-    }
-
-    public static void sendMessage(MessageReceivedEvent event, String text, Consumer<? super Message> callback) {
-        event.getChannel().sendMessage(text).queue(callback);
-    }
-
-    public static void sendMessage(TextChannel channel, String text) {
-        channel.sendMessage(text).queue();
-    }
-
-    public static void sendBeautifulMessage(MessageReceivedEvent event, String text) {
-        event.getChannel().sendMessage("```" + text + "```").queue();
-    }
-
-    public static void sendBeautifulMessage(TextChannel channel, String text) {
-        channel.sendMessage("```" + text + "```").queue();
-    }
-
     private static String[] getArgs(MessageReceivedEvent event) {
         return event.getMessage().getContentRaw().split(" ");
     }
-
 }

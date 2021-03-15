@@ -1,7 +1,7 @@
 package audioplayer.commands.playlist;
 
 import database.PlaylistTable;
-import main.CommandManager;
+import main.MessageUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 
@@ -21,7 +21,7 @@ public class DeletePlaylistCommand extends Command {
         result = PlaylistTable.deletePlaylist(argStrings[0], event.getGuild().getIdLong()) == 1
                 ? "deleted playlist " + argStrings[0]
                 : "playlist " + argStrings[0] + " not found";
-        CommandManager.sendBeautifulMessage(event, result);
+        MessageUtils.sendBeautifulMessage(event, result);
     }
 
 }

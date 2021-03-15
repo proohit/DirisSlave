@@ -2,7 +2,7 @@ package audioplayer.commands.playlist;
 
 import database.Playlist;
 import database.PlaylistTable;
-import main.CommandManager;
+import main.MessageUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 
@@ -22,11 +22,11 @@ public class CreatePlaylistCommand extends Command {
         long guildId = event.getGuild().getIdLong();
         String playlistName = argStrings[0];
         if (PlaylistTable.getPlaylist(playlistName, guildId) != null) {
-            CommandManager.sendBeautifulMessage(event, "this playlist has already been created before");
+            MessageUtils.sendBeautifulMessage(event, "this playlist has already been created before");
         }
         Playlist createdPlaylist = PlaylistTable.createPlaylist(playlistName, guildId);
         if (createdPlaylist != null) {
-            CommandManager.sendBeautifulMessage(event, "playlist " + createdPlaylist.getName() + " created.");
+            MessageUtils.sendBeautifulMessage(event, "playlist " + createdPlaylist.getName() + " created.");
         }
     }
 

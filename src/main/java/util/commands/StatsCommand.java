@@ -14,7 +14,7 @@ public class StatsCommand extends Command {
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
-        main.CommandManager.sendBeautifulMessage(event,
+        main.MessageUtils.sendBeautifulMessage(event,
                 MetaHandler.greet() + MetaHandler.runtime() + MetaHandler.helpMessage());
     }
 

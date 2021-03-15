@@ -7,6 +7,7 @@ import audioplayer.api.RecommendationHandler;
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
 import main.CommandManager;
+import main.MessageUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 import shared.util.ListUtilies;
@@ -28,7 +29,7 @@ public class PlayRecommendedCommand extends Command {
         JSONArray recommendedTracksJson = recommendationHandler.getRecommendationsByTrackSearchQuery(searchQuery);
         List<JSONObject> recommendedTracks = ListUtilies.castList(JSONObject.class, recommendedTracksJson.toList());
         if (recommendedTracks.isEmpty()) {
-            CommandManager.sendBeautifulMessage(event, "No recommendations found...");
+            MessageUtils.sendBeautifulMessage(event, "No recommendations found...");
             return;
         }
         recommendedTracks = recommendedTracks.subList(0, 2);

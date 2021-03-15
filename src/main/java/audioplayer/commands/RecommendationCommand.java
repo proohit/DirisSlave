@@ -33,7 +33,7 @@ public class RecommendationCommand extends Command {
             recommendationsString.append("\n").append("Song name: ").append(track.getString("name")).append(", uri: ")
                     .append(track.getString("uri")).append("\n");
         });
-        main.CommandManager.sendMessage(event, recommendationsString.toString());
+        main.MessageUtils.sendMessage(event, recommendationsString.toString());
     }
 
 }

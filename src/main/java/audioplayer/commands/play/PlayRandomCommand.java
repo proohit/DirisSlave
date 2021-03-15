@@ -9,6 +9,7 @@ import audioplayer.api.RecommendationHandler;
 import audioplayer.api.TrackHandler;
 import kong.unirest.json.JSONObject;
 import main.CommandManager;
+import main.MessageUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 import shared.util.ListUtilies;
@@ -30,7 +31,7 @@ public class PlayRandomCommand extends Command {
         List<String> availableGenres = recommendationHandler.getAvailableGenreSeeds();
         List<JSONObject> recommendedTracks = null;
         String requestedGenre = identifyRequestedGenre(rawRequestedGenre, availableGenres);
-        CommandManager.sendMessage(event, "Playing recommended tracks for genre: " + requestedGenre);
+        MessageUtils.sendMessage(event, "Playing recommended tracks for genre: " + requestedGenre);
         recommendedTracks = ListUtilies.castList(JSONObject.class,
                 recommendationHandler.getRecommendationsByGenre(requestedGenre).toList());
         if (recommendedTracks != null) {

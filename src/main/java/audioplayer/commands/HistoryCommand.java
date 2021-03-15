@@ -1,11 +1,10 @@
 package audioplayer.commands;
 
-import static main.CommandManager.sendBeautifulMessage;
-
 import java.util.Comparator;
 import java.util.Map;
 
 import database.SongHistoryTable;
+import main.MessageUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 
@@ -22,7 +21,7 @@ public class HistoryCommand extends Command {
         StringBuilder result = new StringBuilder("History: \n");
         SongHistoryTable.getLastSongs().entrySet().stream().sorted(Map.Entry.comparingByKey(Comparator.reverseOrder()))
                 .forEach(entry -> result.append(entry.getValue().toString()).append("\n"));
-        sendBeautifulMessage(event, result.toString());
+        MessageUtils.sendBeautifulMessage(event, result.toString());
     }
 
 }

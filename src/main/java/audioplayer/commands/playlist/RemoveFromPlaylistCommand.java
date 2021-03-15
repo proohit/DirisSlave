@@ -1,9 +1,8 @@
 package audioplayer.commands.playlist;
 
-import static main.CommandManager.sendBeautifulMessage;
-
 import database.Song;
 import database.SongPlaylistTable;
+import main.MessageUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 
@@ -27,10 +26,11 @@ public class RemoveFromPlaylistCommand extends Command {
                 .get(indexOfSongToRemove);
         if (song != null) {
             if (SongPlaylistTable.removeSongFromPlaylist(playlistToRemoveFrom, guildId, song) != 0) {
-                sendBeautifulMessage(event, "deleted " + song.getTitle() + " from " + playlistToRemoveFrom);
+                MessageUtils.sendBeautifulMessage(event,
+                        "deleted " + song.getTitle() + " from " + playlistToRemoveFrom);
             }
         } else {
-            sendBeautifulMessage(event, "playlist or song not found.");
+            MessageUtils.sendBeautifulMessage(event, "playlist or song not found.");
         }
     }
 

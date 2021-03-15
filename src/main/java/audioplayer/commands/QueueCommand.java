@@ -5,6 +5,7 @@ import java.util.Iterator;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import main.CommandManager;
+import main.MessageUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 
@@ -24,7 +25,7 @@ public class QueueCommand extends Command {
         while (it.hasNext()) {
             queue.append(i++).append(" ").append(it.next().getInfo().title).append("\n");
         }
-        CommandManager.sendBeautifulMessage(event, queue.toString());
+        MessageUtils.sendBeautifulMessage(event, queue.toString());
     }
 
 }

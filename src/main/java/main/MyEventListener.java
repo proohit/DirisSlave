@@ -34,7 +34,7 @@ public class MyEventListener extends ListenerAdapter {
             Logger.error(e);
             List<TextChannel> channels = event.getGuild().getTextChannelsByName("debugchannel", true);
             if (!channels.isEmpty()) {
-                CommandManager.sendMessage(channels.get(0), String.format("%s%s", e.getMessage(),
+                MessageUtils.sendMessage(channels.get(0), String.format("%s%s", e.getMessage(),
                         Arrays.toString(Arrays.copyOfRange(e.getStackTrace(), 0, 5))));
             }
         }

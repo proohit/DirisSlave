@@ -1,7 +1,5 @@
 package audioplayer.commands.playlist;
 
-import static main.CommandManager.sendBeautifulMessage;
-
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
@@ -12,6 +10,7 @@ import database.Song;
 import database.SongPlaylistTable;
 import database.SongTable;
 import main.CommandManager;
+import main.MessageUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 
@@ -41,10 +40,10 @@ public class AddToPlaylistCommand extends Command {
                 Song song = SongTable.getSongsByUrl(track.getInfo().uri).get(0);
                 if (SongPlaylistTable.insertSongIntoPlaylist(song,
                         SongPlaylistTable.getPlaylistByName(playlistNameToAddTo, guildId)) != 0) {
-                    sendBeautifulMessage(event,
+                    MessageUtils.sendBeautifulMessage(event,
                             "added \"" + track.getInfo().title + "\" to playlist " + playlistNameToAddTo);
                 } else {
-                    sendBeautifulMessage(event, "there is no playlist " + playlistNameToAddTo);
+                    MessageUtils.sendBeautifulMessage(event, "there is no playlist " + playlistNameToAddTo);
                 }
             }
 
@@ -56,15 +55,16 @@ public class AddToPlaylistCommand extends Command {
                 Song song = SongTable.getSongsByUrl(playlist.getTracks().get(0).getInfo().uri).get(0);
                 if (SongPlaylistTable.insertSongIntoPlaylist(song,
                         PlaylistTable.getPlaylist(playlistNameToAddTo, guildId)) != 0) {
-                    sendBeautifulMessage(event, "added \"" + song.getTitle() + "\" to playlist " + playlistNameToAddTo);
+                    MessageUtils.sendBeautifulMessage(event,
+                            "added \"" + song.getTitle() + "\" to playlist " + playlistNameToAddTo);
                 } else {
-                    sendBeautifulMessage(event, "there is no playlist " + playlistNameToAddTo);
+                    MessageUtils.sendBeautifulMessage(event, "there is no playlist " + playlistNameToAddTo);
                 }
             }
 
             @Override
             public void noMatches() {
-                sendBeautifulMessage(event, "Nothing found for keywords");
+                MessageUtils.sendBeautifulMessage(event, "Nothing found for keywords");
             }
 
             @Override

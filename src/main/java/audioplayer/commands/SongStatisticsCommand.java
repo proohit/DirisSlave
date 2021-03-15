@@ -27,7 +27,7 @@ public class SongStatisticsCommand extends Command {
                     result.append(sortedItem.getValue()).append(" times, ").append(sortedItem.getKey().getTitle())
                             .append("\n");
                 });
-        main.CommandManager.sendBeautifulMessage(event, result.toString());
+        main.MessageUtils.sendBeautifulMessage(event, result.toString());
     }
 
 }

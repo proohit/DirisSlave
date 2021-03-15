@@ -1,6 +1,7 @@
 package audioplayer.commands;
 
 import main.CommandManager;
+import main.MessageUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 
@@ -15,7 +16,7 @@ public class ResumeCommand extends Command {
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
         CommandManager.player.togglePause(event.getTextChannel(), false);
-        CommandManager.sendMessage(event, "resuming the playback...");
+        MessageUtils.sendMessage(event, "resuming the playback...");
     }
 
 }

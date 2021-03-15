@@ -1,8 +1,7 @@
 package audioplayer.commands;
 
-import static main.CommandManager.sendBeautifulMessage;
-
 import main.CommandManager;
+import main.MessageUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 
@@ -22,7 +21,7 @@ public class SkiptoCommand extends Command {
         try {
             CommandManager.player.skipTo(indexToSkipTo, event.getTextChannel());
         } catch (NumberFormatException e) {
-            sendBeautifulMessage(event, "the position you have entered is invalid");
+            MessageUtils.sendBeautifulMessage(event, "the position you have entered is invalid");
         }
     }
 
