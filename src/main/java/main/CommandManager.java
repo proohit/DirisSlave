@@ -44,8 +44,8 @@ public class CommandManager {
 
     public static final List<Command> registeredCommands = new ArrayList<>();
     public static final PermissionManager permissionManager = new PermissionManager(registeredCommands);
+    public static final ConfigurationManager CONFIGURATION_MANAGER = new ConfigurationManager();
     public static final AudioPlayer player = new AudioPlayer();
-    private static String prefix = "-";
 
     public CommandManager() {
         registeredCommands.add(new PlaylistCommand());
@@ -82,30 +82,33 @@ public class CommandManager {
     public void handle(MessageReceivedEvent event) {
         String[] argStrings = getArgs(event);
 
-        if (!argStrings[0].startsWith(prefix)) {
+        String prefixOfGuild = CONFIGURATION_MANAGER.getPrefixForGuild(event.getGuild().getIdLong());
+
+        if (!argStrings[0].startsWith(prefixOfGuild)) {
             return;
         }
 
-        Command insertedCommand = getRequestedCommand(argStrings);
+        Command insertedCommand = getRequestedCommand(argStrings, prefixOfGuild);
 
         if (insertedCommand == null) {
             return;
         }
 
-        if (insertedCommand.getTopic().equals("music") && !permissionManager.isMusicChannelAppropriate(event)) {
+        if (insertedCommand.getTopic().equals("music") && !CONFIGURATION_MANAGER
+                .isMusicchannelOfGuild(event.getGuild().getIdLong(), event.getTextChannel().getName())) {
             sendBeautifulMessage(event, String.format("Please input your request in the music channel \"%s\"",
-                    permissionManager.getRegisteredMusicChannelByGuildId(event.getGuild().getIdLong())));
+                    CONFIGURATION_MANAGER.getMusicchannelForGuild(event.getGuild().getIdLong())));
             return;
         }
 
-        String[] splitArguments = splitArgumentsForCommand(argStrings, insertedCommand);
+        String[] splitArguments = splitArgumentsForCommand(argStrings, insertedCommand, prefixOfGuild);
 
         if (permissionManager.isPermitted(event.getMember(), insertedCommand)) {
             insertedCommand.handle(event, splitArguments);
         }
     }
 
-    private String[] splitArgumentsForCommand(String[] argStrings, Command insertedCommand) {
+    private String[] splitArgumentsForCommand(String[] argStrings, Command insertedCommand, String prefix) {
         int indexOfInsertedCommand = 0;
         for (; indexOfInsertedCommand < argStrings.length; indexOfInsertedCommand++) {
             if (insertedCommand.getCommand().contains(argStrings[indexOfInsertedCommand].replace(prefix, ""))) {
@@ -119,7 +122,7 @@ public class CommandManager {
         }
     }
 
-    private Command getRequestedCommand(String[] arguments) {
+    private Command getRequestedCommand(String[] arguments, String prefix) {
         final String pureCommand = arguments[0].replace(prefix, "");
         Command insertedHighLevelCommand = registeredCommands.stream()
                 .filter(command -> command.getCommand().contains(pureCommand)).findFirst().orElse(null);
@@ -171,11 +174,4 @@ public class CommandManager {
         return event.getMessage().getContentRaw().split(" ");
     }
 
-    public static void setPrefix(String newPrefix) {
-        prefix = newPrefix;
-    }
-
-    public static String getPrefix() {
-        return prefix;
-    }
 }

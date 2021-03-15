@@ -23,7 +23,7 @@ public class SetMusicChannelCommand extends Command {
         long guildId = event.getGuild().getIdLong();
 
         if ("everywhere".equals(channelName)) {
-            CommandManager.permissionManager.setRegisteredMusicChannelByGuildId(guildId, channelName);
+            CommandManager.CONFIGURATION_MANAGER.setMusicchannelForGuild(guildId, channelName);
             CommandManager.sendBeautifulMessage(event, String
                     .format("All channels can be used as music channel on server %s", event.getGuild().getName()));
         } else {
@@ -32,7 +32,7 @@ public class SetMusicChannelCommand extends Command {
                 CommandManager.sendBeautifulMessage(event, String.format("Channel %s not found", channelName));
                 return;
             }
-            CommandManager.permissionManager.setRegisteredMusicChannelByGuildId(guildId,
+            CommandManager.CONFIGURATION_MANAGER.setMusicchannelForGuild(guildId,
                     channelsOfGuildByName.get(0).getName());
             CommandManager.sendBeautifulMessage(event, String.format("Set channel %s as music channel for server %s",
                     channelsOfGuildByName.get(0).getName(), event.getGuild().getName()));

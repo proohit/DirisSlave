@@ -45,7 +45,7 @@ public class DBManager {
     public static void initializeDatabase() {
         try (Connection con = getConnection()) {
             List<String> targetTables = new ArrayList<>(Arrays.asList(PlaylistTable.TABLE_NAME, SongTable.TABLE_NAME,
-                    SongPlaylistTable.TABLE_NAME, SongHistoryTable.TABLE_NAME));
+                    SongPlaylistTable.TABLE_NAME, SongHistoryTable.TABLE_NAME, ConfigurationTable.TABLE_NAME));
             List<Table<?>> tables = DSL.using(con, DEFAULT_DIALECT).meta().getTables();
             for (Table<?> table : tables) {
                 if (targetTables.contains(table.getName())) {
@@ -55,20 +55,32 @@ public class DBManager {
             if (!targetTables.isEmpty()) {
                 Logger.info("Following Tables are missing: {}", targetTables.toString());
                 if (targetTables.contains(PlaylistTable.TABLE_NAME)) {
+                    logTableCreation(PlaylistTable.TABLE_NAME);
                     PlaylistTable.createTable();
                 }
                 if (targetTables.contains(SongTable.TABLE_NAME)) {
+                    logTableCreation(SongTable.TABLE_NAME);
                     SongTable.createTable();
                 }
                 if (targetTables.contains(SongPlaylistTable.TABLE_NAME)) {
+                    logTableCreation(SongPlaylistTable.TABLE_NAME);
                     SongPlaylistTable.createTable();
                 }
                 if (targetTables.contains(SongHistoryTable.TABLE_NAME)) {
+                    logTableCreation(SongHistoryTable.TABLE_NAME);
                     SongHistoryTable.createTable();
+                }
+                if (targetTables.contains(ConfigurationTable.TABLE_NAME)) {
+                    logTableCreation(ConfigurationTable.TABLE_NAME);
+                    ConfigurationTable.createTable();
                 }
             }
         } catch (SQLException e) {
             Logger.error(e);
         }
+    }
+
+    private static void logTableCreation(String tableName) {
+        Logger.info("Creating table {}", tableName);
     }
 }

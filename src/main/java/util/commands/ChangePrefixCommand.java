@@ -16,7 +16,9 @@ public class ChangePrefixCommand extends Command {
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
-        CommandManager.setPrefix(argStrings[0]);
-        CommandManager.sendBeautifulMessage(event, String.format("Changed prefix to %s", CommandManager.getPrefix()));
+        long guildId = event.getGuild().getIdLong();
+        CommandManager.CONFIGURATION_MANAGER.setPrefixForGuild(guildId, argStrings[0]);
+        CommandManager.sendBeautifulMessage(event,
+                String.format("Changed prefix to %s", CommandManager.CONFIGURATION_MANAGER.getPrefixForGuild(guildId)));
     }
 }
