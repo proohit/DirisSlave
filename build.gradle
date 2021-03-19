@@ -43,4 +43,6 @@ dependencies {
     implementation "org.jooq:jooq:3.14.8"
     implementation "org.jooq:jooq-meta:3.14.8"
     implementation "org.jooq:jooq-codegen:3.14.8"
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.4.3'
+
 }
