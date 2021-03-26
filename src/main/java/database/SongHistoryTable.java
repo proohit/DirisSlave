@@ -1,9 +1,19 @@
 package database;
 
+import static org.jooq.impl.DSL.count;
+import static org.jooq.impl.DSL.currentTimestamp;
+import static org.jooq.impl.DSL.field;
+import static org.jooq.impl.DSL.foreignKey;
+import static org.jooq.impl.DSL.primaryKey;
+import static org.jooq.impl.DSL.table;
+import static org.jooq.impl.SQLDataType.BIGINT;
+import static org.jooq.impl.SQLDataType.INTEGER;
+import static org.jooq.impl.SQLDataType.TIMESTAMP;
+
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.jooq.CreateTableColumnStep;
@@ -13,9 +23,6 @@ import org.jooq.Record3;
 import org.jooq.Result;
 import org.jooq.impl.DSL;
 import org.tinylog.Logger;
-
-import static org.jooq.impl.SQLDataType.*;
-import static org.jooq.impl.DSL.*;
 
 public class SongHistoryTable {
 
@@ -45,7 +52,7 @@ public class SongHistoryTable {
     }
 
     public static Map<Song, Integer> getSongStatistics() {
-        Map<Song, Integer> statistics = new HashMap<>();
+        Map<Song, Integer> statistics = new LinkedHashMap<>();
         try (Connection con = DBManager.getConnection()) {
             DSLContext create = DSL.using(con, DBManager.DEFAULT_DIALECT);
             Result<Record3<Integer, Object, Object>> result = create
