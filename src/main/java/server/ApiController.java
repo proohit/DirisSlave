@@ -26,7 +26,7 @@ import main.Startup;
 import net.dv8tion.jda.api.entities.Guild;
 
 @RestController
-@RequestMapping(value = "/", produces = "application/json")
+@RequestMapping(value = "/api", produces = "application/json")
 public class ApiController {
 
     @GetMapping(value = "nowplaying")
