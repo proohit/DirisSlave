@@ -259,4 +259,8 @@ public class AudioPlayer {
             }
         }
     }
+
+    public Map<Long, GuildMusicManager> getMusicManagers() {
+        return musicManagers;
+    }
 }
