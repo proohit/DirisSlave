@@ -9,7 +9,7 @@ application {
 }
 
 group 'org.example'
-version '1.0-SNAPSHOT'
+version '0.0.1'
 
 java {
     toolchain {
@@ -46,3 +46,22 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.4.3'
 
 }
+
+def generatedVersionDir = "${buildDir}/generated-version"
+
+sourceSets {
+    main {
+        output.dir(generatedVersionDir, builtBy: 'generateVersionProperties')
+    }
+}
+
+task generateVersionProperties {
+    doLast {
+        def propertiesFile = file "$generatedVersionDir/version.properties"
+        propertiesFile.parentFile.mkdirs()
+        def properties = new Properties()
+        properties.setProperty("version", rootProject.version.toString())
+        propertiesFile.withWriter { properties.store(it, null) }
+    }
+}
+processResources.dependsOn generateVersionProperties

@@ -4,26 +4,35 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-public class ReadPropertyFile {
-    Properties prop = null;
-    private static ReadPropertyFile single_instance = null;
+import org.tinylog.Logger;
 
-    private ReadPropertyFile() {
-        try {
-            FileInputStream ip = new FileInputStream("config/config.properties");
-            prop = new Properties();
+public class ReadPropertyFile {
+    private static final String VERSION_PROPERTY = "version";
+
+    private static Properties prop = new Properties();
+
+    private static ReadPropertyFile singleInstance = null;
+
+    private ReadPropertyFile() throws IOException {
+        try (FileInputStream ip = new FileInputStream("config/config.properties")) {
+            Properties versionProps = new Properties();
+            versionProps.load(this.getClass().getResourceAsStream("/version.properties"));
+            String version = versionProps.getProperty(VERSION_PROPERTY);
             prop.load(ip);
-        } catch (IOException e) {
-            e.printStackTrace();
+            prop.setProperty(VERSION_PROPERTY, version);
         }
     }
 
     // static method to create instance of Singleton class
     public static ReadPropertyFile getInstance() {
-        if (single_instance == null)
-            single_instance = new ReadPropertyFile();
+        if (singleInstance == null)
+            try {
+                singleInstance = new ReadPropertyFile();
+            } catch (IOException e) {
+                Logger.error(e);
+            }
 
-        return single_instance;
+        return singleInstance;
     }
 
     public String getJDAToken() {
@@ -60,5 +69,9 @@ public class ReadPropertyFile {
 
     public String getDbUser() {
         return prop.getProperty("dbUser");
+    }
+
+    public String getVersion() {
+        return prop.getProperty(VERSION_PROPERTY);
     }
 }
