@@ -38,7 +38,7 @@ dependencies {
     implementation 'com.konghq:unirest-java:3.11.05'
     implementation 'com.github.mpkorstanje:simmetrics-core:4.1.1'
     implementation 'org.tinylog:tinylog-api:2.3.0-M1'
-    implementation 'org.tinylog:tinylog-impl:2.3.0-M1'
+    implementation 'org.tinylog:tinylog-impl:2.3.0'
     implementation 'com.zaxxer:HikariCP:4.0.3'
     implementation "org.jooq:jooq:3.14.8"
     implementation "org.jooq:jooq-meta:3.14.8"
