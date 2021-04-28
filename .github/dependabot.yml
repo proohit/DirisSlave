@@ -1,0 +1,44 @@
+version: 2
+updates:
+- package-ecosystem: gradle
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  target-branch: develop
+  ignore:
+  - dependency-name: org.tinylog:tinylog-api
+    versions:
+    - 2.3.0
+    - 2.3.0-M2
+  - dependency-name: org.tinylog:tinylog-impl
+    versions:
+    - 2.3.0
+    - 2.3.0-M2
+  - dependency-name: org.springframework.boot:spring-boot-starter-web
+    versions:
+    - 2.4.4
+  - dependency-name: mysql:mysql-connector-java
+    versions:
+    - 8.0.23
+  - dependency-name: net.dv8tion:JDA
+    versions:
+    - 4.2.0_227
+    - 4.2.0_228
+    - 4.2.0_229
+    - 4.2.0_230
+    - 4.2.0_231
+    - 4.2.0_236
+    - 4.2.0_239
+    - 4.2.0_240
+    - 4.2.0_241
+  - dependency-name: com.sedmelluq:lavaplayer
+    versions:
+    - 1.3.66
+    - 1.3.67
+    - 1.3.69
+    - 1.3.71
+    - 1.3.72
+  - dependency-name: com.konghq:unirest-java
+    versions:
+    - 3.11.10
