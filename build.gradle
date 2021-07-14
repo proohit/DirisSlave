@@ -39,7 +39,7 @@ dependencies {
     implementation 'com.github.mpkorstanje:simmetrics-core:4.1.1'
     implementation 'org.tinylog:tinylog-api:2.3.0-M1'
     implementation 'org.tinylog:tinylog-impl:2.3.0-M1'
-    implementation 'com.zaxxer:HikariCP:4.0.3'
+    implementation 'com.zaxxer:HikariCP:5.0.0'
     implementation "org.jooq:jooq:3.14.11"
     implementation "org.jooq:jooq-meta:3.14.11"
     implementation "org.jooq:jooq-codegen:3.14.11"
