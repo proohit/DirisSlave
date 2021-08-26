@@ -41,7 +41,7 @@ dependencies {
     implementation 'org.tinylog:tinylog-impl:2.3.0-M1'
     implementation 'com.zaxxer:HikariCP:4.0.3'
     implementation "org.jooq:jooq:3.14.11"
-    implementation "org.jooq:jooq-meta:3.14.11"
+    implementation "org.jooq:jooq-meta:3.15.2"
     implementation "org.jooq:jooq-codegen:3.14.11"
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.4.5'
 
