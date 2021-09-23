@@ -3,10 +3,14 @@ package server;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
@@ -64,15 +68,52 @@ public class ApiController {
     }
 
     @GetMapping(value = "logs")
-    public ResponseEntity<String> getLogs() {
+    public ResponseEntity<List<LogEntry>> getLogs() {
         File logFile = new File("log.txt");
+
         try {
             String logFileText = FileUtils.readFileToString(logFile, StandardCharsets.UTF_8);
-            return new ResponseEntity<>(logFileText, HttpStatus.OK);
+            Matcher entryMatcher = Pattern.compile("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}").matcher(logFileText);
+            List<Integer> startIndexes = new ArrayList<>();
+            List<Integer> endIndexes = new ArrayList<>();
+            List<LogEntry> logEntries2 = new ArrayList<>();
+            while (entryMatcher.find()) {
+                startIndexes.add(entryMatcher.start());
+                endIndexes.add(entryMatcher.end());
+            }
+            for (int index = 0; index < startIndexes.size(); index++) {
+                String content;
+                if (index + 1 >= startIndexes.size()) {
+                    content = logFileText.substring(endIndexes.get(index));
+                } else {
+                    content = logFileText.substring(endIndexes.get(index), startIndexes.get(index + 1));
+                }
+                String level;
+                if (content.contains("ERROR:")) {
+                    level = "ERROR";
+                    content.replace("ERROR:", "");
+                } else if (content.contains("WARN:")) {
+                    level = "WARN";
+                    content.replace("WARN:", "");
+                } else if (content.contains("INFO:")) {
+                    level = "INFO";
+                    content.replace("INFO:", "");
+                } else if (content.contains("DEBUG:")) {
+                    level = "DEBUG";
+                    content.replace("DEBUG:", "");
+                } else {
+                    level = "UNKNOWN";
+                }
+                var entry = new LogEntry(content, logFileText.substring(startIndexes.get(index), endIndexes.get(index)),
+                        level);
+                logEntries2.add(entry);
+            }
+            Collections.reverse(logEntries2);
+            return new ResponseEntity<>(logEntries2, HttpStatus.OK);
         } catch (IOException e) {
             Logger.error(e);
         }
-        return new ResponseEntity<>("Error retrieving logfile", HttpStatus.INTERNAL_SERVER_ERROR);
+        return null;
     }
 
 }
