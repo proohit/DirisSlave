@@ -28,6 +28,7 @@ import database.SongHistoryTable;
 import main.CommandManager;
 import main.Startup;
 import net.dv8tion.jda.api.entities.Guild;
+import server.LogEntry.LogLevel;
 
 @RestController
 @RequestMapping(value = "/api", produces = "application/json")
@@ -88,24 +89,30 @@ public class ApiController {
                 } else {
                     content = logFileText.substring(endIndexes.get(index), startIndexes.get(index + 1));
                 }
-                String level;
-                if (content.contains("ERROR:")) {
-                    level = "ERROR";
-                    content.replace("ERROR:", "");
-                } else if (content.contains("WARN:")) {
-                    level = "WARN";
-                    content.replace("WARN:", "");
-                } else if (content.contains("INFO:")) {
-                    level = "INFO";
-                    content.replace("INFO:", "");
-                } else if (content.contains("DEBUG:")) {
-                    level = "DEBUG";
-                    content.replace("DEBUG:", "");
-                } else {
-                    level = "UNKNOWN";
+                int indexOfStackTrace = -1;
+                Matcher matcher = Pattern.compile("\\s+(at)\\s+\\w+\\.+").matcher(content);
+                if (matcher.find()) {
+                    indexOfStackTrace = matcher.start();
                 }
+                String stackTrace;
+                if (indexOfStackTrace < 0) {
+                    stackTrace = "";
+                } else {
+                    stackTrace = content.substring(indexOfStackTrace);
+                    content = content.substring(0, indexOfStackTrace);
+                }
+                LogLevel level = null;
+                for (LogLevel it : LogLevel.values()) {
+                    if (content.contains(it.getLevel())) {
+                        level = it;
+                        content = content.substring(content.indexOf(it.getLevel()) + it.getLevel().length());
+                    }
+                }
+                if (level == null)
+                    level = LogLevel.UNKNOWN;
+
                 var entry = new LogEntry(content, logFileText.substring(startIndexes.get(index), endIndexes.get(index)),
-                        level);
+                        level, stackTrace);
                 logEntries2.add(entry);
             }
             Collections.reverse(logEntries2);
