@@ -1,6 +1,7 @@
 package audioplayer.commands.play;
 
 import main.CommandManager;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
 
@@ -29,6 +30,20 @@ public class PlayCommand extends Command {
         }
 
         CommandManager.player.loadAndPlay(event, trackUrl);
+    }
+
+    public void handle(Guild guild, String[] argStrings) {
+        String trackUrl = "";
+        if (!(argStrings[0].contains("http") || argStrings[0].contains("https"))) {
+            trackUrl = "ytsearch: ";
+            for (int i = 0; i < argStrings.length; i++) {
+                trackUrl += argStrings[i] + " ";
+            }
+        } else {
+            trackUrl = argStrings[0];
+        }
+
+        CommandManager.player.loadAndPlay(guild, trackUrl);
     }
 
 }

@@ -16,6 +16,7 @@ public class Startup {
         try {
             ReadPropertyFile rpf = ReadPropertyFile.getInstance();
             jda = JDABuilder.createDefault(rpf.getJDAToken()).build().awaitReady();
+            AudioHandler audioHandler = new AudioHandler();
             DBManager.initializeDatabase();
             jda.addEventListener(new MyEventListener(jda));
             RestServer restServer = new RestServer();

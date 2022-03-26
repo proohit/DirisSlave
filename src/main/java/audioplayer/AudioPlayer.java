@@ -104,6 +104,13 @@ public class AudioPlayer {
                 new SingleSongLoadedHandler(musicManager, trackUrl, event));
     }
 
+    public void loadAndPlay(Guild guild, final String trackUrl) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(guild);
+        lastManager = guild.getAudioManager();
+        playerManager.loadItemOrdered(musicManager, trackUrl,
+                new SingleSongLoadedHandler(musicManager, trackUrl));
+    }
+
     public Stream<AudioTrack> getQueue(TextChannel channel) {
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
         return musicManager.scheduler.getQueue();
@@ -120,6 +127,11 @@ public class AudioPlayer {
         if (manager.isConnected()) {
             manager.closeAudioConnection();
         }
+    }
+
+    public void stop(Guild guild) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(guild);
+        musicManager.scheduler.stop();
     }
 
     public long seek(TextChannel channel, int seconds) {
@@ -161,7 +173,7 @@ public class AudioPlayer {
 
     private final class SingleSongLoadedHandler implements AudioLoadResultHandler {
         private final String trackUrl;
-        private final MessageReceivedEvent event;
+        private MessageReceivedEvent event = null;
         private final GuildMusicManager musicManager;
 
         private SingleSongLoadedHandler(GuildMusicManager musicManager, String trackUrl, MessageReceivedEvent event) {
@@ -170,12 +182,19 @@ public class AudioPlayer {
             this.musicManager = musicManager;
         }
 
+        private SingleSongLoadedHandler(GuildMusicManager musicManager, String trackUrl) {
+            this.trackUrl = trackUrl;
+            this.musicManager = musicManager;
+        }
+
         @Override
         public void trackLoaded(AudioTrack track) {
             SearchResultEmbed searchResultEmbed = new SearchResultEmbed(track);
-            event.getTextChannel().sendMessage(searchResultEmbed.getEmbed()).queue();
-            AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(),
-                    event.getMember().getVoiceState().getChannel());
+            if (event != null) {
+                event.getTextChannel().sendMessage(searchResultEmbed.getEmbed()).queue();
+                AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(),
+                        event.getMember().getVoiceState().getChannel());
+            }
             play(musicManager, track);
         }
 
@@ -187,9 +206,11 @@ public class AudioPlayer {
                 firstTrack = playlist.getTracks().get(0);
             }
             SearchResultEmbed searchResultEmbed = new SearchResultEmbed(firstTrack);
-            event.getTextChannel().sendMessage(searchResultEmbed.getEmbed()).queue();
-            AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(),
-                    event.getMember().getVoiceState().getChannel());
+            if (event != null) {
+                event.getTextChannel().sendMessage(searchResultEmbed.getEmbed()).queue();
+                AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(),
+                        event.getMember().getVoiceState().getChannel());
+            }
             play(musicManager, firstTrack);
         }
 
