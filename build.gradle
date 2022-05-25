@@ -32,7 +32,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.8'
     implementation 'org.jfree:jfreechart:1.0.14'
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.26'
-    implementation 'com.konghq:unirest-java:3.13.0'
+    implementation 'com.konghq:unirest-java:3.13.10'
     implementation 'com.github.mpkorstanje:simmetrics-core:4.1.1'
     implementation 'org.tinylog:tinylog-api:2.3.0-M1'
     implementation 'org.tinylog:tinylog-impl:2.3.0-M1'
