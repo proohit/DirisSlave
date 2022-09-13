@@ -8,6 +8,7 @@ import org.tinylog.Logger;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
@@ -38,6 +39,11 @@ public class MyEventListener extends ListenerAdapter {
                         Arrays.toString(Arrays.copyOfRange(e.getStackTrace(), 0, 5))));
             }
         }
+    }
+
+    @Override
+    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+        commandManager.handle(event);
     }
 
     @Override

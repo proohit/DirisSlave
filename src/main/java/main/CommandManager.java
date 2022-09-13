@@ -3,6 +3,7 @@ package main;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import audioplayer.AudioPlayer;
 import audioplayer.commands.HistoryCommand;
@@ -29,8 +30,13 @@ import imageboards.commands.GahCommand;
 import imageboards.commands.LizardCommand;
 import imageboards.commands.PixabayCommand;
 import imageboards.commands.ThighCommand;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import shared.commands.Command;
+import shared.commands.SlashCommand;
 import util.commands.ChangePrefixCommand;
 import util.commands.ClearCommand;
 import util.commands.HelpCommand;
@@ -40,6 +46,7 @@ import weather.commands.WeatherCommand;
 public class CommandManager {
 
     public static final List<Command> registeredCommands = new ArrayList<>();
+    public static final List<SlashCommand> slashCommands = new ArrayList<>();
     public static final PermissionManager permissionManager = new PermissionManager(registeredCommands);
     public static final ConfigurationManager CONFIGURATION_MANAGER = new ConfigurationManager();
     public static final AudioPlayer player = new AudioPlayer();
@@ -63,7 +70,7 @@ public class CommandManager {
         registeredCommands.add(new StopCommand());
         registeredCommands.add(new DanbooruCommand());
         registeredCommands.add(new ClearCommand());
-        registeredCommands.add(new PlayCommand());
+        registerCommand(new PlayCommand());
         registeredCommands.add(new ThighCommand());
         registeredCommands.add(new GahCommand());
         registeredCommands.add(new CoffeeCommand());
@@ -106,6 +113,15 @@ public class CommandManager {
         }
     }
 
+    public void handle(SlashCommandInteractionEvent event) {
+        SlashCommand command = getRequestedCommand(event.getName());
+        if (command == null) {
+            return;
+        }
+        event.deferReply().queue();
+        command.handle(event);
+    }
+
     private String[] splitArgumentsForCommand(String[] argStrings, Command insertedCommand, String prefix) {
         int indexOfInsertedCommand = 0;
         for (; indexOfInsertedCommand < argStrings.length; indexOfInsertedCommand++) {
@@ -144,8 +160,26 @@ public class CommandManager {
         return subCommand;
     }
 
+    private SlashCommand getRequestedCommand(String name) {
+        return slashCommands.stream().filter(command -> command.getNames().contains(name)).findFirst()
+                .orElse(null);
+    }
+
     public static void registerCommand(Command commandToRegister) {
         registeredCommands.add(commandToRegister);
+    }
+
+    public static void registerCommand(SlashCommand commandToRegister) {
+        slashCommands.add(commandToRegister);
+        List<Guild> guilds = Startup.jda.getGuilds().stream()
+                .collect(Collectors.toList());
+
+        for (Guild guild : guilds) {
+            SlashCommandData slashCommandData = Commands.slash(commandToRegister.getNames().get(0),
+                    commandToRegister.getDescription());
+            slashCommandData.addOptions(commandToRegister.getOptions());
+            guild.updateCommands().addCommands(slashCommandData).queue();
+        }
     }
 
     private static String[] getArgs(MessageReceivedEvent event) {

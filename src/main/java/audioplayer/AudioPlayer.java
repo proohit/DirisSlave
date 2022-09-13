@@ -21,6 +21,7 @@ import main.Commands;
 import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.managers.AudioManager;
 
@@ -105,6 +106,13 @@ public class AudioPlayer {
                 new SingleSongLoadedHandler(musicManager, trackUrl, event));
     }
 
+    public void loadAndPlay(final SlashCommandInteractionEvent event, final String trackUrl) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(event.getGuild());
+        lastManager = event.getGuild().getAudioManager();
+        playerManager.loadItemOrdered(musicManager, trackUrl,
+                new SingleSongLoadedHandler(musicManager, trackUrl, event));
+    }
+
     public Stream<AudioTrack> getQueue(Guild guild) {
         GuildMusicManager musicManager = getGuildAudioPlayer(guild);
         return musicManager.scheduler.getQueue();
@@ -163,20 +171,36 @@ public class AudioPlayer {
     private final class SingleSongLoadedHandler implements AudioLoadResultHandler {
         private final String trackUrl;
         private final MessageReceivedEvent messageEvent;
+        private final SlashCommandInteractionEvent slashCommandEvent;
         private final GuildMusicManager musicManager;
 
         private SingleSongLoadedHandler(GuildMusicManager musicManager, String trackUrl, MessageReceivedEvent event) {
             this.trackUrl = trackUrl;
             this.messageEvent = event;
+            this.slashCommandEvent = null;
+            this.musicManager = musicManager;
+        }
+
+        private SingleSongLoadedHandler(GuildMusicManager musicManager, String trackUrl,
+                SlashCommandInteractionEvent event) {
+            this.trackUrl = trackUrl;
+            this.slashCommandEvent = event;
+            this.messageEvent = null;
             this.musicManager = musicManager;
         }
 
         @Override
         public void trackLoaded(AudioTrack track) {
             SearchResultEmbed searchResultEmbed = new SearchResultEmbed(track);
-            messageEvent.getChannel().sendMessageEmbeds(searchResultEmbed.getEmbed()).queue();
-            AudioPlayer.connectToUserVoiceChannel(messageEvent.getGuild().getAudioManager(),
-                    messageEvent.getMember().getVoiceState().getChannel());
+            if (messageEvent != null) {
+                messageEvent.getChannel().sendMessageEmbeds(searchResultEmbed.getEmbed()).queue();
+                AudioPlayer.connectToUserVoiceChannel(messageEvent.getGuild().getAudioManager(),
+                        messageEvent.getMember().getVoiceState().getChannel());
+            } else {
+                slashCommandEvent.getHook().sendMessageEmbeds(searchResultEmbed.getEmbed()).queue();
+                AudioPlayer.connectToUserVoiceChannel(slashCommandEvent.getGuild().getAudioManager(),
+                        slashCommandEvent.getMember().getVoiceState().getChannel());
+            }
             play(musicManager, track);
         }
 

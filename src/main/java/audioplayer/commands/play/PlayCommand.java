@@ -1,10 +1,17 @@
 package audioplayer.commands.play;
 
-import main.CommandManager;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import shared.commands.Command;
+import java.util.List;
 
-public class PlayCommand extends Command {
+import main.CommandManager;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import shared.commands.SlashCommand;
+
+public class PlayCommand extends SlashCommand {
+
     public PlayCommand() {
         addSubCommand(new PlayRecommendedCommand());
         addSubCommand(new PlayRandomCommand());
@@ -29,6 +36,36 @@ public class PlayCommand extends Command {
         }
 
         CommandManager.player.loadAndPlay(event, trackUrl);
+    }
+
+    @Override
+    public void handle(SlashCommandInteractionEvent event) {
+        OptionMapping url = event.getOption("url");
+        OptionMapping search = event.getOption("search");
+        if (url != null) {
+            CommandManager.player.loadAndPlay(event, url.getAsString());
+        } else if (search != null) {
+            CommandManager.player.loadAndPlay(event, "ytsearch: " + search.getAsString());
+        } else {
+            event.getHook().sendMessage("No url or search term given").queue();
+        }
+    }
+
+    @Override
+    public List<OptionData> getOptions() {
+        return List.of(
+                new OptionData(OptionType.STRING, "url", "Play an url"),
+                new OptionData(OptionType.STRING, "search", "Play from any search term"));
+    }
+
+    @Override
+    public List<String> getNames() {
+        return List.of("play");
+    }
+
+    @Override
+    public List<SlashCommand> getSlashSubCommands() {
+        return List.of(new PlayRecommendedCommand());
     }
 
 }
