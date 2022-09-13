@@ -55,7 +55,7 @@ public class MyEventListener extends ListenerAdapter {
             return;
         }
         if (event.getMessageId().equals(lastSentHelpMessage.getId())) {
-            lastSentHelpMessage.addReaction(event.getReactionEmote().getEmoji()).queue();
+            lastSentHelpMessage.addReaction(event.getReaction().getEmoji()).queue();
             helpCommand.handlePageRequest(event);
         }
     }

@@ -4,6 +4,7 @@ import java.io.File;
 
 import kong.unirest.json.JSONArray;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.utils.FileUpload;
 import shared.commands.Command;
 import weather.WeatherChart;
 import weather.api.OpenWeatherMapHandler;
@@ -28,8 +29,9 @@ public class WeatherCommand extends Command {
 
         WeatherChart chart = new WeatherChart(list, query);
         File chartFile = chart.buildChart();
+        FileUpload chartUpload = FileUpload.fromData(chartFile, chartFile.getName());
         event.getAuthor().openPrivateChannel()
-                .queue(privateChannel -> privateChannel.sendFile(chartFile, chartFile.getName()).queue());
+                .queue(privateChannel -> privateChannel.sendFiles(chartUpload).queue());
 
     }
 

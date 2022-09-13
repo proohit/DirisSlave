@@ -14,7 +14,7 @@ public class PauseCommand extends Command {
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
-        CommandManager.player.togglePause(event.getTextChannel(), true);
+        CommandManager.player.togglePause(event.getChannel().asTextChannel(), true);
     }
 
 }

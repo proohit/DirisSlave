@@ -23,6 +23,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.utils.FileUpload;
 import weather.api.OpenWeatherMapHandler;
 
 public class WeatherWatcher {
@@ -108,7 +109,8 @@ public class WeatherWatcher {
                     List<Message> msgs;
                     msgs = history.retrievePast(1).complete();
                     channel.purgeMessages(msgs);
-                    channel.sendFile(file, file.getName()).queue();
+                    FileUpload fileUpload = FileUpload.fromData(file, file.getName());
+                    channel.sendFiles(fileUpload).queue();
 
                 } catch (IOException e) {
                     e.printStackTrace();

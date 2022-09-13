@@ -14,7 +14,7 @@ public class SkipCommand extends Command {
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
-        CommandManager.player.skipTrack(event.getTextChannel());
+        CommandManager.player.skipTrack(event.getChannel().asTextChannel());
     }
 
 }

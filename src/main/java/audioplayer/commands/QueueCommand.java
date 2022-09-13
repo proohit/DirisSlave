@@ -20,7 +20,7 @@ public class QueueCommand extends Command {
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
         StringBuilder queue = new StringBuilder("current queue: \n");
-        Iterator<AudioTrack> it = CommandManager.player.getQueue(event.getTextChannel()).iterator();
+        Iterator<AudioTrack> it = CommandManager.player.getQueue(event.getChannel().asTextChannel()).iterator();
         int i = 1;
         while (it.hasNext()) {
             queue.append(i++).append(" ").append(it.next().getInfo().title).append("\n");

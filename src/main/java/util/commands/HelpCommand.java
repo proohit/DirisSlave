@@ -10,6 +10,7 @@ import main.CommandManager;
 import main.MessageUtils;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.GenericMessageReactionEvent;
 import shared.commands.Command;
@@ -140,7 +141,7 @@ public class HelpCommand extends Command {
         if (lastSentHelpMessage.getId().equals(event.getMessageId())) {
             String ARROW_LEFT = "U+25c0U+fe0f";
             String ARROW_RIGHT = "U+25b6U+fe0f";
-            String emoji = event.getReactionEmote().getAsCodepoints();
+            String emoji = event.getReaction().getEmoji().getAsReactionCode();
             if (emoji.equals(ARROW_LEFT)) {
                 currentPage = currentPage - 1 < 0 ? lastPage : currentPage - 1;
             } else if (emoji.equals(ARROW_RIGHT)) {
@@ -155,9 +156,8 @@ public class HelpCommand extends Command {
 
         @Override
         public void accept(Message t) {
-            // Here we could use pagination
-            t.addReaction("U+25c0U+fe0f").queue();
-            t.addReaction("U+25b6U+fe0f").queue();
+            t.addReaction(Emoji.fromFormatted("U+25c0U+fe0f")).queue();
+            t.addReaction(Emoji.fromFormatted("U+25b6U+fe0f")).queue();
             lastSentHelpMessage = t;
         }
 

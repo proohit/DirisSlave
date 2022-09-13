@@ -19,7 +19,7 @@ public class RemoveCommand extends Command {
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
         int indexToRemove = Integer.parseInt(argStrings[0]);
         try {
-            CommandManager.player.remove(indexToRemove, event.getTextChannel());
+            CommandManager.player.remove(indexToRemove, event.getChannel().asTextChannel());
         } catch (NumberFormatException e) {
             MessageUtils.sendBeautifulMessage(event, "the position you have entered is invalid");
         }

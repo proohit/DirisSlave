@@ -15,7 +15,7 @@ public class ShuffleCommand extends Command {
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
-        if (CommandManager.player.shuffle(event.getTextChannel())) {
+        if (CommandManager.player.shuffle(event.getChannel().asTextChannel())) {
             MessageUtils.sendMessage(event, "shuffled the music :man_dancing:");
         } else {
             MessageUtils.sendBeautifulMessage(event, "queue is empty :( start rocking with pl!");

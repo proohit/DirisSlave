@@ -18,9 +18,9 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import database.Song;
 import database.SongPlaylistTable;
 import main.Commands;
+import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.managers.AudioManager;
 
@@ -153,7 +153,7 @@ public class AudioPlayer {
         musicManager.scheduler.skipTo(pos);
     }
 
-    public static void connectToUserVoiceChannel(AudioManager audioManager, VoiceChannel channel) {
+    public static void connectToUserVoiceChannel(AudioManager audioManager, AudioChannel channel) {
         if (!audioManager.isConnected()) {
             audioManager.openAudioConnection(channel);
         }
@@ -173,7 +173,7 @@ public class AudioPlayer {
         @Override
         public void trackLoaded(AudioTrack track) {
             SearchResultEmbed searchResultEmbed = new SearchResultEmbed(track);
-            event.getTextChannel().sendMessage(searchResultEmbed.getEmbed()).queue();
+            event.getChannel().asTextChannel().sendMessageEmbeds(searchResultEmbed.getEmbed()).queue();
             AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(),
                     event.getMember().getVoiceState().getChannel());
             play(musicManager, track);
@@ -187,7 +187,7 @@ public class AudioPlayer {
                 firstTrack = playlist.getTracks().get(0);
             }
             SearchResultEmbed searchResultEmbed = new SearchResultEmbed(firstTrack);
-            event.getTextChannel().sendMessage(searchResultEmbed.getEmbed()).queue();
+            event.getChannel().asTextChannel().sendMessageEmbeds(searchResultEmbed.getEmbed()).queue();
             AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(),
                     event.getMember().getVoiceState().getChannel());
             play(musicManager, firstTrack);
@@ -195,12 +195,12 @@ public class AudioPlayer {
 
         @Override
         public void noMatches() {
-            event.getTextChannel().sendMessage("Nothing found by " + trackUrl).queue();
+            event.getChannel().asTextChannel().sendMessage("Nothing found by " + trackUrl).queue();
         }
 
         @Override
         public void loadFailed(FriendlyException exception) {
-            event.getTextChannel().sendMessage("Could not play: " + exception.getMessage()).queue();
+            event.getChannel().asTextChannel().sendMessage("Could not play: " + exception.getMessage()).queue();
         }
     }
 

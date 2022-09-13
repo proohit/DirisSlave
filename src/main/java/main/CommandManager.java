@@ -92,7 +92,7 @@ public class CommandManager {
         }
 
         if (insertedCommand.getTopic().equals("music") && !CONFIGURATION_MANAGER
-                .isMusicchannelOfGuild(event.getGuild().getIdLong(), event.getTextChannel().getName())) {
+                .isMusicchannelOfGuild(event.getGuild().getIdLong(), event.getChannel().asTextChannel().getName())) {
             MessageUtils.sendBeautifulMessage(event,
                     String.format("Please input your request in the music channel \"%s\"",
                             CONFIGURATION_MANAGER.getMusicchannelForGuild(event.getGuild().getIdLong())));
