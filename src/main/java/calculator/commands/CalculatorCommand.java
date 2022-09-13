@@ -24,13 +24,13 @@ public class CalculatorCommand extends Command {
         }
         Calculator calculator = new Calculator();
         try {
-            MessageUtils.sendMessage(event.getChannel().asTextChannel(), Double.toString(calculator.calculate(term)));
+            MessageUtils.sendMessage(event.getChannel(), Double.toString(calculator.calculate(term)));
         } catch (DivisionByZero e) {
-            MessageUtils.sendMessage(event.getChannel().asTextChannel(),
+            MessageUtils.sendMessage(event.getChannel(),
                     "http://math-fail.com/images-old/divide-by-zero3.jpg");
         } catch (Exception e) {
             e.printStackTrace();
-            MessageUtils.sendMessage(event.getChannel().asTextChannel(), "#calc usage:\n number (+ - * /) number");
+            MessageUtils.sendMessage(event.getChannel(), "#calc usage:\n number (+ - * /) number");
         }
     }
 

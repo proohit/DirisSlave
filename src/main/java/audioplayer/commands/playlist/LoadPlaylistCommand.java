@@ -28,7 +28,7 @@ public class LoadPlaylistCommand extends Command {
         }
         if (argStrings.length >= 1) {
             String playlistNameToBeLoaded = argStrings[0];
-            CommandManager.player.playPlaylist(event.getChannel().asTextChannel(), playlistNameToBeLoaded, isShuffle);
+            CommandManager.player.playPlaylist(event.getGuild(), event.getChannel(), playlistNameToBeLoaded, isShuffle);
             AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(),
                     event.getMember().getVoiceState().getChannel());
         }

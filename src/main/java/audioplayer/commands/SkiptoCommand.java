@@ -19,7 +19,7 @@ public class SkiptoCommand extends Command {
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
         int indexToSkipTo = Integer.parseInt(argStrings[0]);
         try {
-            CommandManager.player.skipTo(indexToSkipTo, event.getChannel().asTextChannel());
+            CommandManager.player.skipTo(indexToSkipTo, event.getGuild());
         } catch (NumberFormatException e) {
             MessageUtils.sendBeautifulMessage(event, "the position you have entered is invalid");
         }

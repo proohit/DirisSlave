@@ -15,7 +15,7 @@ public class ResumeCommand extends Command {
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
-        CommandManager.player.togglePause(event.getChannel().asTextChannel(), false);
+        CommandManager.player.togglePause(event.getGuild(), false);
         MessageUtils.sendMessage(event, "resuming the playback...");
     }
 

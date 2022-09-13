@@ -21,7 +21,7 @@ public class RepeatCommand extends Command {
         if (inputBoolean.equals("true") || inputBoolean.equals("false")) {
             boolean isRepeat = Boolean.parseBoolean(inputBoolean);
             MessageUtils.sendBeautifulMessage(event, "Repetition of songs has been set to: "
-                    + CommandManager.player.setRepeat(event.getChannel().asTextChannel(), isRepeat));
+                    + CommandManager.player.setRepeat(event.getGuild(), isRepeat));
         } else {
             MessageUtils.sendMessage(event, getHelp());
         }

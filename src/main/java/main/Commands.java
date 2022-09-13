@@ -28,6 +28,7 @@ import imageboards.commands.GahCommand;
 import imageboards.commands.LizardCommand;
 import imageboards.commands.ThighCommand;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import shared.commands.Command;
@@ -102,7 +103,7 @@ public class Commands {
         event.getChannel().sendMessage("```" + text + "```").queue();
     }
 
-    public static void sendBeautifulMessage(TextChannel channel, String text) {
+    public static void sendBeautifulMessage(MessageChannel channel, String text) {
         channel.sendMessage("```" + text + "```").queue();
     }
 

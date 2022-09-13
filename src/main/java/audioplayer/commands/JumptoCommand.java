@@ -16,7 +16,7 @@ public class JumptoCommand extends Command {
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
-        CommandManager.player.jumpto(event.getChannel().asTextChannel(), Integer.parseInt(argStrings[1]));
+        CommandManager.player.jumpto(event.getGuild(), Integer.parseInt(argStrings[1]));
     }
 
 }

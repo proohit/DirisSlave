@@ -20,7 +20,7 @@ import database.SongPlaylistTable;
 import main.Commands;
 import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.managers.AudioManager;
 
@@ -53,13 +53,13 @@ public class AudioPlayer {
         return musicManager;
     }
 
-    public boolean shuffle(TextChannel channel) {
-        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+    public boolean shuffle(Guild guild) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(guild);
         return musicManager.scheduler.shuffle();
     }
 
-    public void togglePause(TextChannel channel, boolean setPause) {
-        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+    public void togglePause(Guild guild, boolean setPause) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(guild);
         if (setPause) {
             musicManager.scheduler.pause();
         } else {
@@ -67,22 +67,23 @@ public class AudioPlayer {
         }
     }
 
-    public void fetchAudioTrack(final TextChannel channel, final String trackUrl, AudioLoadResultHandler handler) {
-        lastManager = channel.getGuild().getAudioManager();
-        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+    public void fetchAudioTrack(Guild guild, final String trackUrl, AudioLoadResultHandler handler) {
+        lastManager = guild.getAudioManager();
+        GuildMusicManager musicManager = getGuildAudioPlayer(guild);
         playerManager.loadItemOrdered(musicManager, trackUrl, handler);
     }
 
-    public boolean setRepeat(TextChannel channel, boolean repeat) {
-        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+    public boolean setRepeat(Guild guild, boolean repeat) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(guild);
         return musicManager.scheduler.setRepeat(repeat);
     }
 
-    public void playPlaylist(final TextChannel channel, final String playlistName, final boolean shuffle) {
-        lastManager = channel.getGuild().getAudioManager();
-        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+    public void playPlaylist(Guild guild, final MessageChannel channel, final String playlistName,
+            final boolean shuffle) {
+        lastManager = guild.getAudioManager();
+        GuildMusicManager musicManager = getGuildAudioPlayer(guild);
         ArrayList<Song> songs = (ArrayList<Song>) SongPlaylistTable.getSongsByPlaylist(playlistName,
-                channel.getGuild().getIdLong());
+                guild.getIdLong());
         if (songs.isEmpty()) {
             Commands.sendBeautifulMessage(channel, String.format("Playlist %s empty or not found", playlistName));
             return;
@@ -104,8 +105,8 @@ public class AudioPlayer {
                 new SingleSongLoadedHandler(musicManager, trackUrl, event));
     }
 
-    public Stream<AudioTrack> getQueue(TextChannel channel) {
-        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+    public Stream<AudioTrack> getQueue(Guild guild) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(guild);
         return musicManager.scheduler.getQueue();
     }
 
@@ -122,25 +123,25 @@ public class AudioPlayer {
         }
     }
 
-    public long seek(TextChannel channel, int seconds) {
-        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+    public long seek(Guild guild, int seconds) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(guild);
         return musicManager.scheduler.seek(seconds);
     }
 
-    public void jumpto(TextChannel channel, int seconds) {
-        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+    public void jumpto(Guild guild, int seconds) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(guild);
         musicManager.scheduler.jumpto(seconds);
     }
 
-    public void skipTrack(TextChannel channel) {
-        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+    public void skipTrack(Guild guild, MessageChannel channel) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(guild);
         musicManager.scheduler.nextTrack();
 
         Commands.sendBeautifulMessage(channel, "Skipped to next track.");
     }
 
-    public void remove(int pos, TextChannel channel) {
-        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+    public void remove(int pos, Guild guild) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(guild);
         musicManager.scheduler.remove(pos);
     }
 
@@ -148,8 +149,8 @@ public class AudioPlayer {
         return lastManager;
     }
 
-    public void skipTo(int pos, TextChannel channel) {
-        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+    public void skipTo(int pos, Guild guild) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(guild);
         musicManager.scheduler.skipTo(pos);
     }
 
@@ -161,46 +162,41 @@ public class AudioPlayer {
 
     private final class SingleSongLoadedHandler implements AudioLoadResultHandler {
         private final String trackUrl;
-        private final MessageReceivedEvent event;
+        private final MessageReceivedEvent messageEvent;
         private final GuildMusicManager musicManager;
 
         private SingleSongLoadedHandler(GuildMusicManager musicManager, String trackUrl, MessageReceivedEvent event) {
             this.trackUrl = trackUrl;
-            this.event = event;
+            this.messageEvent = event;
             this.musicManager = musicManager;
         }
 
         @Override
         public void trackLoaded(AudioTrack track) {
             SearchResultEmbed searchResultEmbed = new SearchResultEmbed(track);
-            event.getChannel().asTextChannel().sendMessageEmbeds(searchResultEmbed.getEmbed()).queue();
-            AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(),
-                    event.getMember().getVoiceState().getChannel());
+            messageEvent.getChannel().sendMessageEmbeds(searchResultEmbed.getEmbed()).queue();
+            AudioPlayer.connectToUserVoiceChannel(messageEvent.getGuild().getAudioManager(),
+                    messageEvent.getMember().getVoiceState().getChannel());
             play(musicManager, track);
         }
 
         @Override
         public void playlistLoaded(AudioPlaylist playlist) {
             AudioTrack firstTrack = playlist.getSelectedTrack();
-
             if (firstTrack == null) {
                 firstTrack = playlist.getTracks().get(0);
             }
-            SearchResultEmbed searchResultEmbed = new SearchResultEmbed(firstTrack);
-            event.getChannel().asTextChannel().sendMessageEmbeds(searchResultEmbed.getEmbed()).queue();
-            AudioPlayer.connectToUserVoiceChannel(event.getGuild().getAudioManager(),
-                    event.getMember().getVoiceState().getChannel());
-            play(musicManager, firstTrack);
+            this.trackLoaded(firstTrack);
         }
 
         @Override
         public void noMatches() {
-            event.getChannel().asTextChannel().sendMessage("Nothing found by " + trackUrl).queue();
+            messageEvent.getChannel().sendMessage("Nothing found by " + trackUrl).queue();
         }
 
         @Override
         public void loadFailed(FriendlyException exception) {
-            event.getChannel().asTextChannel().sendMessage("Could not play: " + exception.getMessage()).queue();
+            messageEvent.getChannel().sendMessage("Could not play: " + exception.getMessage()).queue();
         }
     }
 
@@ -209,11 +205,11 @@ public class AudioPlayer {
         private final List<Integer> completedSongIds;
         private final Song song;
         private final String playlistName;
-        private final TextChannel channel;
+        private final MessageChannel channel;
         private final ArrayList<Song> songs;
 
         private PlaylistLoadedHandler(GuildMusicManager musicManager, List<Integer> completedSongIds, Song song,
-                String playlistName, TextChannel channel, ArrayList<Song> songs) {
+                String playlistName, MessageChannel channel, ArrayList<Song> songs) {
             this.musicManager = musicManager;
             this.completedSongIds = completedSongIds;
             this.song = song;

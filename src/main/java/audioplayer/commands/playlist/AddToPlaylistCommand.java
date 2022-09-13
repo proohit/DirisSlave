@@ -32,7 +32,7 @@ public class AddToPlaylistCommand extends Command {
         for (int i = 1; i < argStrings.length; i++) {
             search += argStrings[i] + " ";
         }
-        CommandManager.player.fetchAudioTrack(event.getChannel().asTextChannel(), search, new AudioLoadResultHandler() {
+        CommandManager.player.fetchAudioTrack(event.getGuild(), search, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
                 if (!SongTable.hasSong(track.getInfo().uri))

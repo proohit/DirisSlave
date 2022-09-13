@@ -20,7 +20,7 @@ public class SeekCommand extends Command {
         int inputSeconds = Integer.parseInt(argStrings[0]);
         if (inputSeconds < 0)
             return;
-        long position = CommandManager.player.seek(event.getChannel().asTextChannel(), inputSeconds);
+        long position = CommandManager.player.seek(event.getGuild(), inputSeconds);
         if (position > 0) {
             int seconds = (int) position / 1000;
             int minutes = seconds / 60;
