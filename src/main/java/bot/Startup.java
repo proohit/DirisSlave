@@ -16,6 +16,7 @@ import bot.main.MyEventListener;
 import bot.main.ReadPropertyFile;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 
 @SpringBootApplication
 @EnableAutoConfiguration(exclude = { R2dbcAutoConfiguration.class })
@@ -26,7 +27,11 @@ public class Startup {
         try {
             SpringApplication.run(Startup.class);
             ReadPropertyFile rpf = ReadPropertyFile.getInstance();
-            jda = JDABuilder.createDefault(rpf.getJDAToken()).build().awaitReady();
+            jda = JDABuilder//
+                    .createDefault(rpf.getJDAToken())
+                    .enableIntents(GatewayIntent.MESSAGE_CONTENT)
+                    .build()
+                    .awaitReady();
             DBManager.initializeDatabase();
             jda.addEventListener(new MyEventListener(jda));
         } catch (Exception e) {
