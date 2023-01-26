@@ -5,18 +5,18 @@ import bot.metahandler.MetaHandler;
 import bot.shared.commands.Command;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-public class StatsCommand extends Command {
-    public StatsCommand() {
+public class MetaCommand extends Command {
+    public MetaCommand() {
         addPermission("everyone");
-        addCommendPrefix("stats");
-        setDescription("see the running-time");
+        addCommendPrefix("meta");
+        setDescription("see meta information about the bot");
         setTopic("util");
     }
 
     @Override
     protected void handleImpl(MessageReceivedEvent event, String[] argStrings) {
         MessageUtils.sendBeautifulMessage(event,
-                MetaHandler.greet() + MetaHandler.runtime() + MetaHandler.helpMessage());
+                MetaHandler.getMetaInformation(event));
     }
 
 }

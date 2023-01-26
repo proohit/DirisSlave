@@ -16,7 +16,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.GenericMessageReactionEvent;
 
 public class HelpCommand extends Command {
-    private int HELP_PER_PAGE = 5;
+    private int HELP_PER_PAGE = 10;
     private int currentPage = 0;
     private int lastPage;
     private int restCommands;

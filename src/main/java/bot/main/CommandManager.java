@@ -33,6 +33,7 @@ import bot.shared.commands.Command;
 import bot.util.commands.ChangePrefixCommand;
 import bot.util.commands.ClearCommand;
 import bot.util.commands.HelpCommand;
+import bot.util.commands.MetaCommand;
 import bot.util.commands.SetMusicChannelCommand;
 import bot.weather.commands.WeatherCommand;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -73,6 +74,7 @@ public class CommandManager {
         registeredCommands.add(new DiceRollCommand());
         registeredCommands.add(new ChangePrefixCommand());
         registeredCommands.add(new SetMusicChannelCommand());
+        registeredCommands.add(new MetaCommand());
         registeredCommands.add(HelpCommand.getInstance());
     }
 
