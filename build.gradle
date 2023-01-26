@@ -44,7 +44,7 @@ dependencies {
     implementation 'com.zaxxer:HikariCP:5.0.1'
     implementation "org.jooq:jooq:3.15.3"
     implementation "org.jooq:jooq-meta:3.15.3"
-    implementation "org.jooq:jooq-codegen:3.15.3"
+    implementation "org.jooq:jooq-codegen:3.17.7"
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.5.4'
 
 }
