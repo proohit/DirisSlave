@@ -1,8 +1,8 @@
 package bot.server;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,7 +13,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import org.apache.commons.io.FileUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -70,10 +69,9 @@ public class ApiController {
 
     @GetMapping(value = "logs")
     public ResponseEntity<List<LogEntry>> getLogs() {
-        File logFile = new File("log.txt");
 
         try {
-            String logFileText = FileUtils.readFileToString(logFile, StandardCharsets.UTF_8);
+            String logFileText = Files.readString(Path.of("log.txt"));
             Matcher entryMatcher = Pattern.compile("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}").matcher(logFileText);
             List<Integer> startIndexes = new ArrayList<>();
             List<Integer> endIndexes = new ArrayList<>();
