@@ -9,7 +9,7 @@ application {
     mainClass = 'bot.Startup'
 }
 
-group 'org.example'
+group 'com.proohit'
 version '1.0.16'
 
 java {
