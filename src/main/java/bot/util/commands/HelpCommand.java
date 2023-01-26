@@ -139,8 +139,8 @@ public class HelpCommand extends Command {
             return;
         }
         if (lastSentHelpMessage.getId().equals(event.getMessageId())) {
-            String ARROW_LEFT = "U+25c0U+fe0f";
-            String ARROW_RIGHT = "U+25b6U+fe0f";
+            String ARROW_LEFT = "◀️";
+            String ARROW_RIGHT = "▶️";
             String emoji = event.getReaction().getEmoji().getAsReactionCode();
             if (emoji.equals(ARROW_LEFT)) {
                 currentPage = currentPage - 1 < 0 ? lastPage : currentPage - 1;
