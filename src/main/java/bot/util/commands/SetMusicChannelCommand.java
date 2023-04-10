@@ -5,7 +5,7 @@ import java.util.List;
 import bot.main.CommandManager;
 import bot.main.MessageUtils;
 import bot.shared.commands.Command;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class SetMusicChannelCommand extends Command {
